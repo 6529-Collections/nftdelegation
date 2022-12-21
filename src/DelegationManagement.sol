@@ -55,7 +55,7 @@ contract delegationManagement {
      * 
      */
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        require((_useCase >0 && _useCase <= useCaseCounter) || (_useCase == 99));
+        require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;
