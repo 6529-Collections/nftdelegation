@@ -2,8 +2,8 @@
 
 /** 
  *
- *	@title: Delegation Management Contract   
- *	@date: 21-Dec-2022 @ 10:30
+ *  @title: Delegation Management Contract   
+ *  @date: 21-Dec-2022 @ 10:30
  *  @version: 4.23 
  *  @notes: This is a experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
