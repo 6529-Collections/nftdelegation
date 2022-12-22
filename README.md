@@ -62,6 +62,6 @@ Use-Case  | Action
 	6. Returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
 	7. Returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection
 
-#### The contract is free from any dependencies
+#### Free from Dependencies
 
-- Contract is free from any dependencies. We took the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
+- The contract is free from any dependencies. We took the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
