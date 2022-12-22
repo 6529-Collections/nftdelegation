@@ -19,7 +19,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 - We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet. 
 
 #### Use Cases
-&nbsp;
+
 Use-Case  | Action
 ------------- | -------------
 1  | All
