@@ -4,9 +4,9 @@
 ##### Deployment
 Network  | Contract Address
 ------------- | -------------
-Goerli Testnet  | All
+Goerli Testnet  | [0x2a77A2c10ee78f0B022F2693224e5C31d57efED1](https://goerli.etherscan.io/address/0x2a77a2c10ee78f0b022f2693224e5c31d57efed1)
 
-- Deployer Address: 
+- Deployer Address: 0x11dcd7e3F966F6eC56EC1658909Ff0AB78EcB6A0
 
 ##### What is it?
 Simply put, the proposed contract implementation deploys a "Delegation Management" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
