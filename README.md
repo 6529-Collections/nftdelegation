@@ -2,7 +2,6 @@
 
 
 ##### Deployment
-&nbsp;
 Network  | Contract Address
 ------------- | -------------
 Goerli Testnet  | All
