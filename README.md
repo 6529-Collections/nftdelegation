@@ -55,7 +55,7 @@ Use-Case  | Action
 
 - Current implementation enables the following functionality:
     1. Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
-	2. Delegator revokes delegation rights from a delagation address given to a specific use case on a specific NFT collection
+	2. Delegator revokes delegation rights from a delagation address given a specific use case on a specific NFT collection
 	3. Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
 	4. Returns an array of all delegation addresses (active AND inactive) set by a delegator for a specific use case on a specific NFT collection
 	5. Returns an array of all delegators (active AND inactive) for a specific use case on a specific NFT collection
