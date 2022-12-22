@@ -6,6 +6,7 @@ Network  | Contract Address
 ------------- | -------------
 Goerli Testnet  | All
 
+- Deployer Address: 
 
 ##### What is it?
 Simply put, the proposed contract implementation deploys a "Delegation Management" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
