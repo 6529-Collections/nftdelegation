@@ -1,5 +1,13 @@
 # Delegation Management
 
+
+##### Deployment
+&nbsp;
+Network  | Contract Address
+------------- | -------------
+Goerli Testnet  | All
+
+
 ##### What is it?
 Simply put, the proposed contract implementation deploys a "Delegation Management" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
 
@@ -9,9 +17,9 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 - A Delegator can assign a delegation address for a specific use case on a specific NFT collection for a certain duration.
 - We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet. 
 
-##### Ok, so what are the use-cases?
+##### Use Cases
 &nbsp;
-Use-case  | Action
+Use-Case  | Action
 ------------- | -------------
 1  | All
 2  | Minting / Allowlist
@@ -29,7 +37,7 @@ Use-case  | Action
 14 | Sub-delegation
 99 | Consolidation
 
-##### Ok, so why is it useful then?
+##### Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
 - Delegation assignments make sense in cases where it is extremely risky to connect and sign messages from a cold wallet that is used for storing valuable fungible or non-fungible assets. Delegation addresses can be used to represent a Delegator and act on the Delegator's behalf under certain actions:
@@ -53,6 +61,6 @@ Use-case  | Action
 	6. Returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
 	7. Returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection
 
-##### NO Dependencies
+##### The contract is free from any dependencies
 
 - Contract is free from any dependencies. We took the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
