@@ -49,7 +49,7 @@ contract delegationManagement {
     error NoGlobalHashOnRegisteredDelegation();
 
     // Constructor
-    constructor(uint8 _counter) public {
+    constructor(uint8 _counter) {
         useCaseCounter = _counter;
     }
 
