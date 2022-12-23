@@ -19,8 +19,6 @@ contract delegationManagement {
 
     // Mapping declarations
     mapping (bytes32 => bool) public registeredDelegation;
-    mapping (bytes32 => uint256) public delegationToCounterPerHash;
-    mapping (bytes32 => uint256) public delegationFromCounterPerHash;
 
     // Struct declaration
     struct delegationAddresses {
@@ -56,21 +54,17 @@ contract delegationManagement {
      */
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase) public {
         require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
-        bytes32 toHash;
-        bytes32 fromHash;
-        bytes32 globalHash;
-        globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
-        toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
-        fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
-        require(registeredDelegation[globalHash] ==false);
+        bytes32 toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
+        bytes32 fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
+        bytes32 globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
+        
+        require(registeredDelegation[globalHash] == false);
+
         delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase);
         delegateToHashes[toHash].push(newdelegationAddress);
         delegateFromHashes[fromHash].push(newdelegationAddress);
-		delegationToCounterPerHash[toHash] = delegationToCounterPerHash[toHash] + 1;
-        delegationFromCounterPerHash[fromHash] = delegationFromCounterPerHash[fromHash] + 1;
-        registeredDelegation[globalHash] =true;
+		registeredDelegation[globalHash] = true;
         emit registerDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase);
-
     }
 
     /**
@@ -78,66 +72,37 @@ contract delegationManagement {
      * 
      */
     function revokeDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _useCase) public {
-        bytes32 toHash;
-        bytes32 fromHash;
-        bytes32 globalHash;
-        uint256 count;
-        globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
-        toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
-        fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
-        // delete from toHashes mapping
-        count=0;
-        for (uint256 i=0; i<=delegationToCounterPerHash[toHash]-1; i++){
-            if (globalHash == delegateToHashes[toHash][i].delegationGlobalHash) {
-                count=count+1;
+        bytes32 toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
+        bytes32 fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
+        bytes32 globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
+
+        uint256 toHashLength = delegateToHashes[toHash].length;
+        uint256 fromHashLength = delegateFromHashes[fromHash].length;
+
+        if (toHashLength == 1) {
+            delete delegateToHashes[toHash];
+        } else {
+            for (uint256 i = 0; i <= toHashLength; i++) {
+                if (globalHash == delegateToHashes[toHash][i].delegationGlobalHash) {
+                    delegateToHashes[toHash][i] = delegateToHashes[toHash][toHashLength-1];
+                    delegateToHashes[toHash].pop();
+                    break;
+                }
             }
         }
-        uint256[] memory delegationsPerUser = new uint256[](count);
-        uint256 count1=0;
-        for (uint256 i=0; i<=delegationToCounterPerHash[toHash]-1; i++){
-            if (globalHash == delegateToHashes[toHash][i].delegationGlobalHash) {
-                delegationsPerUser[count1] = i;
-                count1=count1+1;
+
+        if (fromHashLength == 1) {
+            delete delegateFromHashes[fromHash];
+        } else {
+            for (uint256 i = 0; i <= fromHashLength; i++) {
+                if (globalHash == delegateFromHashes[fromHash][i].delegationGlobalHash) {
+                    delegateFromHashes[fromHash][i] = delegateFromHashes[fromHash][fromHashLength-1];
+                    delegateFromHashes[fromHash].pop();
+                    break;
+                }
             }
         }
-        if (count1>0) {
-        for (uint256 j=0; j<=delegationsPerUser.length-1; j++) {
-            uint256 temp1;
-            uint256 temp2;
-            temp1 = delegationsPerUser[delegationsPerUser.length-1-j];
-            temp2 = delegateToHashes[toHash].length-1;
-            delegateToHashes[toHash][temp1] = delegateToHashes[toHash][temp2];
-            delegateToHashes[toHash].pop();
-            delegationToCounterPerHash[toHash] = delegationToCounterPerHash[toHash] - 1;
-        }
-        }
-        // delete from fromHashes mapping
-        uint256 countFrom=0;
-        for (uint256 i=0; i<=delegationFromCounterPerHash[fromHash]-1; i++){
-            if (globalHash == delegateFromHashes[fromHash][i].delegationGlobalHash) {
-                countFrom=countFrom+1;
-            }
-        }
-        uint256[] memory delegationsFromPerUser = new uint256[](countFrom);
-        uint256 countFrom1=0;
-        for (uint256 i=0; i<=delegationFromCounterPerHash[fromHash]-1; i++){
-            if (globalHash == delegateFromHashes[fromHash][i].delegationGlobalHash) {
-                delegationsFromPerUser[countFrom1] = i;
-                countFrom1=countFrom1+1;
-            }
-        }
-        if (countFrom1>0) {
-        for (uint256 j=0; j<=delegationsFromPerUser.length-1; j++) {
-            uint256 temp1;
-            uint256 temp2;
-            temp1 = delegationsFromPerUser[delegationsFromPerUser.length-1-j];
-            temp2 = delegateFromHashes[fromHash].length-1;
-            delegateFromHashes[fromHash][temp1] = delegateFromHashes[fromHash][temp2];
-            delegateFromHashes[fromHash].pop();
-            delegationFromCounterPerHash[fromHash] = delegationFromCounterPerHash[fromHash] - 1;
-        }
-        
-        }
+
         registeredDelegation[globalHash] =false;
         emit revokeDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase);
     }
@@ -154,14 +119,20 @@ contract delegationManagement {
 
     // Getter functions
 
+    function toHashCounter(bytes32 toHash) public view returns (uint256) {
+        return delegateToHashes[toHash].length;
+    }
+
+    function fromHashCounter(bytes32 fromHash) public view returns (uint256) {
+        return delegateFromHashes[fromHash].length;
+    }
+
     /**
      * @notice Support function used to retrieve the hash given specific parameters
      * 
      */
     function retrieveHash(address _profileAddress, address _collectionAddress, uint256 _useCase) public view returns (bytes32) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress,_collectionAddress,_useCase));
-        return (hash);
+        return keccak256(abi.encodePacked(_profileAddress,_collectionAddress,_useCase));
     }
     
     /**
@@ -171,7 +142,7 @@ contract delegationManagement {
      function retrieveToDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint256 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationToCounterPerHash[hash]);
+        address[] memory allDelegations = new address[](delegateToHashes[hash].length);
         uint256 count;
         count=0;
         for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
@@ -190,7 +161,7 @@ contract delegationManagement {
      function retrieveFromDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint256 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationFromCounterPerHash[hash]);
+        address[] memory allDelegations = new address[](delegateFromHashes[hash].length);
         uint256 count;
         count=0;
         for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
@@ -211,7 +182,7 @@ contract delegationManagement {
      function retrieveActiveToDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint256 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationToCounterPerHash[hash]);
+        address[] memory allDelegations;
         uint256 count;
         count=0;
         for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
@@ -231,7 +202,7 @@ contract delegationManagement {
      function retrieveActiveFromDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint256 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationFromCounterPerHash[hash]);
+        address[] memory allDelegations = new address[](delegateFromHashes[hash].length);
         uint256 count;
         count=0;
         for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
