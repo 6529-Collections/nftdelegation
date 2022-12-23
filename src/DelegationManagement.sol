@@ -40,10 +40,13 @@ contract delegationManagement {
     mapping (bytes32 => delegationAddresses[]) public delegateFromHashes;
 
     // Events declaration
-
     event registerDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
     event revokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
     event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint256 useCase);
+
+    //Errors
+    error UseCaseOutOfBounds();
+    error NoGlobalHashOnRegisteredDelegation();
 
     // Constructor
     constructor(uint8 _counter) public {
@@ -55,14 +58,14 @@ contract delegationManagement {
      *
      */
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == 255));
+        if ((_useCase < 0) || (_useCase > useCaseCounter && _useCase != 99)) revert UseCaseOutOfBounds();
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
         toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
         fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
-        require(registeredDelegation[globalHash] ==false);
+        if (!registeredDelegation[globalHash]) revert NoGlobalHashOnRegisteredDelegation();
         delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase);
         delegateToHashes[toHash].push(newdelegationAddress);
         delegateFromHashes[fromHash].push(newdelegationAddress);
