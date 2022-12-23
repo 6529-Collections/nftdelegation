@@ -46,8 +46,8 @@ contract delegationManagement {
     event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint256 useCase);
 
     // Constructor
-    constructor() public {
-        useCaseCounter = 15;
+    constructor(uint8 _counter) public {
+        useCaseCounter = _counter;
     }
 
     /**
