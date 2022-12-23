@@ -165,7 +165,7 @@ contract delegationManagement {
      * @notice Support function used to retrieve the hash given specific parameters
      *
      */
-    function retrieveHash(address _profileAddress, address _collectionAddress, uint256 _useCase) public view returns (bytes32) {
+    function retrieveHash(address _profileAddress, address _collectionAddress, uint256 _useCase) public pure returns (bytes32) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress,_collectionAddress,_useCase));
         return (hash);
