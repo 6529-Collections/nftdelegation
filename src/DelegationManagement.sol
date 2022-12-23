@@ -15,7 +15,7 @@ pragma solidity >=0.6.0 <=0.8.0;
 contract delegationManagement {
 
     // Variable declarations
-    uint256 useCaseCounter;
+    uint8 useCaseCounter;
 
     // Mapping declarations
     mapping (bytes32 => bool) public registeredDelegation;
@@ -55,7 +55,7 @@ contract delegationManagement {
      *
      */
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == 99));
+        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == 255));
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;

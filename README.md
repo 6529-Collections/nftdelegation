@@ -36,7 +36,7 @@ Use-Case  | Action
 12 | Gameplay
 13 | IP Licensing
 14 | Sub-delegation
-99 | Consolidation
+255 | Consolidation
 
 #### Why is delegation useful?
 
