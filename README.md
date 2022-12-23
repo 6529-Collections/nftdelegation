@@ -14,9 +14,9 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 
 #### Purpose
 
-- It is often the case that wallet owners wish to assign delegation rights (in this context let's refer to assigners as "Delegators") to some other wallet address to act on their behalf. 
+- It is often the case that wallet owners wish to assign delegation rights (in this context let's refer to assigners as "Delegators") to some other wallet address to act on their behalf.
 - A Delegator can assign a delegation address for a specific use case on a specific NFT collection for a certain duration.
-- We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet. 
+- We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet.
 
 #### Use Cases
 
@@ -49,8 +49,8 @@ Use-Case  | Action
     3. verifying/proving token ownership e.g., apps that implement some token gated policy
     4. or any other activity that relates to the above use-cases
 &nbsp;
-- Overall, this contract proposal is useful for use-cases where dApps require a global, on-chain registry that maps the "delegation" relationship between wallet addresses. 
-	
+- Overall, this contract proposal is useful for use-cases where dApps require a global, on-chain registry that maps the "delegation" relationship between wallet addresses.
+
 #### Features
 
 - Current implementation enables the following functionality:
