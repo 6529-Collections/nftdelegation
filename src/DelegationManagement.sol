@@ -182,7 +182,7 @@ contract delegationManagement {
      function retrieveActiveToDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint256 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations;
+        address[] memory allDelegations = new address[](delegateToHashes[hash].length);
         uint256 count;
         count=0;
         for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
