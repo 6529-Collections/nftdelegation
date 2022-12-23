@@ -45,7 +45,7 @@ Use-Case  | Action
 
 - An action could be:
     1. claiming token airdrops
-    2. minting tokens from collections that require an entry to their whitelist(s)
+    2. minting tokens from collections that require an entry to their allowlist(s)
     3. verifying/proving token ownership e.g., apps that implement some token gated policy
     4. or any other activity that relates to the above use-cases
 &nbsp;
