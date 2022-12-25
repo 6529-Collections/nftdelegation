@@ -10,7 +10,7 @@
  *
  */
 
-pragma solidity >=0.6.0 <=0.8.0;
+pragma solidity 0.8.17;
 
 contract delegationManagement {
 
@@ -46,7 +46,7 @@ contract delegationManagement {
     event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint256 useCase);
     
     // Constructor
-    constructor() public {
+    constructor() {
         useCaseCounter = 15;
     }
   
@@ -158,7 +158,7 @@ contract delegationManagement {
      * @notice Support function used to retrieve the hash given specific parameters
      * 
      */
-    function retrieveHash(address _profileAddress, address _collectionAddress, uint256 _useCase) public view returns (bytes32) {
+    function retrieveHash(address _profileAddress, address _collectionAddress, uint256 _useCase) public pure returns (bytes32) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress,_collectionAddress,_useCase));
         return (hash);
