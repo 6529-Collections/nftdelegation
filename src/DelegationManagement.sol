@@ -77,7 +77,7 @@ contract delegationManagement {
         bool _tokenSpecific,
         uint256 _tokenID
     ) public {
-        require((_useCase > 0) || (_useCase == 99));
+        require(_useCase > 0);
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;
