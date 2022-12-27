@@ -147,8 +147,8 @@ contract delegationManagement {
      * 
      */
     function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase);
         revokeDelegationAddress(_collectionAddress, _olddelegationAddress, _useCase);
+        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase);
         emit updateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase);
     }
 
