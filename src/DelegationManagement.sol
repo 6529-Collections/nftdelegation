@@ -14,8 +14,8 @@ pragma solidity >=0.6.0 <=0.8.0;
 
 contract delegationManagement {
 
-    // Variable declarations
-    uint256 useCaseCounter; 
+    // // Variable declarations
+    // uint256 useCaseCounter; 
 
     // Mapping declarations
     mapping (bytes32 => bool) public registeredDelegation;
@@ -33,6 +33,11 @@ contract delegationManagement {
         uint256 registeredDate;
         uint256 expiryDate;
         uint256 useCase;
+        //a parameter to be checked if the delegation is specific to a token or not
+        bool tokenSpecific;
+        //if tokenSpecific is true, its value represents the tokenID delegated
+        //if tokenSpecific is false, its value can be anything preferably 0 as it is not used
+        uint256 tokenID;
     }
 
     // bytes32 mappings with arrays
@@ -47,15 +52,16 @@ contract delegationManagement {
     
     // Constructor
     constructor() public {
-        useCaseCounter = 15;
+        // useCaseCounter = 15;
     }
   
     /**
      * @notice Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
      * 
      */
-    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
+    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase, bool _tokenSpecific, uint256 _tokenId) public {
+        // require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
+        require(_useCase>0);
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;
@@ -63,7 +69,7 @@ contract delegationManagement {
         toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
         fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         require(registeredDelegation[globalHash] ==false);
-        delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase);
+        delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase, _tokenSpecific, _tokenId);
         delegateToHashes[toHash].push(newdelegationAddress);
         delegateFromHashes[fromHash].push(newdelegationAddress);
 		delegationToCounterPerHash[toHash] = delegationToCounterPerHash[toHash] + 1;
@@ -146,8 +152,8 @@ contract delegationManagement {
      * @notice Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
      * 
      */
-    function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint256 _useCase) public {
-        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase);
+    function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint256 _useCase, bool _tokenSpecific, uint256 _tokenId) public {
+        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase, _tokenSpecific, _tokenId);
         revokeDelegationAddress(_collectionAddress, _olddelegationAddress, _useCase);
         emit updateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase);
     }
