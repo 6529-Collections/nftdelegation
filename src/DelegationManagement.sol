@@ -83,8 +83,8 @@ contract delegationManagement {
         bytes32 globalHash;
         uint256 count;
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
-        toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
-        fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
+        fromHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
+        toHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         // delete from toHashes mapping
         count=0;
         for (uint256 i=0; i<=delegationToCounterPerHash[toHash]-1; i++){
