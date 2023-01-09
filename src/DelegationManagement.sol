@@ -85,8 +85,8 @@ contract delegationManagement {
         require(collectionLock[collectionLockHash] == false);
         require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
-        toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
-        fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
+        toHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
+        fromHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
         delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase, _tokenid);
         delegateToHashes[toHash].push(newdelegationAddress);
         delegateFromHashes[fromHash].push(newdelegationAddress);
