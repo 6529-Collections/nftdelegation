@@ -3,8 +3,8 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 05-Jan-2022 @ 13:12
- *  @version: 4.33 
+ *  @date: 10-Jan-2022 @ 13:15
+ *  @version: 5.12 - revokeAll
  *  @notes: This is a experimental contract for delegation registry
  *  @modifications: Added global, collection and usecase locks, Added change/retrieve Lock status function
  *  @modifications: Updated revoke and update functions
@@ -26,37 +26,29 @@ contract delegationManagement {
     uint256 useCaseCounter; 
 
     // Mapping declarations
-    mapping (bytes32 => bool) public registeredDelegation;
-    mapping (bytes32 => uint8) public delegationToCounterPerHash;
-    mapping (bytes32 => uint8) public delegationFromCounterPerHash;
+    mapping (bytes32 => address[]) public delegateToHashes;
+    mapping (bytes32 => address[]) public delegateFromHashes;
 
-    // Struct declaration
-    struct delegationAddresses {
-        address mainAddress;
-        bytes32 delegationGlobalHash;
-        bytes32 delegationToHash;
-        bytes32 delegationFromHash;
-        address collectionAddress;
-        address delegationAddress;
-        uint256 registeredDate;
+    struct globalData {
         uint256 expiryDate;
-        uint8 useCase;
-        int256 tokens;
+        bool allTokens;
+        uint256 tokens;
     }
 
     // Mapping of struct declarations
-    mapping (bytes32 => delegationAddresses[]) public delegateToHashes;
-    mapping (bytes32 => delegationAddresses[]) public delegateFromHashes;
+    mapping (bytes32 => globalData[]) public globalDataHashes;
 
     // Events declaration
-
-    event registerDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase, uint8 lock, int256 _tokenid);
+    event registerDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase, uint8 lock, bool allTokens, uint256 _tokenid);
     event revokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase);
-    event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint8 useCase, uint8 lock, int256 _tokenid);
+    event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint8 useCase, uint8 lock, bool allTokens, uint256 _tokenid);
     
-    
-    // Locks declarations
+    //Global Registry for all collections & usecases history
+    mapping (address => address[]) public CollectionsRegistered;
+    mapping (address => uint256[]) public UseCaseRegistered;
 
+    
+    // Locks mapping declarations
     mapping (address => bool) public globalLock;
     mapping (bytes32 => bool) public collectionLock;
     mapping (bytes32 => bool) public collectionUsecaseLock;
@@ -68,30 +60,44 @@ contract delegationManagement {
   
     /**
      * @notice Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
-     * @notice 0x8888888888888888888888888888888888888888 = All collections
-     * @notice tokenid = -1 ALL
+     * @notice _collectionAddress --> 0x8888888888888888888888888888888888888888 = All collections
+     * @notice For allTokens -- > _allTokens needs to be true, _tokenId does not matter
      * @notice 0 - unlock, 1 - collectionLock, 2 - collectionUsecaseLock, 3 - globalLock
      */
-    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, uint8 _lock, int256 _tokenid) public {
+
+    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, uint8 _lock, bool _allTokens, uint256 _tokenid) public {
         require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
         bytes32 toHash;
         bytes32 fromHash;
         bytes32 globalHash;
         bytes32 collectionLockHash;
         bytes32 collectionUsecaseLockHash;
+        // Locks
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
         require(globalLock[_delegationAddress] == false);
         require(collectionLock[collectionLockHash] == false);
         require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
+        // Push data to mappings
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
         toHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
         fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
-        delegationAddresses memory newdelegationAddress = delegationAddresses(msg.sender, globalHash, toHash, fromHash, _collectionAddress, _delegationAddress, block.timestamp, _expiryDate, _useCase, _tokenid);
-        delegateToHashes[toHash].push(newdelegationAddress);
-        delegateFromHashes[fromHash].push(newdelegationAddress);
-		delegationToCounterPerHash[toHash] = delegationToCounterPerHash[toHash] + 1;
-        delegationFromCounterPerHash[fromHash] = delegationFromCounterPerHash[fromHash] + 1;
+        delegateToHashes[toHash].push(_delegationAddress);
+        delegateFromHashes[fromHash].push(msg.sender);
+        // Optional to keep history
+        CollectionsRegistered[msg.sender].push(_collectionAddress);
+        CollectionsRegistered[_delegationAddress].push(_collectionAddress);
+        UseCaseRegistered[msg.sender].push(_useCase);
+        UseCaseRegistered[_delegationAddress].push(_useCase);
+        // Push data to the globalData mapping
+        if (_allTokens == true) {
+        globalData memory newdelegationGlobalData = globalData(_expiryDate, true, 0);
+        globalDataHashes[globalHash].push(newdelegationGlobalData);
+        } else {
+            globalData memory newdelegationGlobalData = globalData(_expiryDate, false, _tokenid);
+            globalDataHashes[globalHash].push(newdelegationGlobalData);
+        }
+        // Lock choice for delegationAddress
         if (_lock == 1) {
             collectionLock[collectionLockHash] = true;
         } else if (_lock == 2) {
@@ -99,13 +105,14 @@ contract delegationManagement {
         } else if (_lock ==3) {
             globalLock[_delegationAddress] = true;
         }
-        emit registerDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _lock, _tokenid);
+        emit registerDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _lock, _allTokens, _tokenid);
     }
 
     /**
      * @notice Delegator revokes delegation rights from a delagation address given to a specific use case on a specific NFT collection
-     * 
+     * @notice This function does not revoke from the CollectionsRegistered or UseCaseRegistered as we want to track history
      */
+    
     function revokeDelegationAddress(address _collectionAddress, address _delegationAddress, uint8 _useCase) public {
         bytes32 toHash;
         bytes32 fromHash;
@@ -116,15 +123,16 @@ contract delegationManagement {
         fromHash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         // delete from toHashes mapping
         count=0;
-        for (uint256 i=0; i<=delegationToCounterPerHash[toHash]-1; i++){
-            if (globalHash == delegateToHashes[toHash][i].delegationGlobalHash) {
+        if (delegateToHashes[toHash].length>0) {
+        for (uint256 i=0; i<=delegateToHashes[toHash].length-1; i++){
+            if (_delegationAddress == delegateToHashes[toHash][i]) {
                 count=count+1;
             }
         }
         uint256[] memory delegationsPerUser = new uint256[](count);
         uint256 count1=0;
-        for (uint256 i=0; i<=delegationToCounterPerHash[toHash]-1; i++){
-            if (globalHash == delegateToHashes[toHash][i].delegationGlobalHash) {
+        for (uint256 i=0; i<=delegateToHashes[toHash].length-1; i++){
+            if (_delegationAddress == delegateToHashes[toHash][i]) {
                 delegationsPerUser[count1] = i;
                 count1=count1+1;
             }
@@ -137,20 +145,19 @@ contract delegationManagement {
             temp2 = delegateToHashes[toHash].length-1;
             delegateToHashes[toHash][temp1] = delegateToHashes[toHash][temp2];
             delegateToHashes[toHash].pop();
-            delegationToCounterPerHash[toHash] = delegationToCounterPerHash[toHash] - 1;
         }
         }
         // delete from fromHashes mapping
         uint256 countFrom=0;
-        for (uint256 i=0; i<=delegationFromCounterPerHash[fromHash]-1; i++){
-            if (globalHash == delegateFromHashes[fromHash][i].delegationGlobalHash) {
+        for (uint256 i=0; i<=delegateFromHashes[fromHash].length-1; i++){
+            if (msg.sender == delegateFromHashes[fromHash][i]) {
                 countFrom=countFrom+1;
             }
         }
         uint256[] memory delegationsFromPerUser = new uint256[](countFrom);
         uint256 countFrom1=0;
-        for (uint256 i=0; i<=delegationFromCounterPerHash[fromHash]-1; i++){
-            if (globalHash == delegateFromHashes[fromHash][i].delegationGlobalHash) {
+        for (uint256 i=0; i<=delegateFromHashes[fromHash].length-1; i++){
+            if (msg.sender == delegateFromHashes[fromHash][i]) {
                 delegationsFromPerUser[countFrom1] = i;
                 countFrom1=countFrom1+1;
             }
@@ -163,10 +170,9 @@ contract delegationManagement {
             temp2 = delegateFromHashes[fromHash].length-1;
             delegateFromHashes[fromHash][temp1] = delegateFromHashes[fromHash][temp2];
             delegateFromHashes[fromHash].pop();
-            delegationFromCounterPerHash[fromHash] = delegationFromCounterPerHash[fromHash] - 1;
+        }
         }
         
-        }
         bytes32 collectionLockHash;
         bytes32 collectionUsecaseLockHash;
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
@@ -174,32 +180,60 @@ contract delegationManagement {
         collectionLock[collectionLockHash] = false;
         collectionUsecaseLock[collectionUsecaseLockHash] = false;
         globalLock[_delegationAddress] = false;
+        delete globalDataHashes[globalHash];
         emit revokeDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase);
+        }
+    }
+
+    /**
+     * @notice RevokeAll
+     * @notice This function revokes everything and history cannot be tracked
+     */
+
+    function revokeAll() public returns (address[] memory){
+        address[] memory allCollections = CollectionsRegistered[msg.sender];
+        uint256[] memory allUseCases = UseCaseRegistered[msg.sender];
+        address[] memory delegationAddresses;
+        for (uint256 i=0; i<= allCollections.length-1; i++) {
+            delegationAddresses = this.retrieveToDelegationAddressesPerUsecaseForCollection(msg.sender, allCollections[i], uint8(allUseCases[i]));
+        if (delegationAddresses.length>0) {
+        for (uint y=0; y<=delegationAddresses.length-1; y++) {
+                revokeDelegationAddress(allCollections[i], delegationAddresses[y], uint8(allUseCases[i]));
+            }
+        }
+        }
+        for (uint256 x=0; x<=allCollections.length-1; x++) {
+            CollectionsRegistered[msg.sender].pop();
+            UseCaseRegistered[msg.sender].pop();
+        }
+        return (delegationAddresses);
+
     }
 
     /**
      * @notice Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
      * 
      */
-    function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint8 _useCase, uint8 _lock, int256 _tokenid) public {
+
+    function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint8 _useCase, uint8 _lock, bool _allTokens, uint256 _tokenid) public {
         revokeDelegationAddress(_collectionAddress, _olddelegationAddress, _useCase);
-        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase, _lock, _tokenid);
-        emit updateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase, _lock, _tokenid);
+        registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase, _lock, _allTokens, _tokenid);
+        emit updateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase, _lock, _allTokens, _tokenid);
     }
 
     /**
-     * @notice Batch Registrations - use locks on last registration
-     * 
+     * @notice Batch Registrations
+     * @notice Use locks during last registration
      */
 
-    function batchRegisterDelegations (address[] memory _collectionAddress, address[] memory _newdelegationAddress, uint256[] memory _expiryDate, uint8[] memory _useCase, uint8[] memory _lock, int256[] memory _tokenid) public {
+    function batchRegisterDelegations (address[] memory _collectionAddress, address[] memory _newdelegationAddress, uint256[] memory _expiryDate, uint8[] memory _useCase, uint8[] memory _lock, bool[] memory _allTokens, uint256[] memory _tokenid) public {
         for (uint256 i=0; i<=_collectionAddress.length-1; i++) {
-        registerDelegationAddress(_collectionAddress[i], _newdelegationAddress[i], _expiryDate[i], _useCase[i], _lock[i], _tokenid[i]);
+        registerDelegationAddress(_collectionAddress[i], _newdelegationAddress[i], _expiryDate[i], _useCase[i], _lock[i], _allTokens[i], _tokenid[i]);
         }
     }
 
     /**
-     * @notice Set globalLock status
+     * @notice Set globalLock status from hot wallet
      */
 
      function setglobalLock(bool _status) public {
@@ -207,7 +241,7 @@ contract delegationManagement {
      }
 
      /**
-     * @notice Set collection Lock status
+     * @notice Set collection Lock status from hot wallet
      */
 
      function setcollectionLock(address _collectionAddress, bool _status) public {
@@ -216,7 +250,7 @@ contract delegationManagement {
      }
 
      /**
-     * @notice Set collection usecase Lock status
+     * @notice Set collection usecase Lock status from hot wallet
      */
 
      function setcollectionUsecaseLock(address _collectionAddress, uint8 _useCase, bool _status) public {
@@ -224,7 +258,7 @@ contract delegationManagement {
          collectionUsecaseLock[collectionUsecaseLockHash] = _status;
      }
 
-    // Getter functions
+    // A full list of Available Getter functions
 
     /**
      * @notice Retrieve Global Lock Status
@@ -237,7 +271,6 @@ contract delegationManagement {
      /**
      * @notice Retrieve Collection Lock Status
      */
-
 
     function retrieveCollectionLockStatus(address _collectionAddress, address _delegationAddress) public view returns (bool) {
         bytes32 collectionLockHash;
@@ -257,188 +290,193 @@ contract delegationManagement {
 
     /**
      * @notice Support function used to retrieve the hash given specific parameters
-     * 
      */
-    function retrieveHash(address _profileAddress, address _collectionAddress, uint8 _useCase) public pure returns (bytes32) {
+
+    function retrieveLocalHash(address _profileAddress, address _collectionAddress, uint8 _useCase) public pure returns (bytes32) {
         bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress,_collectionAddress,_useCase));
+        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
+        return (hash);
+    }
+
+    /**
+     * @notice Support function used to retrieve the global hash given specific parameters
+     */
+
+    function retrieveGlobalHash(address _profileAddress1, address _profileAddress2, address _collectionAddress, uint8 _useCase) public pure returns (bytes32) {
+        bytes32 hash;
+        hash = keccak256(abi.encodePacked(_profileAddress1, _profileAddress2, _collectionAddress, _useCase));
         return (hash);
     }
     
     /**
      * @notice Returns an array of all delegation addresses (active AND inactive) set by a delegator for a specific use case on a specific NFT collection
-     * 
      */
+
      function retrieveToDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationToCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
-            if (hash == delegateToHashes[hash][i].delegationToHash) {
-                allDelegations[count] = delegateToHashes[hash][i].delegationAddress;
-                count=count+1;
-            }
-        }
-        return (allDelegations);
+        return (delegateToHashes[hash]);
     }
 
     /**
      * @notice Returns an array of all delegators (active AND inactive) for a specific use case on a specific NFT collection
-     *
      */
+
      function retrieveFromDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (address[] memory ) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationFromCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
-            if (hash == delegateFromHashes[hash][i].delegationFromHash) {
-                allDelegations[count] = delegateFromHashes[hash][i].mainAddress;
-                count=count+1;
-            }
-        }
-        return (allDelegations);
+        return (delegateFromHashes[hash]);
     }
-
-    // Retrieve Active Delegations given an expiry date
 
     /**
-     * @notice Returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
-     *
+     * @notice Returns an array of all history given a wallet address
      */
-     function retrieveActiveToDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint8 _useCase) external view returns (address[] memory ) {
+
+     function retrieveHistory(address _profileAddress) external view returns (address[] memory, uint256[] memory ) {
+        return (CollectionsRegistered[_profileAddress], UseCaseRegistered[_profileAddress]);
+    }
+
+    /**
+     * @notice Returns the status of each delegations for a cold wallet
+     * @notice false means that is not registered or it was revoked from the delegateToHashes mapping
+     */
+
+     function retrieveStatusOfToDelegation(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationToCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
-            if ((hash == delegateToHashes[hash][i].delegationToHash) && (delegateToHashes[hash][i].expiryDate > _date  )) {
-                allDelegations[count] = delegateToHashes[hash][i].delegationAddress;
-                count=count+1;
+        if (delegateToHashes[hash].length >0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @notice Returns the status of each delegations for a hot wallet
+     * @notice false means that is not registered or it was revoked from the delegateFromHashes mapping
+     */
+
+     function retrieveStatusOfFromDelegation(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (bool) {
+        bytes32 hash;
+        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
+        if (delegateFromHashes[hash].length >0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // Retrieve To Delegation 
+    // This set of functions is used to retrieve info for a cold address
+
+
+
+
+    // Retrieve From Delegation 
+    // This set of functions is used to retrieve info for a hot wallet
+
+
+    /**
+     * @notice Returns an array of all token ids delegated from an address for a specific usecase on specific collection
+     */
+     function retrieveTokensIDsandExpiredDatesFromDelegation(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
+        address[] memory allFromDelegations = this.retrieveFromDelegationAddressesPerUsecaseForCollection(_profileAddress, _collectionAddress, _useCase);
+        bytes32 globalHash;
+        bytes32[] memory allGlobalHashes = new bytes32[](allFromDelegations.length);
+        uint256 count1 =0 ;
+        uint256 count2 =0 ;
+        uint256 k=0;
+        for (uint256 i=0; i<=allFromDelegations.length-1; i++){
+            globalHash = keccak256(abi.encodePacked(allFromDelegations[i], _collectionAddress, _profileAddress, _useCase));
+            allGlobalHashes[count1] = globalHash;
+            count1 = count1+1;
+        }
+        //delete duplicates!!!
+        for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
+            for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+                if (allGlobalHashes[i] == allGlobalHashes[j]) {
+                delete allGlobalHashes[i];
+                }
             }
         }
-        return (allDelegations);
-    }
+        for (uint256 i=0; i<=allGlobalHashes.length-1; i++){
+            k = globalDataHashes[allGlobalHashes[i]].length + k;
+        }
+        //declare local arrays
+        uint256[] memory tokensIDs = new uint256[](k);
+        bool[] memory allTokens = new bool[](k);
+        uint256[] memory allExpirations = new uint256[](k);
+        for (uint256 y=0; y<=k-1; y++){
+            if (globalDataHashes[allGlobalHashes[y]].length>0) {
+                for (uint256 w=0; w<=globalDataHashes[allGlobalHashes[y]].length-1; w++){
+                allExpirations[count2] = globalDataHashes[allGlobalHashes[y]][w].expiryDate;
+                allTokens[count2] = globalDataHashes[allGlobalHashes[y]][w].allTokens;
+                tokensIDs[count2] = globalDataHashes[allGlobalHashes[y]][w].tokens;
+                count2 = count2 + 1;
+            }
+        }
+        }
+        return (allFromDelegations, allExpirations, allTokens, tokensIDs);
+     }
 
     /**
      * @notice Returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection 
      *
     */
 
-     function retrieveActiveFromDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint8 _useCase) external view returns (address[] memory ) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationFromCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
-           if ((hash == delegateFromHashes[hash][i].delegationFromHash) && (delegateFromHashes[hash][i].expiryDate > _date  )) {
-                allDelegations[count] = delegateFromHashes[hash][i].mainAddress;
-                count=count+1;
+     function retrieveActiveFromDelegations(address _profileAddress, address _collectionAddress, uint256 _date, uint8 _useCase) external view returns (address[] memory) {
+        address[] memory allFromDelegations = this.retrieveFromDelegationAddressesPerUsecaseForCollection(_profileAddress, _collectionAddress, _useCase);
+        bytes32 globalHash;
+        bytes32[] memory allGlobalHashes = new bytes32[](allFromDelegations.length);
+        uint256 count1 =0;
+        uint256 count2 =0;
+        uint256 count3 =0;
+        uint256 k=0;
+        for (uint256 i=0; i<=allFromDelegations.length-1; i++){
+            globalHash = keccak256(abi.encodePacked(allFromDelegations[i], _collectionAddress, _profileAddress, _useCase));
+            allGlobalHashes[count1] = globalHash;
+            count1 = count1+1;
+        }
+        //delete duplicates!!!
+        for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
+        for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            if (allGlobalHashes[i] == allGlobalHashes[j]) {
+            delete allGlobalHashes[i];
             }
         }
-        return (allDelegations);
-    }
-
-    // Retrieve Most Recent Delegations
-
-    /**
-     * @notice Returns the most recent delegations for a specific use case on a specific NFT collection
-     */
-
-    function retrieveMostRecentToDelegations(address _profileAddress, address _collectionAddress, uint8 _useCase) external view returns (address ) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationToCounterPerHash[hash]);
-        uint256[] memory allTimes = new uint256[](delegationToCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
-            if ((hash == delegateToHashes[hash][i].delegationToHash) && (delegateToHashes[hash][i].expiryDate > 1  )) {
-                allDelegations[count] = delegateToHashes[hash][i].delegationAddress;
-                allTimes[count] = delegateToHashes[hash][i].registeredDate;
-                count=count+1;
+        }
+        for (uint256 i=0; i<=allGlobalHashes.length-1; i++){
+                k = globalDataHashes[allGlobalHashes[i]].length + k;
+        }
+        //declare local array
+        uint256[] memory allExpirations = new uint256[](k);
+        for (uint256 y=0; y<=k-1; y++){
+            if (globalDataHashes[allGlobalHashes[y]].length>0) {
+                for (uint256 w=0; w<=globalDataHashes[allGlobalHashes[y]].length-1; w++){
+                allExpirations[count2] = globalDataHashes[allGlobalHashes[y]][w].expiryDate;
+                count2 = count2 + 1;
             }
         }
-        uint256 mostrecent;
-        mostrecent = allTimes[0];
-        for (uint256 i=0; i<=allTimes.length-1; i++){
-           if (allTimes[i] >= mostrecent) {
-                mostrecent = i;
+        }
+        address[] memory allActive = new address[](allExpirations.length);
+        for (uint256 y=0; y<=k-1; y++){
+            if (allExpirations[y]>_date) {
+                allActive[count3] = allFromDelegations[y];
+                count3 = count3 + 1;
             }
-        } 
-        return allDelegations[mostrecent];
-    }
+        }
+        return (allActive);
+     }
 
-    /**
-     * @notice Returns the most recent delegators for a specific use case on a specific NFT collection 
+     /**
+     * @notice Returns the most recent delegator for a specific use case on a specific NFT collection 
+     *
     */
 
-     function retrieveMostRecentFromDelegations(address _profileAddress, address _collectionAddress, uint8 _useCase) external view returns (address ) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        address[] memory allDelegations = new address[](delegationFromCounterPerHash[hash]);
-        uint256[] memory allTimes = new uint256[](delegationFromCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
-           if ((hash == delegateFromHashes[hash][i].delegationFromHash) && (delegateFromHashes[hash][i].expiryDate > 1  )) {
-                allDelegations[count] = delegateFromHashes[hash][i].mainAddress;
-                allTimes[count] = delegateFromHashes[hash][i].registeredDate;
-                count=count+1;
-            }
-        }
-        uint256 mostrecent;
-        mostrecent = allTimes[0];
-        for (uint256 i=0; i<=allTimes.length-1; i++){
-           if (allTimes[i] >= mostrecent) {
-                mostrecent = i;
-            }
-        } 
-        return allDelegations[mostrecent];
-    }
+     function retrieveMostRecentFromDelegations(address _profileAddress, address _collectionAddress, uint8 _useCase) external view returns (address) {
+         address[] memory allFromDelegations = this.retrieveActiveFromDelegations(_profileAddress, _collectionAddress, 1, _useCase);
+         return (allFromDelegations[allFromDelegations.length-1]);
+     }
 
-    // Retrieve tokenids delegated
-
-        /**
-     * @notice Returns an array of all token ids delegated to an address for a specific usecase on specific collection
-     * 
-     */
-     function retrieveTokenIDsToDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (int256[] memory ) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-        int256[] memory allTokens = new int256[](delegationToCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateToHashes[hash].length-1; i++){
-            if (hash == delegateToHashes[hash][i].delegationToHash) {
-                allTokens[count] = delegateToHashes[hash][i].tokens;
-                count=count+1;
-            }
-        }
-        return (allTokens);
-    }
-
-    /**
-     * @notice Returns an array of all token ids delegated from an address for a specific usecase on specific collection
-     *
-     */
-     function retrieveTokensIDsFromDelegationAddressesPerUsecaseForCollection(address _profileAddress, address _collectionAddress,uint8 _useCase) external view returns (int256[] memory ) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _useCase));
-         int256[] memory allTokens = new int256[](delegationFromCounterPerHash[hash]);
-        uint256 count;
-        count=0;
-        for (uint256 i=0; i<=delegateFromHashes[hash].length-1; i++){
-            if (hash == delegateFromHashes[hash][i].delegationFromHash) {
-                allTokens[count] = delegateFromHashes[hash][i].tokens;
-                count=count+1;
-            }
-        }
-        return (allTokens);
-    }
+     
 }
