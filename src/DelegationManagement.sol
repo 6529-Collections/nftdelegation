@@ -3,8 +3,8 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 10-Jan-2022 @ 13:15
- *  @version: 5.12 - revokeAll
+ *  @date: 09-Jan-2022 @ 12:51
+ *  @version: 5.13 - subDelegation features
  *  @notes: This is a experimental contract for delegation registry
  *  @modifications: Added global, collection and usecase locks, Added change/retrieve Lock status function
  *  @modifications: Updated revoke and update functions
@@ -103,6 +103,10 @@ contract delegationManagement {
         } else if (_lock == 2) {
             collectionUsecaseLock[collectionUsecaseLockHash] = true;
         } else if (_lock ==3) {
+            globalLock[_delegationAddress] = true;
+        }
+        // lock only one address for subdelegation
+        if (_useCase == 14) {
             globalLock[_delegationAddress] = true;
         }
         emit registerDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _lock, _allTokens, _tokenid);
@@ -468,7 +472,7 @@ contract delegationManagement {
         return (allActive);
      }
 
-     /**
+    /**
      * @notice Returns the most recent delegator for a specific use case on a specific NFT collection 
      *
     */
@@ -478,5 +482,32 @@ contract delegationManagement {
          return (allFromDelegations[allFromDelegations.length-1]);
      }
 
-     
+    /**
+     * @notice Retrieve subDelegation 
+     *
+    */
+
+    function retrieveSubDelegation(address _profileAddress, address _collectionAddress, uint8 _useCase) external view returns(address[] memory) {
+        address[] memory allFromDelegations = this.retrieveFromDelegationAddressesPerUsecaseForCollection(_profileAddress, _collectionAddress, _useCase);
+        bytes32 hash;
+        uint8 subUsecase;
+        uint8 count;
+        subUsecase = 14;
+        for (uint256 i=0; i<=allFromDelegations.length-1; i++) {
+        hash = keccak256(abi.encodePacked(allFromDelegations[i], _collectionAddress, subUsecase));
+            if (delegateFromHashes[hash].length > 0) {
+                count = count + 1;
+        }
+        }
+        address[] memory subDelegations = new address[](count);
+        count = 0;
+        for (uint256 y=0; y<=allFromDelegations.length-1; y++) {
+        hash = keccak256(abi.encodePacked(allFromDelegations[y], _collectionAddress, subUsecase));
+            if (delegateFromHashes[hash].length > 0) {
+                subDelegations[count] = delegateFromHashes[hash][0];
+                count = count + 1;
+        }
+        }
+        return (subDelegations);
+    }     
 }
