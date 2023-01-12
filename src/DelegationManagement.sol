@@ -3,12 +3,13 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 11-Jan-2022 @ 20:11
- *  @version: 5.15 
+ *  @date: 12-Jan-2022 @ 08:45
+ *  @version: 5.16
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ... 
- *  @pending: retrieve functions globalhash retrieve status, fix most recent, add retrieve functions for cold wallet
+ *  @modifications: added a global status return, added a token status return, simplified most recent function
+ *  @pending: retrieve functions 
  *
  */
 
@@ -300,10 +301,10 @@ contract delegationManagement {
      * @notice Support function to retrieve the global hash given specific parameters
      */
 
-    function retrieveGlobalHash(address _profileAddress1, address _profileAddress2, address _collectionAddress, uint8 _useCase) public pure returns (bytes32) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_profileAddress1, _profileAddress2, _collectionAddress, _useCase));
-        return (hash);
+    function retrieveGlobalHash(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public pure returns (bytes32) {
+        bytes32 globalHash;
+        globalHash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _delegationAddress, _useCase));
+        return (globalHash);
     }
     
     /**
@@ -362,6 +363,39 @@ contract delegationManagement {
         } else {
             return false;
         }
+    }
+
+    /**
+     * @notice Returns the status of a delegation given both the delegator address as well as the delegation address
+     */
+
+     function retrieveGlobalStatus(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+        bytes32 globalHash;
+        globalHash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _delegationAddress, _useCase));
+        if (globalDataHashes[globalHash].length >0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @notice Returns the status of a delegation given the delegator address, the delegation address as well as a token id
+     */
+
+     function retrieveTokenStatus(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase, uint256 _tokenid) public view returns (bool) {
+        bytes32 globalHash;
+        globalHash = keccak256(abi.encodePacked(_profileAddress, _collectionAddress, _delegationAddress, _useCase));
+        bool status;
+        for (uint256 i=0; i<= globalDataHashes[globalHash].length-1; i++) {
+            if ((globalDataHashes[globalHash][i].allTokens == false) && (globalDataHashes[globalHash][i].tokens == _tokenid)) {
+                status = true;
+                break;
+            } else {
+                status = false;
+            }
+            }
+            return status;
     }
 
     // Retrieve To Delegations 
@@ -483,7 +517,7 @@ contract delegationManagement {
     */
 
      function retrieveMostRecentFromDelegation(address _profileAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
-         address[] memory allFromDelegations = retrieveActiveFromDelegations(_profileAddress, _collectionAddress, 0, _useCase);
+         address[] memory allFromDelegations = retrieveFromDelegationAddressesPerUsecaseForCollection(_profileAddress, _collectionAddress, _useCase);
          return (allFromDelegations[allFromDelegations.length-1]);
      }
 
