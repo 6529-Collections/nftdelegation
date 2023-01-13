@@ -3,12 +3,12 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 12-Jan-2022 @ 08:45
- *  @version: 5.16
+ *  @date: 13-Jan-2022 @ 09:39
+ *  @version: 5.17
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ... 
- *  @modifications: added a global status return, added a token status return, simplified most recent function
+ *  @modifications: added a function to check if the delegation address performing actions is the most recent one
  *  @pending: retrieve functions 
  *
  */
@@ -185,7 +185,7 @@ contract delegationManagement {
     }
 
     /**
-     * @notice RevokeAll function removes everything and resets history
+     * @notice RevokeAll function removes every delegation but does not resets history as we want to track history
      */
 
     function revokeAll() public returns (address[] memory){
@@ -200,11 +200,6 @@ contract delegationManagement {
                 revokeDelegationAddress(allCollections[i], delegationAddresses[y], uint8(allUseCases[i]));
             }
         }
-        }
-        // Resets the History of a Delegator
-        for (uint256 x=0; x<=allCollections.length-1; x++) {
-            CollectionsRegistered[msg.sender].pop();
-            UseCaseRegistered[msg.sender].pop();
         }
         return (delegationAddresses);
 
@@ -381,7 +376,7 @@ contract delegationManagement {
 
     /**
      * @notice Returns the status of a delegation given the delegator address, the delegation address as well as a token id
-     */
+    */
 
      function retrieveTokenStatus(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase, uint256 _tokenid) public view returns (bool) {
         bytes32 globalHash;
@@ -396,7 +391,19 @@ contract delegationManagement {
             }
             }
             return status;
-    }
+     }
+
+    /**
+     * @notice Checks if the delegation address performing actions is the most recent delegated one
+    */
+
+     function retrieveMostRecentStatus(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+     if (_delegationAddress == retrieveMostRecentToDelegation(_profileAddress, _collectionAddress, _useCase)){
+         return true;
+     } else {
+         return false;
+     }
+     } 
 
     // Retrieve To Delegations 
     // This set of functions is used to retrieve info for a cold address
@@ -410,8 +417,14 @@ contract delegationManagement {
     // pending
     }
 
+    /**
+     * @notice Returns the most recent delegation address delegated for a specific use case on a specific NFT collection 
+     *
+    */
+
     function retrieveMostRecentToDelegation(address _profileAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
-    // pending
+    address[] memory allToDelegations = retrieveToDelegationAddressesPerUsecaseForCollection(_profileAddress, _collectionAddress, _useCase);
+         return (allToDelegations[allToDelegations.length-1]);
     }
 
 
