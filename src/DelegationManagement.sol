@@ -3,12 +3,12 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 13-Jan-2022 @ 09:39
- *  @version: 5.17
+ *  @date: 14-Jan-2022 @ 10:48
+ *  @version: 5.18
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ... 
- *  @modifications: added a function to check if the delegation address performing actions is the most recent one
+ *  @modifications: retrieve status of active delegator
  *  @pending: retrieve functions 
  *
  */
@@ -397,12 +397,30 @@ contract delegationManagement {
      * @notice Checks if the delegation address performing actions is the most recent delegated one
     */
 
-     function retrieveMostRecentStatus(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+     function retrieveStatusOfMostRecentDelegation(address _profileAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
      if (_delegationAddress == retrieveMostRecentToDelegation(_profileAddress, _collectionAddress, _useCase)){
          return true;
      } else {
          return false;
      }
+     } 
+
+     /**
+     * @notice Checks the status of a active delegator from a hot wallet
+    */
+
+     function retrieveStatusOfActiveDelegator(address _profileAddress, address _collectionAddress, address _delegationAddress, uint256 _date, uint8 _useCase) public view returns (bool) {
+     address[] memory allActiveDelegators = retrieveActiveFromDelegations(_delegationAddress, _collectionAddress, _date, _useCase);
+     bool status;
+        for (uint256 i=0; i<= allActiveDelegators.length-1; i++) {
+            if (_profileAddress == allActiveDelegators[i]) {
+                status = true;
+                break;
+            } else {
+                status = false;
+            }
+            }
+            return status;
      } 
 
     // Retrieve To Delegations 
