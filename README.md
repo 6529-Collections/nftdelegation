@@ -55,13 +55,28 @@ Use-Case  | Action
 #### Features
 
 - Current implementation enables the following functionality:
-    1. Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
-	2. Delegator revokes delegation rights from a delagation address given a specific use case on a specific NFT collection
+    	
+	1. Delegator assigns a delegation address on a specific use case on a specific NFT collection for a certain duration. The Delegator can assign all tokens or a specific token to the delegation address.
+	2. Delegator revokes delegation rights from a delagation address on a specific NFT collection given a specific use case 
 	3. Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
-	4. Returns an array of all delegation addresses (active AND inactive) set by a delegator for a specific use case on a specific NFT collection
-	5. Returns an array of all delegators (active AND inactive) for a specific use case on a specific NFT collection
-	6. Returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
-	7. Returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection
+	4. Batch registrations of delegation addresses
+	5. Revoke all delegation rights assigned by a Delegator
+	6. Functions to change the status of a Global/Collection/Collection&UseCase Lock
+	7. Function that returns an array of all delegations (active AND inactive) assigned by a delegator on a specific use case on a specific NFT collection
+	8. Function that returns an array of all delegators (active AND inactive) given a delegation Address for a specific use case on a specific NFT collection
+	9. Function that returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
+	10. Function that returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection
+	11. Retrieve functions to get the status (true/false) of a delegation 
+	12. Retrieve function to get the status (true/false) of a delegation given a token id
+	13. Retrieve function to check if the delegation address performing any actions is the most recently delegated one
+	14. Retrieve function to check the status (true/false) of an active delegator on a given date
+	15. Retrieve functions to get all the tokends ids as well as the expiry dates of a delegation address/delegator
+	16. Retrieve function to get the most recent delegation address delegated on a specific usecase
+	17. Retrieve function to get the most recent delegator given a delegation Address
+	18. Function to support the subDelegation process
+	19. Function to check if a Consolidation between 2 addresses exists
+	20. Functions to retrieve the status of a Global/Collection/Collection&UseCase Lock
+	21. Other functions that support smart contract's processes like retrieving of hashes etc.
 
 #### Free from Dependencies
 
