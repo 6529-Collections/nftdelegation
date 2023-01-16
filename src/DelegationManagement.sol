@@ -3,13 +3,11 @@
 /** 
  *
  *  @title: Delegation Management Contract   
- *  @date: 16-Jan-2022 @ 09:54
- *  @version: 5.19
+ *  @date: 16-Jan-2022 @ 15:03
+ *  @version: 5.20.2
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ... 
- *  @modifications: renamed variables and functions
- *  @pending: retrieve functions for a delegator
  *
  */
 
@@ -362,7 +360,7 @@ contract delegationManagementContract {
      * @notice Returns the status of a delegation given the delegator address as well as the delegation address
      */
 
-     function retrieveGlobalStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+     function retrieveGlobalStatusOfDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         if (globalDelegationHashes[hash].length >0) {
@@ -380,6 +378,7 @@ contract delegationManagementContract {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         bool status;
+        if (globalDelegationHashes[hash].length > 0) {
         for (uint256 i=0; i<= globalDelegationHashes[hash].length-1; i++) {
             if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenid)) {
                 status = true;
@@ -388,7 +387,10 @@ contract delegationManagementContract {
                 status = false;
             }
             }
-        return status;
+            return status; 
+        } else {
+            return false;
+        }
      }
 
     /**
@@ -410,6 +412,7 @@ contract delegationManagementContract {
      function retrieveStatusOfActiveDelegator(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _date, uint8 _useCase) public view returns (bool) {
      address[] memory allActiveDelegators = retrieveActiveDelegators(_delegationAddress, _collectionAddress, _date, _useCase);
      bool status;
+     if (allActiveDelegators.length>0) {
         for (uint256 i=0; i<= allActiveDelegators.length-1; i++) {
             if (_delegatorAddress == allActiveDelegators[i]) {
                 status = true;
@@ -418,19 +421,111 @@ contract delegationManagementContract {
                 status = false;
             }
             }
-        return status;
+        return status; 
+        } else {
+        return false;
+        } 
      } 
 
     // Retrieve Delegations delegated by a Delegator
-    // This set of functions is used to retrieve info for a cold address
-    // Pending functions
+    // This set of functions is used to retrieve info for a Delegator (cold address)
 
     function retrieveDelegationAddressesTokensIDsandExpiredDates(address _delegatorAddress, address _collectionAddress,uint8 _useCase) public view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
-    // pending
+        address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
+        bytes32 globalHash;
+        bytes32[] memory allGlobalHashes = new bytes32[](allDelegations.length);
+        uint256 count1 =0 ;
+        uint256 count2 =0 ;
+        uint256 k=0;
+        if (allDelegations.length>0) {
+        for (uint256 i=0; i<=allDelegations.length-1; i++){
+            globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, allDelegations[i], _useCase));
+            allGlobalHashes[count1] = globalHash;
+            count1 = count1+1;
+        }
+        //Removes duplicates
+        for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
+            for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+                if (allGlobalHashes[i] == allGlobalHashes[j]) {
+                delete allGlobalHashes[i];
+                }
+            }
+        }
+        for (uint256 i=0; i<=allGlobalHashes.length-1; i++){
+            k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+        }
+        //Declare local arrays
+        uint256[] memory tokensIDs = new uint256[](k);
+        bool[] memory allTokens = new bool[](k);
+        uint256[] memory allExpirations = new uint256[](k);
+        for (uint256 y=0; y<=k-1; y++){
+            if (globalDelegationHashes[allGlobalHashes[y]].length>0) {
+                for (uint256 w=0; w<=globalDelegationHashes[allGlobalHashes[y]].length-1; w++){
+                allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
+                allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
+                tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
+                count2 = count2 + 1;
+            }
+        }
+        }
+            return (allDelegations, allExpirations, allTokens, tokensIDs);
+        } else {
+            address[] memory allDelegations1 = new address[](0);
+            uint256[] memory tokensIDs = new uint256[](0);
+            bool[] memory allTokens = new bool[](0);
+            uint256[] memory allExpirations = new uint256[](0);
+            return (allDelegations1, allExpirations, allTokens, tokensIDs);
+        }
     }
         
     function retrieveActiveDelegations(address _delegatorAddress, address _collectionAddress, uint256 _date, uint8 _useCase) public view returns (address[] memory) {
-    // pending
+        address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
+        bytes32 globalHash;
+        bytes32[] memory allGlobalHashes = new bytes32[](allDelegations.length);
+        uint256 count1 =0;
+        uint256 count2 =0;
+        uint256 count3 =0;
+        uint256 k=0;
+        if (allDelegations.length>0) {
+        for (uint256 i=0; i<=allDelegations.length-1; i++){
+            globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, allDelegations[i], _useCase));
+            allGlobalHashes[count1] = globalHash;
+            count1 = count1+1;
+        }
+        //Remove duplicates
+        for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
+        for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            if (allGlobalHashes[i] == allGlobalHashes[j]) {
+            delete allGlobalHashes[i];
+            }
+        }
+        }
+        for (uint256 i=0; i<=allGlobalHashes.length-1; i++){
+                k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+        }
+        //Declare local arrays
+        uint256[] memory allExpirations = new uint256[](k);
+        for (uint256 y=0; y<=k-1; y++){
+            if (globalDelegationHashes[allGlobalHashes[y]].length>0) {
+                for (uint256 w=0; w<=globalDelegationHashes[allGlobalHashes[y]].length-1; w++){
+                allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
+                count2 = count2 + 1;
+            }
+        }
+        }
+        address[] memory allActive = new address[](allExpirations.length);
+        for (uint256 y=0; y<=k-1; y++){
+            if (allExpirations[y]>_date) {
+                allActive[count3] = allDelegations[y];
+                count3 = count3 + 1;
+            }
+        }
+        return (allActive); 
+        } else {
+        address[] memory allActive = new address[](0);
+        return (allActive);
+        }
+
     }
 
     /**
@@ -439,8 +534,12 @@ contract delegationManagementContract {
     */
 
     function retrieveMostRecentDelegation(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
-    address[] memory allToDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
-         return (allToDelegations[allToDelegations.length-1]);
+    address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
+    if (allDelegations.length>0) {
+        return (allDelegations[allDelegations.length-1]);
+    } else {
+        return (0x0000000000000000000000000000000000000000);
+    }
     }
 
 
@@ -457,6 +556,7 @@ contract delegationManagementContract {
         uint256 count1 =0 ;
         uint256 count2 =0 ;
         uint256 k=0;
+        if (allDelegators.length>0) {
         for (uint256 i=0; i<=allDelegators.length-1; i++){
             globalHash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, _delegationAddress, _useCase));
             allGlobalHashes[count1] = globalHash;
@@ -487,7 +587,15 @@ contract delegationManagementContract {
             }
         }
         }
-        return (allDelegators, allExpirations, allTokens, tokensIDs);
+            return (allDelegators, allExpirations, allTokens, tokensIDs);
+        } else {
+            address[] memory allDelegations1 = new address[](0);
+            uint256[] memory tokensIDs = new uint256[](0);
+            bool[] memory allTokens = new bool[](0);
+            uint256[] memory allExpirations = new uint256[](0);
+            return (allDelegations1, allExpirations, allTokens, tokensIDs);
+
+        }
      }
 
     /**
@@ -503,6 +611,7 @@ contract delegationManagementContract {
         uint256 count2 =0;
         uint256 count3 =0;
         uint256 k=0;
+        if (allDelegators.length>0) {
         for (uint256 i=0; i<=allDelegators.length-1; i++){
             globalHash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, _delegationAddress, _useCase));
             allGlobalHashes[count1] = globalHash;
@@ -536,7 +645,11 @@ contract delegationManagementContract {
                 count3 = count3 + 1;
             }
         }
+        return (allActive); 
+        } else {
+        address[] memory allActive = new address[](0);
         return (allActive);
+        }
      }
 
     /**
@@ -546,21 +659,28 @@ contract delegationManagementContract {
 
      function retrieveMostRecentDelegator(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
          address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, _useCase);
-         return (allDelegators[allDelegators.length-1]);
+         if (allDelegators.length>0) {
+        return (allDelegators[allDelegators.length-1]);
+            } else {
+        return (0x0000000000000000000000000000000000000000);
+    }
      }
+
+     // Other functions to support subDelegtion and Consolidation 
 
     /**
      * @notice This function retrieves the Delegator that granted subDelegation rights to a specific delegation Address
-     * @notice Example: A delegated B for usecase 14 (subDelegation). Then B delegated C for a specific usecase on a specific collection. 
-     * @notice This function retrieves delegator A given delegation address C.
+     * @notice Example: walletA delegated walletB for usecase 15 (subDelegation). Then walletB delegated walletC for a specific usecase on a specific collection. 
+     * @notice This function retrieves delegator walletA given delegation address C.
     */
 
-    function retrieveSubDelegation(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns(address[] memory) {
+    function retrieveSubDelegation(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns(string memory, address[] memory) {
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, _useCase);
         bytes32 hash;
         uint8 subUsecase;
         uint8 count;
-        subUsecase = 14;
+        subUsecase = 15;
+        if (allDelegators.length>0) {
         for (uint256 i=0; i<=allDelegators.length-1; i++) {
         hash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, subUsecase));
             if (delegationAddressHashes[hash].length > 0) {
@@ -576,7 +696,39 @@ contract delegationManagementContract {
                 count = count + 1;
         }
         }
-        return (subDelegations);
+        return ("subDelegation found" , subDelegations);
+        } else {
+        address[] memory subDelegations = new address[](0);
+        return ("subDelegation not found" , subDelegations);
+        }
+    }
+
+    /**
+     * @notice This function checks the Consolidation status between 2 addresses
+    */
+
+    function checkConsolidation(address _wallet1, address _wallet2, address _collectionAddress) public view returns( bool ) {
+        address[] memory allDelegationsWallet1 = retrieveDelegationAddresses(_wallet1, _collectionAddress, 99);
+        address[] memory allDelegationsWallet2 = retrieveDelegationAddresses(_wallet2, _collectionAddress, 99);
+        bool wallet1Consolidation;
+        bool wallet2Consolidation;
+        if (allDelegationsWallet1.length>0 && allDelegationsWallet2.length>0) {
+        for (uint256 i=0; i<=allDelegationsWallet1.length-1; i++) {
+            if (_wallet2 == allDelegationsWallet1[i]) {
+                wallet1Consolidation = true;
+            }
+        }
+        for (uint256 i=0; i<=allDelegationsWallet2.length-1; i++) {
+            if (_wallet1 == allDelegationsWallet2[i]) {
+                wallet2Consolidation = true;
+            }
+        }
+        }
+        if (wallet1Consolidation == true && wallet2Consolidation == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
      
