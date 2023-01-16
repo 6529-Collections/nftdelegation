@@ -4,10 +4,10 @@
 #### Deployment
 Network  | Contract Address
 ------------- | -------------
-Goerli Testnet  | [0x2a77A2c10ee78f0B022F2693224e5C31d57efED1](https://goerli.etherscan.io/address/0x2a77a2c10ee78f0b022f2693224e5c31d57efed1)
+Goerli Testnet  | [0xFa8f9C0EBD0a2cEA53dfa3c2485e1a8648CaB59e](https://goerli.etherscan.io/address/0xfa8f9c0ebd0a2cea53dfa3c2485e1a8648cab59e)
 
-- Deployer Address: 0x11dcd7e3F966F6eC56EC1658909Ff0AB78EcB6A0
-- Contract created on Goerli during TxHash# [0xe1bfd761924b615211079308f08c90c056eee9a0ed359f7a2f855a80e7038de4](https://goerli.etherscan.io/tx/0xe1bfd761924b615211079308f08c90c056eee9a0ed359f7a2f855a80e7038de4)
+- Deployer Address: 0xA63858Ace9838a457139c26886a2d155Cc3dFc2e
+- Contract created on Goerli during TxHash# [0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84](https://goerli.etherscan.io/tx/0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84)
 
 #### What is it?
 Simply put, the proposed contract implementation deploys a "Delegation Management" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
@@ -22,7 +22,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 
 Use-Case  | Action
 ------------- | -------------
-1  | All
+1  | All (1-14)
 2  | Minting / Allowlist
 3 | Airdrops
 4 | Voting / Governance
@@ -35,7 +35,8 @@ Use-Case  | Action
 11 | Metaverse Land
 12 | Gameplay
 13 | IP Licensing
-14 | Sub-delegation
+14 | NFT rentals
+15 | Sub-delegation 
 99 | Consolidation
 
 #### Why is delegation useful?
