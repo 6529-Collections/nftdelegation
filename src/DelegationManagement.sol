@@ -99,8 +99,8 @@ contract delegationManagementContract {
         } else if (_lock ==3) {
             globalLock[_delegationAddress] = true;
         }
-        // If usecase == 14 (subdelegation) automatically global lock the delegationAddress
-        if (_useCase == 14) {
+        // If usecase == 15 (subdelegation) automatically global lock the delegationAddress
+        if (_useCase == 15) {
             globalLock[_delegationAddress] = true;
         }
         emit registerDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _lock, _allTokens, _tokenid);
