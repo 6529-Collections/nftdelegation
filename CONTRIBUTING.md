@@ -7,7 +7,7 @@ The following is a set of guidelines for contributing to the project, hosted at 
 
 ## Code of Conduct
 
-Let's respect everyone participating to this project and promote a harassment-free experience for everyone. NFTDelegation is governed by the following[Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
+Let's respect everyone participating to this project and promote a harassment-free experience for everyone. NFTDelegation is governed by the following [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## Getting Started
 
