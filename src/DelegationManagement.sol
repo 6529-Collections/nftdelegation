@@ -44,7 +44,13 @@ contract delegationManagementContract {
     mapping (address => bool) public globalLock;
     mapping (bytes32 => bool) public collectionLock;
     mapping (bytes32 => bool) public collectionUsecaseLock;
-    
+
+    //Errors
+    error UseCaseOutOfBounds();
+    error delegationAddressGlobalLockExists();
+    error delegationAddressCollectionLockExists();
+    error delegationAddressCollectionUsecaseLockExists();
+
     // Constructor
     constructor() {
         useCaseCounter = 16;
@@ -58,7 +64,7 @@ contract delegationManagementContract {
      */
 
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, uint8 _lock, bool _allTokens, uint256 _tokenid) public {
-        require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
+        if ((_useCase < 0) || (_useCase > useCaseCounter && _useCase != 99)) revert UseCaseOutOfBounds();
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -67,9 +73,9 @@ contract delegationManagementContract {
         // Locks
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
-        require(globalLock[_delegationAddress] == false);
-        require(collectionLock[collectionLockHash] == false);
-        require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
+        if(globalLock[_delegationAddress]) revert delegationAddressGlobalLockExists();
+        if(collectionLock[collectionLockHash]) revert delegationAddressCollectionLockExists();
+        if(collectionUsecaseLock[collectionUsecaseLockHash]) revert delegationAddressCollectionUsecaseLockExists();
         // Push data to mappings
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
         delegatorHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
