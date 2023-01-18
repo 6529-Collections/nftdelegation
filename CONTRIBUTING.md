@@ -1,32 +1,32 @@
-# Contributors
+# Contributing Guide
 
-Welcome and thank you for considering contributing to the nftdelegation repository.
+Welcome! Thank you for considering making a contribution to the nftdelegation repository. This guide will help you find the right approach.
 
-#### Getting Started
+## Getting Started
 
 When contributing to the nftdelegation repository, please first discuss the change you wish to make via an issue.
 
-#### Issues
+## Issues
 
 Issues should be used to report bugs, suggest a fix, propose a new feature, or to discuss potential changes.
 
-#### Pull Requests
+## Pull Requests
 
-In general, PRs should:
+In general, each PR should:
 
 - Address a single concern in the least number of changed lines as possible
-- Add tests for fixed or changed functionality
-- Address whitespace/style issues
+- Add or update tests for fixed or changed functionality
+- Address whitespace/style issues in standalone PRs, not combined with other changes
 
-For changes that address core functionality or would require breaking changes, it's best to open an issue to discuss your proposal first.
+For changes that address core functionality, or would require breaking changes, it's best to open an issue to discuss your proposal first.
 
-#### Maintainers
+## Maintainers
 
-Maintainers actively support the project and have admin access to the repo and provide support reviewing issues and pull requests.
+Maintainers actively support the project, have admin access to the repo, and review issues and pull requests.
 
 - [skyn3t2030](https://github.com/skyn3t2030)
 
-#### Contributors
+## Contributors
 
 - [brookr](https://github.com/brookr)
 - [rookmate](https://github.com/rookmate)
