@@ -1,6 +1,13 @@
-# Contributing Guide
+# Contributing to NFTDelegation
 
-Welcome! Thank you for considering making a contribution to the nftdelegation repository. This guide will help you find the right approach.
+:+1::tada: Welcome! and thanks for taking the time to contribute! :tada::+1:
+
+The following is a set of guidelines for contributing to the project, which are hosted at [NFTDelegation](https://github.com/6529-Collections/nftdelegation). These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes using pull requests.
+
+
+## Code of Conduct
+
+Let's respect everyone participating to this project and promote a harassment-free experience for everyone. NFTDelegation is governed by the following[Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 
 ## Getting Started
 
@@ -33,3 +40,7 @@ Maintainers actively support the project, have admin access to the repo, and rev
 - [omnus](https://github.com/omnus)
 - [CookedCookee](https://github.com/CookedCookee)
 - [0xwurdig](https://github.com/0xwurdig)
+- [skyn3t2030](https://github.com/skyn3t2030)
+
+## Consumers
+Placeholder for other users who are building off the project to create their own project(s)
