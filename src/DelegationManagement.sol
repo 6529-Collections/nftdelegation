@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
 
-/** 
+/**
  *
- *  @title: Delegation Management Contract   
+ *  @title: Delegation Management Contract
  *  @date: 18-Jan-2022 @ 09:38
  *  @version: 5.20.3
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
- *  @credits: to be added ... 
+ *  @credits: to be added ...
  *
  */
 
@@ -16,7 +16,7 @@ pragma solidity ^0.8.17;
 contract delegationManagementContract {
 
     // Variable declarations
-    uint256 useCaseCounter; 
+    uint256 useCaseCounter;
 
     // Mapping declarations
     mapping (bytes32 => address[]) public delegatorHashes;
@@ -35,7 +35,7 @@ contract delegationManagementContract {
     event registerDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase, uint8 lock, bool allTokens, uint256 _tokenid);
     event revokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase);
     event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint8 useCase, uint8 lock, bool allTokens, uint256 _tokenid);
-    
+
     // Global Registry for all collections & usecases history
     mapping (address => address[]) public CollectionsRegistered;
     mapping (address => uint256[]) public UseCaseRegistered;
@@ -44,12 +44,12 @@ contract delegationManagementContract {
     mapping (address => bool) public globalLock;
     mapping (bytes32 => bool) public collectionLock;
     mapping (bytes32 => bool) public collectionUsecaseLock;
-    
+
     // Constructor
     constructor() {
         useCaseCounter = 16;
     }
-  
+
     /**
      * @notice Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
      * @notice _collectionAddress --> 0x8888888888888888888888888888888888888888 = All collections
@@ -113,7 +113,7 @@ contract delegationManagementContract {
      * @notice Delegator revokes delegation rights given to a delegation address on a specific use case on a specific NFT collection
      * @notice This function does not remove the delegation from the CollectionsRegistered or UseCaseRegistered as we want to track delegations history
      */
-    
+
     function revokeDelegationAddress(address _collectionAddress, address _delegationAddress, uint8 _useCase) public {
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
@@ -266,7 +266,7 @@ contract delegationManagementContract {
     function retrieveGloballockStatus(address _delegationAddress) public view returns (bool) {
         return globalLock[_delegationAddress];
     }
-    
+
      /**
      * @notice Retrieve Collection Lock Status
      */
@@ -306,7 +306,7 @@ contract delegationManagementContract {
         globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         return (globalHash);
     }
-    
+
     /**
      * @notice Returns an array of all delegation addresses (active AND inactive) assigned by a delegator for a specific use case on a specific NFT collection
      */
@@ -396,7 +396,7 @@ contract delegationManagementContract {
                     status = false;
                 }
             }
-            return status; 
+            return status;
         } else {
             return false;
         }
@@ -412,7 +412,7 @@ contract delegationManagementContract {
          } else {
              return false;
          }
-     } 
+     }
 
      /**
      * @notice Checks the status of an active delegator for a delegation Address
@@ -430,11 +430,11 @@ contract delegationManagementContract {
                     status = false;
                 }
             }
-            return status; 
+            return status;
         } else {
             return false;
-        } 
-     } 
+        }
+     }
 
     // Retrieve Delegations delegated by a Delegator
     // This set of functions is used to retrieve info for a Delegator (cold address)
@@ -490,7 +490,7 @@ contract delegationManagementContract {
             return (allDelegations1, allExpirations, allTokens, tokensIDs);
         }
     }
-        
+
     function retrieveActiveDelegations(address _delegatorAddress, address _collectionAddress, uint256 _date, uint8 _useCase) public view returns (address[] memory) {
         address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
@@ -538,7 +538,7 @@ contract delegationManagementContract {
                 }
             }
 
-            return (allActive); 
+            return (allActive);
         } else {
             address[] memory allActive = new address[](0);
             return (allActive);
@@ -547,7 +547,7 @@ contract delegationManagementContract {
     }
 
     /**
-     * @notice Returns the most recent delegation address delegated for a specific use case on a specific NFT collection 
+     * @notice Returns the most recent delegation address delegated for a specific use case on a specific NFT collection
      *
     */
 
@@ -561,7 +561,7 @@ contract delegationManagementContract {
     }
 
 
-    // Retrieve Delegators delegated to a hot wallet 
+    // Retrieve Delegators delegated to a hot wallet
     // This set of functions is used to retrieve info for a hot wallet
 
     /**
@@ -672,7 +672,7 @@ contract delegationManagementContract {
                 }
             }
 
-            return (allActive); 
+            return (allActive);
         } else {
             address[] memory allActive = new address[](0);
             return (allActive);
@@ -693,11 +693,11 @@ contract delegationManagementContract {
         }
     }
 
-    // Other functions to support subDelegation and Consolidation 
+    // Other functions to support subDelegation and Consolidation
 
     /**
      * @notice This function retrieves the Delegator that granted subDelegation rights to a specific delegation Address
-     * @notice Example: walletA delegated walletB for usecase 15 (subDelegation). Then walletB delegated walletC for a specific usecase on a specific collection. 
+     * @notice Example: walletA delegated walletB for usecase 15 (subDelegation). Then walletB delegated walletC for a specific usecase on a specific collection.
      * @notice This function retrieves delegator walletA given delegation address C.
     */
 
@@ -762,5 +762,5 @@ contract delegationManagementContract {
         }
     }
 
-     
+
 }
