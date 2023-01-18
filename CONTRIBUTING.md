@@ -2,7 +2,7 @@
 
 :+1::tada: Welcome! and thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to the project, which are hosted at [NFTDelegation](https://github.com/6529-Collections/nftdelegation). These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes using pull requests.
+The following is a set of guidelines for contributing to the project, hosted at [NFTDelegation](https://github.com/6529-Collections/nftdelegation). These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes using pull requests.
 
 
 ## Code of Conduct
