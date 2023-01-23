@@ -23,7 +23,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 
 Use-Case  | Action
 ------------- | -------------
-1  | All (1-14)
+1  | All (1-15)
 2  | Minting / Allowlist
 3 | Airdrops
 4 | Voting / Governance
@@ -37,7 +37,8 @@ Use-Case  | Action
 12 | Gameplay
 13 | IP Licensing
 14 | NFT rentals
-15 | Sub-delegation
+15 | View Access
+16 | Sub-delegation
 99 | Consolidation
 
 ## Why is delegation useful?
