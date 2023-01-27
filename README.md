@@ -8,6 +8,7 @@ Goerli Testnet  | [0xFa8f9C0EBD0a2cEA53dfa3c2485e1a8648CaB59e](https://goerli.et
 
 - Deployer Address: 0xA63858Ace9838a457139c26886a2d155Cc3dFc2e
 - Contract created on Goerli during TxHash# [0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84](https://goerli.etherscan.io/tx/0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84)
+- Deployed version: 5.20.2
 
 ## What is it?
 
