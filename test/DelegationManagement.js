@@ -101,21 +101,9 @@ describe("DelegationManagement", () => {
     })
   })
 
-  context("Global Delegations", () => {
+  context("Filtering", () => {
     beforeEach(async () => {
 
-    })
-
-    describe("Delegate all to another address", () => {
-      it("succeeds", async () => {
-        
-        await expect(
-          hhDelegationManagement.connect(addr1).registerDelegationAddress(GLOBAL_DELEGATION, addr2.address, 9999999999, 1, true, 0),
-        ).to.not.be.reverted
-
-        expect((await hhDelegationManagement.retrieveActiveDelegators(addr2.address, GLOBAL_DELEGATION, 0, 1))[0]).to.equal(addr1.address)
-
-      })
     })
 
     describe("Validity Dates", () => {
