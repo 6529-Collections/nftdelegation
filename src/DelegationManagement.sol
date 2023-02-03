@@ -3,12 +3,12 @@
 /** 
  *
  *  @title: Delegation Management Contract
- *  @date: 26-Jan-2022 @ 22:50
- *  @version: 5.20.7
+ *  @date: 03-Feb-2022 @ 21:56
+ *  @version: 5.20.9
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ...
- *  @modifications: removed locks from registration, created new subdelegation functions for registering and revoking, added a retrieve subdelegation status function, optimized most recent functions
+ *  @modifications: removed locks from revoking functions, added a batch revocations function, added setter function to retrieve the active history of a delegator
  *
  */
 
@@ -40,7 +40,7 @@ contract delegationManagementContract {
     event revokeDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase);
     event updateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint8 useCase, bool allTokens, uint256 _tokenid);
     
-    // Global Registry for all collections & usecases history
+    // Registry for all collections & usecases for a Delegator
     mapping (address => address[]) public CollectionsRegistered;
     mapping (address => uint256[]) public UseCaseRegistered;
 
@@ -227,14 +227,7 @@ contract delegationManagementContract {
                     delegationAddressHashes[delegationAddressHash].pop();
                 }
             }
-        // Reset Locks and other restrictions
-            bytes32 collectionLockHash;
-            bytes32 collectionUsecaseLockHash;
-            collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
-            collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
-            collectionLock[collectionLockHash] = false;
-            collectionUsecaseLock[collectionUsecaseLockHash] = false;
-            globalLock[_delegationAddress] = false;
+        // Delete global delegation data and emit event
             delete globalDelegationHashes[globalHash];
             emit revokeDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase);
         }
@@ -327,41 +320,20 @@ contract delegationManagementContract {
                 delegationAddressHashes[delegationAddressHash].pop();
             }
             }
-            // Reset Locks and other restrictions
-            {
-            bytes32 collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
-            bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase)); 
-            collectionLock[collectionLockHash] = false;
-            collectionUsecaseLock[collectionUsecaseLockHash] = false;
-            globalLock[_delegationAddress] = false;
+            // Delete global delegation data and emit event
             delete globalDelegationHashes[globalHash];
-            }
-            {
             emit revokeDelegationUsingSubDelegation(_delegatorAddress, msg.sender, _collectionAddress, _delegationAddress, _useCase);
-            }
         }
     }
 
     /**
-     * @notice This function revokes all delegations registered by a Delegator
+     * @notice Batch revoking (up to 5 delegation addresses)
      */
 
-    function revokeAll() public {
-        address[] memory allCollections = CollectionsRegistered[msg.sender];
-        uint256[] memory allUseCases = UseCaseRegistered[msg.sender];
-        address[] memory delegationAddresses;
-        for (uint256 i=0; i<= allCollections.length-1; i++) {
-            delegationAddresses = retrieveDelegationAddresses(msg.sender, allCollections[i], uint8(allUseCases[i]));
-            if (delegationAddresses.length>0) {
-                for (uint y=0; y<=delegationAddresses.length-1; y++) {
-                revokeDelegationAddress(allCollections[i], delegationAddresses[y], uint8(allUseCases[i]));
-                }
-            }
-        }
-    // Reset History of a Delegator
-        for (uint256 x=0; x<=allCollections.length-1; x++) {
-                CollectionsRegistered[msg.sender].pop();
-                UseCaseRegistered[msg.sender].pop();
+     function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint8[] memory _useCases) public {
+        require(_collectionAddresses.length < 6);
+        for (uint256 i=0; i<=_collectionAddresses.length-1; i++) {
+        revokeDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _useCases[i]);
         }
     }
 
@@ -369,19 +341,20 @@ contract delegationManagementContract {
      * @notice Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
      */
 
-    function updateDelegationAddress (address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenid) public {
+    function updateDelegationAddress(address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenid) public {
         revokeDelegationAddress(_collectionAddress, _olddelegationAddress, _useCase);
         registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase, _allTokens, _tokenid);
         emit updateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase, _allTokens, _tokenid);
     }
 
     /**
-     * @notice Batch Registrations function
+     * @notice Batch registrations function (up to 5 delegation addresses)
      */
 
-    function batchDelegations (address[] memory _collectionAddress, address[] memory _newdelegationAddress, uint256[] memory _expiryDate, uint8[] memory _useCase, bool[] memory _allTokens, uint256[] memory _tokenid) public {
-        for (uint256 i=0; i<=_collectionAddress.length-1; i++) {
-        registerDelegationAddress(_collectionAddress[i], _newdelegationAddress[i], _expiryDate[i], _useCase[i], _allTokens[i], _tokenid[i]);
+    function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint8[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenids) public {
+        require(_collectionAddresses.length < 6);
+        for (uint256 i=0; i<=_collectionAddresses.length-1; i++) {
+        registerDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _expiryDates[i], _useCases[i], _allTokens[i], _tokenids[i]);
         }
     }
 
@@ -482,11 +455,31 @@ contract delegationManagementContract {
     }
 
     /**
-     * @notice Returns the collection and usecase history given a delegator address
+     * @notice Returns all collections and usecases history given a delegator address
      */
 
-     function retrieveHistory(address _delegatorAddress) public view returns (address[] memory, uint256[] memory ) {
+     function retrieveFullHistoryOfDelegator(address _delegatorAddress) public view returns (address[] memory, uint256[] memory ) {
         return (CollectionsRegistered[_delegatorAddress], UseCaseRegistered[_delegatorAddress]);
+    }
+
+    /**
+     * @notice Returns the active collections and usecases history given a delegator address
+     */
+
+     function retrieveActiveHistoryOfDelegator(address _delegatorAddress) public view returns (address[] memory, uint256[] memory ) {
+        address[] memory activeCollections = new address[](CollectionsRegistered[_delegatorAddress].length);
+        uint256[] memory activeUseCases = new uint256[](UseCaseRegistered[_delegatorAddress].length);
+        uint256 count=0;
+        bytes32 hash;
+        for (uint256 i=0; i<=CollectionsRegistered[_delegatorAddress].length-1; i++) {
+            hash = keccak256(abi.encodePacked(_delegatorAddress, CollectionsRegistered[_delegatorAddress][i], uint8(UseCaseRegistered[_delegatorAddress][i])));
+            if (delegatorHashes[hash].length > 0) {
+                activeCollections[count] = CollectionsRegistered[_delegatorAddress][i];
+                activeUseCases[count] = UseCaseRegistered[_delegatorAddress][i];
+                count = count +1;
+            }
+        }
+        return (activeCollections, activeUseCases);
     }
 
     /**
@@ -933,7 +926,7 @@ contract delegationManagementContract {
      * @notice This function checks the Consolidation status between 2 addresses
     */
 
-    function checkConsolidation(address _wallet1, address _wallet2, address _collectionAddress) public view returns( bool ) {
+    function checkConsolidationStatus(address _wallet1, address _wallet2, address _collectionAddress) public view returns( bool ) {
         address[] memory allDelegationsWallet1 = retrieveDelegationAddresses(_wallet1, _collectionAddress, 99);
         address[] memory allDelegationsWallet2 = retrieveDelegationAddresses(_wallet2, _collectionAddress, 99);
         bool wallet1Consolidation;
