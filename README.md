@@ -4,11 +4,11 @@
 
 Network  | Contract Address
 ------------- | -------------
-Goerli Testnet  | [0xFa8f9C0EBD0a2cEA53dfa3c2485e1a8648CaB59e](https://goerli.etherscan.io/address/0xfa8f9c0ebd0a2cea53dfa3c2485e1a8648cab59e)
+Goerli Testnet  | [0x6a89AFF3B4ea4CF323C32740289C8a1d703aBeC8](https://goerli.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8)
 
-- Deployer Address: 0xA63858Ace9838a457139c26886a2d155Cc3dFc2e
-- Contract created on Goerli during TxHash# [0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84](https://goerli.etherscan.io/tx/0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84)
-- Deployed version: 5.20.2
+- Deployer Address: 0xAcf42B85eCb77d9332584119FD78a3DE9953c2a0
+- Contract created on Goerli during TxHash# [0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3](https://goerli.etherscan.io/tx/0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3)
+- Deployed version: 5.20.10
 
 ## What is it?
 
