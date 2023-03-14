@@ -3,12 +3,12 @@
 /** 
  *
  *  @title: Delegation Management Contract
- *  @date: 03-Feb-2022 @ 21:56
- *  @version: 5.20.9
+ *  @date: 14-Mar-2022 @ 09:13
+ *  @version: 5.20.10
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ...
- *  @modifications: removed locks from revoking functions, added a batch revocations function, added setter function to retrieve the active history of a delegator
+ *  @modifications: removed locks from revoking functions, added a batch revocations function, added getter function to retrieve the active history of a delegator
  *
  */
 
@@ -102,7 +102,8 @@ contract delegationManagementContract {
 
     function registerDelegationAddressUsingSubDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenid) public {
         // Check subdelegation rights for the specific collection
-        {bool subdelegationRightsCol;
+        {
+        bool subdelegationRightsCol;
         address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, 16);
         if (allDelegators.length > 0) {
         for (uint i=0; i<allDelegators.length; i++) {
@@ -239,7 +240,8 @@ contract delegationManagementContract {
     
     function revokeDelegationAddressUsingSubdelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public {
         // Check subdelegation rights for the specific collection
-        {bool subdelegationRightsCol;
+        {
+        bool subdelegationRightsCol;
         address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, 16);
         if (allDelegators.length > 0) {
         for (uint i=0; i<allDelegators.length; i++) {
