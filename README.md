@@ -42,6 +42,12 @@ Use-Case  | Action
 16 | Sub-delegation
 99 | Consolidation
 
+## Documentation
+
+[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
+\
+[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
+
 ## Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
