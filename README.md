@@ -42,6 +42,12 @@ Use-Case  | Action
 16 | Sub-delegation
 99 | Consolidation
 
+## Documentation
+
+[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
+\
+[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
+
 ## Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
@@ -56,7 +62,7 @@ Use-Case  | Action
 
 ## Features
 
-- Current implementation enables the following functionality:
+Current implementation enables the following functionality:
 
   1. Delegator assigns a delegation address on a specific use case on a specific NFT collection for a certain duration. The Delegator can assign all tokens or a specific   token to the delegation address.
   2. Delegator revokes delegation rights from a delagation address on a specific NFT collection given a specific use case
@@ -79,6 +85,8 @@ Use-Case  | Action
   19. Function to check if a Consolidation between 2 addresses exists
   20. Functions to retrieve the status of a Global/Collection/Collection&UseCase Lock
   21. Other functions that support smart contract's processes like retrieving of hashes etc.
+
+Want to learn more? [Explore documentation](https://github.com/6529-Collections/nftdelegation/tree/main/Documentation)
 
 ## Free from Dependencies
 
