@@ -111,7 +111,7 @@
         * @param _useCase The type of delegation.
       */
 
-      function revokeDelegationAddress(
+      function revokeDelegationAddressUsingSubdelegation(
           address _delegatorAddress,
           address _collectionAddress,
           address _delegationAddress,
