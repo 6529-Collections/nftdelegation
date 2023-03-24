@@ -392,7 +392,7 @@ contract DelegationManagementContract {
      * @notice Retrieve Global Lock Status
      */
 
-    function retrieveGloballockStatus(address _delegationAddress) public view returns (bool) {
+    function retrieveGlobalLockStatus(address _delegationAddress) public view returns (bool) {
         return globalLock[_delegationAddress];
     }
     
