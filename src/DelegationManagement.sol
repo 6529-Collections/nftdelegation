@@ -3,8 +3,8 @@
 /** 
  *
  *  @title: Delegation Management Contract
- *  @date: 14-Mar-2022 @ 09:13
- *  @version: 5.20.10
+ *  @date: 24-Mar-2022 @ 13:05
+ *  @version: 5.20.11 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ...
@@ -17,7 +17,7 @@ pragma solidity ^0.8.17;
 contract DelegationManagementContract {
 
     // Variable declarations
-    uint256 public useCaseCounter;
+    uint256 useCaseCounter;
 
     // Mapping declarations
     mapping (bytes32 => address[]) public delegatorHashes;
@@ -114,7 +114,6 @@ contract DelegationManagementContract {
         }
         }
         // Check subdelegation rights for All collections
-        bool subdelegationRightsAll;
         allDelegators = retrieveDelegators(msg.sender, 0x8888888888888888888888888888888888888888, 16);
         if (allDelegators.length > 0) {
             if (subdelegationRightsCol != true) {
@@ -127,7 +126,7 @@ contract DelegationManagementContract {
             }
         }
         // Allow to register
-        require ((subdelegationRightsCol == true) || (subdelegationRightsAll == true));
+        require ((subdelegationRightsCol == true));
         }
         // If check passed then register delegation address for Delegator
         require((_useCase >0 && _useCase < useCaseCounter) || (_useCase == 99));
@@ -252,7 +251,6 @@ contract DelegationManagementContract {
                 }
             }
             // Check subdelegation rights for All collections
-            bool subdelegationRightsAll;
             allDelegators = retrieveDelegators(msg.sender, 0x8888888888888888888888888888888888888888, 16);
             if (allDelegators.length > 0) {
                 if (subdelegationRightsCol != true) {
@@ -265,7 +263,7 @@ contract DelegationManagementContract {
                 }
             }
             // Allow to revoke
-            require ((subdelegationRightsCol == true) || (subdelegationRightsAll == true));
+            require ((subdelegationRightsCol == true));
         }
         // If check passed then revoke delegation address for Delegator
         bytes32 delegatorHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
@@ -364,7 +362,7 @@ contract DelegationManagementContract {
      * @notice Set global Lock status (hot wallet)
      */
 
-    function setglobalLock(bool _status) public {
+    function setGlobalLock(bool _status) public {
         globalLock[msg.sender] = _status;
     }
 
@@ -372,7 +370,7 @@ contract DelegationManagementContract {
      * @notice Set collection Lock status (hot wallet)
      */
 
-    function setcollectionLock(address _collectionAddress, bool _status) public {
+    function setCollectionLock(address _collectionAddress, bool _status) public {
         bytes32 collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender));
         collectionLock[collectionLockHash] = _status;
     }
@@ -381,7 +379,7 @@ contract DelegationManagementContract {
      * @notice Set collection usecase Lock status (hot wallet)
      */
 
-    function setcollectionUsecaseLock(address _collectionAddress, uint8 _useCase, bool _status) public {
+    function setCollectionUsecaseLock(address _collectionAddress, uint8 _useCase, bool _status) public {
         bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender, _useCase));
         collectionUsecaseLock[collectionUsecaseLockHash] = _status;
     }
