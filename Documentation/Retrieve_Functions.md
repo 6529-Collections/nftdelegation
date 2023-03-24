@@ -320,7 +320,7 @@
       address _collectionAddress,
       uint8 _useCase
     ) public view returns (address[], uint256[], bool[], uint256[]) {
-      return delegationAddresses, tokenIDs, allTokens, allExpirations;
+      return delegationAddresses, allExpirations, allTokens, tokenIDs;
     }
     
 <div id='retrieveDelegatorsTokensIDsandExpiredDates'/>
@@ -344,7 +344,7 @@
       address _collectionAddress,
       uint8 _useCase
     ) public view returns (address[], uint256[], bool[], uint256[]) {
-      return delegatorsAddresses, tokenIDs, allTokens, allExpirations;
+      return delegatorsAddresses, allExpirations, allTokens, tokenIDs;
     }
 
 <div id='retrieveTokenStatus'/>
