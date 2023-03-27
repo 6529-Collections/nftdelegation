@@ -8,7 +8,7 @@
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
  *  @credits: to be added ...
- *  @modifications: removed locks from revoking functions, added a batch revocations function, added getter function to retrieve the active history of a delegator
+ *  @modifications: final draft
  *
  */
 
