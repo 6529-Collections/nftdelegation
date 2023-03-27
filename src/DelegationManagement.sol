@@ -3,7 +3,7 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 24-Mar-2022 @ 13:05
+ *  @date: 27-Mar-2022 @ 09:02
  *  @version: 5.20.11 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
@@ -573,7 +573,7 @@ contract DelegationManagementContract {
         bool subdelegationRights;
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, USE_CASE_SUB_DELEGATION);
         if (allDelegators.length > 0) {
-            for (uint i = 0; i <= allDelegators.length; i++) {
+            for (uint i = 0; i <= allDelegators.length - 1; i++) {
                 if (_delegatorAddress == allDelegators[i]) {
                     subdelegationRights = true;
                     break;
@@ -754,7 +754,7 @@ contract DelegationManagementContract {
             address recentDelegationAddress = allDelegations[0];
             uint256 time = allRegistrations[0];
             for (uint256 i = 0; i <= allDelegations.length - 1; i++) {
-                if (allRegistrations[i] > time) {
+                if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
                     recentDelegationAddress = allDelegations[i];
                 }
@@ -914,7 +914,7 @@ contract DelegationManagementContract {
             address recentDelegatorAddress = allDelegators[0];
             uint256 time = allRegistrations[0];
             for (uint256 i = 0; i <= allDelegators.length - 1; i++) {
-                if (allRegistrations[i] > time) {
+                if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
                     recentDelegatorAddress = allDelegators[i];
                 }
