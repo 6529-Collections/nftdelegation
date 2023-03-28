@@ -18,7 +18,7 @@
 [How to retrieve all data about a delegator address for a specific usecase on a collection?](#retrieveDelegationAddressesTokensIDsandExpiredDates)\
 [How to retrieve all data about a delegation address for a specific usecase on a collection?](#retrieveDelegatorsTokensIDsandExpiredDates)\
 [How to check the delegation status given a specific token id?](#retrieveTokenStatus)\
-[How to retrieve the global lock status that exists on a delegation address?](#retrieveGloballockStatus)\
+[How to retrieve the global lock status that exists on a delegation address?](#retrieveGlobalLockStatus)\
 [How to retrieve the collection lock status that exists on a delegation address?](#retrieveCollectionLockStatus)\
 [How to retrieve the collection use case lock status that exists on a delegation address?](#retrieveCollectionUseCaseLockStatus)\
 [How to retrieve the collections & usecases history of a Delegator?](#retrieveFullHistoryOfDelegator)\
@@ -375,11 +375,11 @@
       return true/false;
     }
     
-<div id='retrieveGloballockStatus'/>
+<div id='retrieveGlobalLockStatus'/>
 
 ### How to retrieve the global lock status that exists on a delegation address?
 
-<b>Purpose:</b> The retrieveGloballockStatus() function retrieves the global lock status of a delegation Address.
+<b>Purpose:</b> The retrieveGlobalLockStatus() function retrieves the global lock status of a delegation Address.
 
 <b>Description:</b> The function takes one parameter: _delegationAddress. The _delegationAddress parameter is the address for which the global lock status will be returned. This function returns a boolean value indicating whether the global lock is enabled or not, if true it means that the _delegationAddress is locked and cannot be registered in any other usecase or collection.
 
@@ -389,7 +389,7 @@
       * @return true if the global lock is enabled, false otherwise.
     */
  
-    function retrieveGloballockStatus(
+    function retrieveGlobalLockStatus(
       address _delegationAddress
     ) public view returns (bool) {
       return globalLock;
