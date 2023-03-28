@@ -58,6 +58,8 @@ contract DelegationManagementContract {
     error delegationAddressGlobalLockExists();
     error delegationAddressCollectionLockExists();
     error delegationAddressCollectionUsecaseLockExists();
+    error subDelegationNotAllowed();
+    error collectionLengthOutOfBounds();
 
     // Constructor
     constructor() {
@@ -111,6 +113,8 @@ contract DelegationManagementContract {
      */
 
     function registerDelegationAddressUsingSubDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
+        // If check passed then register delegation address for Delegator
+        if ((_useCase < 0) || (_useCase > useCaseCounter && _useCase != USE_CASE_CONSOLIDATION)) revert UseCaseOutOfBounds();
         // Check subdelegation rights for the specific collection
         {
             bool subdelegationRightsCol;
@@ -136,10 +140,8 @@ contract DelegationManagementContract {
                 }
             }
             // Allow to register
-            require((subdelegationRightsCol == true));
+            if(!subdelegationRightsCol) revert subDelegationNotAllowed();
         }
-        // If check passed then register delegation address for Delegator
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -148,9 +150,9 @@ contract DelegationManagementContract {
         // Locks
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
-        require(globalLock[_delegationAddress] == false);
-        require(collectionLock[collectionLockHash] == false);
-        require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
+        if(globalLock[_delegationAddress]) revert delegationAddressGlobalLockExists();
+        if(collectionLock[collectionLockHash]) revert delegationAddressCollectionLockExists();
+        if(collectionUsecaseLock[collectionUsecaseLockHash]) revert delegationAddressCollectionUsecaseLockExists();
         // Push data to mappings
         globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         delegatorHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
@@ -273,7 +275,7 @@ contract DelegationManagementContract {
                 }
             }
             // Allow to revoke
-            require((subdelegationRightsCol == true));
+            if(!subdelegationRightsCol) revert subDelegationNotAllowed();
         }
         // If check passed then revoke delegation address for Delegator
         bytes32 delegatorHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
@@ -341,7 +343,7 @@ contract DelegationManagementContract {
      */
 
     function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint8[] memory _useCases) public {
-        require(_collectionAddresses.length < 6);
+        if(_collectionAddresses.length > 5) revert collectionLengthOutOfBounds();
         for (uint256 i = 0; i <= _collectionAddresses.length - 1; i++) {
             revokeDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _useCases[i]);
         }
@@ -362,7 +364,7 @@ contract DelegationManagementContract {
      */
 
     function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint8[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenIds) public {
-        require(_collectionAddresses.length < 6);
+        if(_collectionAddresses.length > 5) revert collectionLengthOutOfBounds();
         for (uint256 i = 0; i <= _collectionAddresses.length - 1; i++) {
             registerDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _expiryDates[i], _useCases[i], _allTokens[i], _tokenIds[i]);
         }
