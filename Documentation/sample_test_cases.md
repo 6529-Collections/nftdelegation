@@ -17,7 +17,7 @@
 
 The simpliest configuration to run the sample test cases is via remix.org.
 
-1. Navigate to remix.org
+1. Navigate to [remix.ethereum.org](https://remix.ethereum.org/)
 2. Under File Explorer click the Create New file icon
 3. Name the file testCases.sol
 4. Navigate to the src folder on the [nftdelegation repository](https://github.com/6529-Collections/nftdelegation/blob/main/src/DelegationManagement.sol)
