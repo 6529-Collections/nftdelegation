@@ -7,9 +7,9 @@
 [How to register multiple Delegation Addresses?](#batchDelegations)\
 [How to revoke multiple Delegation Addresses?](#batchRevocations)\
 [How to update a Delegation Address?](#updateDelegationAddress)\
-[How to globally lock my hot wallet?](#setglobalLock)\
-[How to lock my hot wallet on a collection?](#setcollectionLock)\
-[How to lock my hot wallet on a specific usecase on a collection?](#setcollectionUsecaseLock)
+[How to globally lock my hot wallet?](#setGlobalLock)\
+[How to lock my hot wallet on a collection?](#setCollectionLock)\
+[How to lock my hot wallet on a specific usecase on a collection?](#setCollectionUsecaseLock)
 
 <div id='registerDelegationAddress'/>
 
@@ -195,11 +195,11 @@
           uint256 _tokenid
       ) public;
 
-<div id='setglobalLock'/>
+<div id='setGlobalLock'/>
 
 ### How to globally lock my hot wallet?
 
-<b>Purpose:</b> The setglobalLock() function locks the wallet address that executes the transaction to prevent any delegation registration of it on any use case on any collection.
+<b>Purpose:</b> The setGlobalLock() function locks the wallet address that executes the transaction to prevent any delegation registration of it on any use case on any collection.
 
 <b>Description:</b> The function takes one parameter:  _status. The _status parameter is a bool value (true/false), if _status = true the wallet address locks itself, if _status = false the wallet address unlocks.
 
@@ -208,15 +208,15 @@
         * @param _status The lock status of the wallet address.
       */
 
-      function setglobalLock(
+      function setGlobalLock(
           bool _status
       ) public;
 
-<div id='setcollectionLock'/>
+<div id='setCollectionLock'/>
 
 ### How to lock my hot wallet on a collection?
 
-<b>Purpose:</b> The setcollectionLock() function locks the wallet address that executes the transaction to prevent any registration of it on a specific collection.
+<b>Purpose:</b> The setCollectionLock() function locks the wallet address that executes the transaction to prevent any registration of it on a specific collection.
 
 <b>Description:</b> The function takes two parameters:  _collectionAddress and _status. The _collectionAddress parameter is the address of the collection that the wallet address will be locked/unlocked. The _status parameter is a bool value (true/false), if _status = true the wallet address locks itself, if _status = false the wallet address unlocks.
 
@@ -226,16 +226,16 @@
         * @param _status The lock status of the wallet address.
       */
 
-      function setcollectionLock(
+      function setCollectionLock(
           address _collectionAddress,
           bool _status
       ) public;
 
-<div id='setcollectionUsecaseLock'/>
+<div id='setCollectionUsecaseLock'/>
 
 ### How to lock my hot wallet on a specific usecase on a collection?
 
-<b>Purpose:</b> The setcollectionUsecaseLock () function locks the wallet address that executes the transaction to prevent any registration of it on a specific usecase on a specific collection.
+<b>Purpose:</b> The setCollectionUsecaseLock() function locks the wallet address that executes the transaction to prevent any registration of it on a specific usecase on a specific collection.
 
 <b>Description:</b> The function takes three parameters:  _collectionAddress, _useCase and _status. The _collectionAddress parameter is the address of the collection that the wallet address will be locked/unlocked. The _useCase parameter is the type for which the wallet address will be locked/unlocked. The _status parameter is a bool value (true/false), if _status = true the wallet address locks itself, if _status = false the wallet address unlocks.
 
@@ -246,7 +246,7 @@
         * @param _status The lock status of the wallet address.
       */
 
-      function setcollectionUsecaseLock(
+      function setCollectionUsecaseLock(
           address _collectionAddress,
           uint8 _useCase,
           bool _status
