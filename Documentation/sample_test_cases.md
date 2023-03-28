@@ -454,7 +454,7 @@ retrieveActiveDelegators(...) | 8 | Function will return back just the 0x03C6FcE
     
 <div id='useLocks'/>
 
-## Retrieve Delegators who gave delegation rights to a delegation Address
+## Using locks on a wallet address
 
 ### Description: In this group of test cases a wallet will make use of the setglobalLock(...), setcollectionLock(...), setcollectionUsecaseLock(...) functions to get familiar of how he/she can lock/unlock a wallet so thus it cannot accept any more delegations.
 
