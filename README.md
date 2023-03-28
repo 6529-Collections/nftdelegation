@@ -4,10 +4,11 @@
 
 Network  | Contract Address
 ------------- | -------------
-Goerli Testnet  | [0xFa8f9C0EBD0a2cEA53dfa3c2485e1a8648CaB59e](https://goerli.etherscan.io/address/0xfa8f9c0ebd0a2cea53dfa3c2485e1a8648cab59e)
+Goerli Testnet  | [0x6a89AFF3B4ea4CF323C32740289C8a1d703aBeC8](https://goerli.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8)
 
-- Deployer Address: 0xA63858Ace9838a457139c26886a2d155Cc3dFc2e
-- Contract created on Goerli during TxHash# [0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84](https://goerli.etherscan.io/tx/0x60edeff57d35cd850650ad676cad5280e3e9a2c949332d5d09de4a8ebdceac84)
+- Deployer Address: 0xAcf42B85eCb77d9332584119FD78a3DE9953c2a0
+- Contract created on Goerli during TxHash# [0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3](https://goerli.etherscan.io/tx/0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3)
+- Deployed version: 5.20.10
 
 ## What is it?
 
@@ -41,6 +42,12 @@ Use-Case  | Action
 16 | Sub-delegation
 99 | Consolidation
 
+## Documentation
+
+[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
+\
+[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
+
 ## Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
@@ -55,7 +62,7 @@ Use-Case  | Action
 
 ## Features
 
-- Current implementation enables the following functionality:
+Current implementation enables the following functionality:
 
   1. Delegator assigns a delegation address on a specific use case on a specific NFT collection for a certain duration. The Delegator can assign all tokens or a specific   token to the delegation address.
   2. Delegator revokes delegation rights from a delagation address on a specific NFT collection given a specific use case
@@ -78,6 +85,8 @@ Use-Case  | Action
   19. Function to check if a Consolidation between 2 addresses exists
   20. Functions to retrieve the status of a Global/Collection/Collection&UseCase Lock
   21. Other functions that support smart contract's processes like retrieving of hashes etc.
+
+Want to learn more? [Explore documentation](https://github.com/6529-Collections/nftdelegation/tree/main/Documentation)
 
 ## Free from Dependencies
 
