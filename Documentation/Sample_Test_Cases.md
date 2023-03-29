@@ -17,7 +17,7 @@ The simplest approach to run these sample test cases is via the online solidity 
 1. Navigate to the "Solidity compiler" side tab. Click "Compile testCases.sol"
 1. You may see a warning about the size of the contract. You can disregard this, as it does not affect the testing process (or you can enable the optimizer under "Advanced Configurations", with a value of `200`, and recompile).
 1. Navigate to the "Deploy & run transactions" side tab.
-1. Make sure that the Envrionment is set to "Remix VM (Merge)" and the Contract is set to `delegationManagementContract - testCases.sol`
+1. Make sure that the Envrionment is set to "Remix VM (Merge)" and the Contract is set to `DelegationManagementContract - testCases.sol`
 1. Click "Deploy" (and then "Force Send" if you get a warning about contract size).
 
 If you followed the steps correctly, you'll see the contract appear under "Deployed Contracts". By toggling the ">" next to the contract name, you will be able to view all the setter (in red) and getter (in blue) functions of the smart contract.
