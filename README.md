@@ -48,22 +48,6 @@ Use-Case  | Action
 \
 [Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
 
-### Why use sub-delegation if I can delegate directly with my "Vault Wallet"?
-Sub-delegation can be used to minimize the amount of delegation transactions performed with your "Vault Wallet" by delegation all those contract interactions to a "Delegated Wallet". This way you ensure your Vault stays as cold as you want.
-
-#### How it works
-With your "Vault Wallet" you only need to perform 1 transaction to your "Delegated Wallet" by using `registerDelegationAddress` and Use-Case 16 (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). With your "Delegated Wallet" you can then use it to [register sub-delegation rights](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
-
-### What is Consolidation?
-Consolidation Use-Case core focus is to increase your TDH (Total Days Held) in [seize.io](https://seize.io). Although, it can also be used when devs want to leverage the relationship between two addresses.
-
-TDH is the total number of days that the NFTs (Memes or Gradients) held in an address have been held by that address.
-
-#### How it works
-To achieve a consolidation status between two wallets both wallets need to register a Consolidation Use-Case for each other. This means to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with Use-Case 99 from Wallet A to Wallet B and from Wallet B to Wallet A.
-
-The consolidation status will be true if both are registered.
-
 ## Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
@@ -103,6 +87,20 @@ Current implementation enables the following functionality:
   21. Other functions that support smart contract's processes like retrieving of hashes etc.
 
 Want to learn more? [Explore documentation](https://github.com/6529-Collections/nftdelegation/tree/main/Documentation)
+
+## Why use sub-delegation if I can delegate directly with my "Vault Wallet"?
+Sub-delegation can be used to minimize the amount of delegation transactions performed with your "Vault Wallet" by delegating all contract interactions to a "Delegated Wallet". This way you ensure your Vault stays as cold as you want.
+
+### How it works
+With your "Vault Wallet" you only need to perform 1 transaction to your "Delegated Wallet" by using `registerDelegationAddress` and Use-Case 16 (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your "Delegated Wallet" that has sub-delegation rights to call `registerDelegationAddressUsingSubDelegation` to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
+
+## What is Consolidation?
+Consolidation Use-Case is essential when you want to prove the ownership relationship between two addresses, ex. combine the TDH (Total Days Held) that you hold in various vaults on [seize.io](https://seize.io). TDH is the total number of days that the NFTs (Memes or Gradients) are held from an address.
+
+### How it works
+To achieve a consolidation status between two wallets both wallets need to register a Consolidation Use-Case for each other. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with Use-Case 99 from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
+
+The consolidation status will be true if both are registered.
 
 ## Free from Dependencies
 
