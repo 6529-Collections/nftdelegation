@@ -188,7 +188,7 @@ We expect the function will return the delegation address `0xdD870fA1b7C4700F2BD
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
-`registerDelegationAddress()` | `16` | The delegation will be registered. | The delegation was not registered. | Pass
+`registerDelegationAddress()` | `16` | The delegation will be registered. | The delegation was registered. | Pass
 
 #### Test Case ID: 5
 
@@ -224,7 +224,7 @@ We expect the function will return the delegation address `0xdD870fA1b7C4700F2BD
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
-`registerDelegationAddress()` | `99` | The delegation will be registered. | The delegation was not registered. | Pass
+`registerDelegationAddress()` | `99` | The delegation will be registered. | The delegation was registered. | Pass
 
 ### Revoke a delegation
 
@@ -322,7 +322,7 @@ Function | Use-Case  | Expected Output | Actual Output | Status
 
 ### Register a delegation with sub-delegation
 
-In this exmample, we will register a delegation address for The Collection using a wallet that has sub-delegation rights.
+In this example, we will register a delegation address for The Collection using a wallet that has sub-delegation rights.
 
 In this group of test cases a wallet calls the `registerDelegationAddressUsingSubDelegation()` function to register a delegation address on behalf of a Delegator that granted him/her sub-delegation rights
 
@@ -531,6 +531,8 @@ Call the function `retrieveDelegators()` with the following inputs:
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _useCase: `4`
 
+We expect the function will return the addresses `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` and `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`.
+
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
 `retrieveDelegators()` | `4` | Function will return back 2 addresses | Function returns back 2 addresses | Pass
@@ -581,6 +583,8 @@ Call the function `retrieveActiveDelegators()` with the following inputs:
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _data: `1680328929` (01 Apr 2023)
 - _useCase: `8`
+
+We expect the function will return the address `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
@@ -633,7 +637,12 @@ Function | Use-Case  | Expected Output | Actual Output | Status
 ##### Next steps
 
 Select wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from Accounts.
-Call the `setGlobalLock()` function with _status: `false` so as to unlock the address and move to the next Test Case.
+
+Call the `setGlobalLock()` function with:
+
+- _status: `false`
+
+so as to unlock it and move to the next Test Case.
 
 #### Test Case ID: 14
 
@@ -669,8 +678,8 @@ Call the function `setCollectionLock()` with the following inputs:
 
 ##### Validate the test
 
-Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.
-Execute the `registerDelegationAddress()` using the same data as step 1.
+Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.\
+Execute the `registerDelegationAddress()` using the same data as step 1.\
 Your transaction will fail as the address is locked on this collection.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
