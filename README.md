@@ -20,6 +20,24 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 - A Delegator can assign a delegation address for a specific use case on a specific NFT collection for a certain duration.
 - We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet.
 
+## Why is delegation useful?
+
+- Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
+- Delegation assignments make sense in cases where it is extremely risky to connect and sign messages from a cold wallet that is used for storing valuable fungible or non-fungible assets. Delegation addresses can be used to represent a Delegator and act on the Delegator's behalf under certain actions:
+
+- An action could be:
+  1. claiming token airdrops
+  2. minting tokens from collections that require an entry to their allowlist(s)
+  3. verifying/proving token ownership e.g., apps that implement some token gated policy
+  4. or any other activity that relates to the above use-cases
+- Overall, this contract proposal is useful for use-cases where dApps require a global, on-chain registry that maps the "delegation" relationship between wallet addresses.
+
+## Documentation
+
+[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
+\
+[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
+
 ## Use Cases
 
 Use-Case  | Action
@@ -41,24 +59,6 @@ Use-Case  | Action
 15 | View Access
 16 | Sub-delegation
 99 | Consolidation
-
-## Documentation
-
-[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
-\
-[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
-
-## Why is delegation useful?
-
-- Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
-- Delegation assignments make sense in cases where it is extremely risky to connect and sign messages from a cold wallet that is used for storing valuable fungible or non-fungible assets. Delegation addresses can be used to represent a Delegator and act on the Delegator's behalf under certain actions:
-
-- An action could be:
-  1. claiming token airdrops
-  2. minting tokens from collections that require an entry to their allowlist(s)
-  3. verifying/proving token ownership e.g., apps that implement some token gated policy
-  4. or any other activity that relates to the above use-cases
-- Overall, this contract proposal is useful for use-cases where dApps require a global, on-chain registry that maps the "delegation" relationship between wallet addresses.
 
 ## Features
 
