@@ -626,8 +626,8 @@ Call the function `setGlobalLock()` with the following inputs:
 
 ##### Validate the test
 
-Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.
-Execute the `registerDelegationAddress()` using the same data as step 1 but using the 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 wallet from Accounts.
+Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.\
+Execute the `registerDelegationAddress()` using the same data as step 1.\
 Your transaction will fail as the address is locked globally.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
@@ -732,8 +732,8 @@ Call the function `setCollectionUsecaseLock()` with the following inputs:
 
 ##### Validate the test
 
-Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.
-Execute the `registerDelegationAddress()` using the same data as step 1.
+Select wallet 0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2 from the Accounts.\
+Execute the `registerDelegationAddress()` using the same data as step 1.\
 Your transaction will fail as the address is locked on the specific use case on this collection.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
