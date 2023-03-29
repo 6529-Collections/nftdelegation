@@ -33,13 +33,13 @@ For all scenarios, we will use "The Memes by 6529" as the NFT collection in the 
 Each scenario has various setup prerequisites, test cases, and potential reset steps to follow when complete.
 
 1. [Register a delegation address on the collection, with various use cases](#register-a-delegation)
-1. [Revoke a delegation address on the collection](#revoke-a-delegation)
-1. [Update a delegation address on the collection](#update-a-delegation)
-1. [Register a delegation address using a wallet with subdelegation rights](#register-a-delegation-with-sub-delegation)
-1. [Revoke a delegation address using a wallet with subdelegation rights](#revoke-a-delegation-with-sub-delegation)
-1. [Check the consolidation status of two addresses on a collection](#check-consolidation-status)
-1. [Retrieve Delegators who gave delegation rights to a delegation Address](#retrieve-delegators)
-1. [Using locks on a wallet address](#using-locks)
+2. [Revoke a delegation address on the collection](#revoke-a-delegation)
+3. [Update a delegation address on the collection](#update-a-delegation)
+4. [Register a delegation address using a wallet with subdelegation rights](#register-a-delegation-with-sub-delegation-rights)
+5. [Revoke a delegation address using a wallet with subdelegation rights](#revoke-a-delegation-with-sub-delegation-rights)
+6. [Check the consolidation status of two addresses on a collection](#check-consolidation-status)
+7. [Retrieve Delegators who gave delegation rights to a delegation Address](#retrieve-delegators)
+8. [Using locks on a wallet address](#using-locks)
 
 ### Register a delegation
 
@@ -58,7 +58,7 @@ Register a delegation address on The Collection for **all** use cases (1-15).
 ##### Prerequisites
 
 1. Use case number exists (a use case of `1` represents "all" use cases).
-1. Delegation Address is not locked.
+2. Delegation Address is not locked.
 
 ##### Invoke the test
 
@@ -94,7 +94,7 @@ Register a delegation address for the airdrop use case (#3), but only for token 
 ##### Prerequisites
 
 1. Use case number exists.
-1. Delegation Address is not locked.
+2. Delegation Address is not locked.
 
 ##### Invoke the test
 
@@ -163,7 +163,7 @@ Register a delegation address on The Collection for the sub-delegation rights us
 ##### Prerequisites
 
 1. Use case exists
-1. Delegation Address is not locked
+2. Delegation Address is not locked
 
 ##### Invoke the test
 
@@ -199,7 +199,7 @@ Register a delegation address on The Collection for consolidation purposes use c
 ##### Prerequisites
 
 1. Use case exists
-1. Delegation Address is not locked
+2. Delegation Address is not locked
 
 ##### Invoke the test
 
@@ -241,14 +241,14 @@ Revoke a delegation address from The Collection that was already registered for 
 ##### Prerequisites
 
 1. Execute Test Case ID 2.
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `3`; ensure that a delegation Address was registered for that specific use case. If you have already executed Test Case ID 2 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`
 
-1. Use case number exists
-1. Delegation Address was already registered
+3. Use case number exists
+4. Delegation Address was already registered
 
 ##### Invoke the test
 
@@ -285,14 +285,14 @@ Update a delegation address from The Collection that was already registered for 
 ##### Prerequisites
 
 1. Execute Test Case ID 1.
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `1`; ensure that a delegation Address was registered for that specific use case. If you have already executed Test Case ID 1 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
-1. Use case number exists
-1. Delegation Address was already registered
+3. Use case number exists
+4. Delegation Address was already registered
 
 ##### Invoke the test
 
@@ -320,7 +320,7 @@ Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
 `updateDelegationAddress()` | `1` | The delegation will be updated. | The delegation was updated. | Pass
 
-### Register a delegation with sub-delegation
+### Register a delegation with sub-delegation rights
 
 In this example, we will register a delegation address for The Collection using a wallet that has sub-delegation rights.
 
@@ -335,15 +335,15 @@ Register a delegation address on behalf of a delegator on The Collection for min
 ##### Prerequisites
 
 1. Execute Test Case ID 4.
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `16`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
-1. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
-1. Use case number exists.
-1. Delegation Address in not locked.
+3. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
+4. Use case number exists.
+5. Delegation Address in not locked.
 
 ##### Invoke the test
 
@@ -371,7 +371,7 @@ Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
 `registerDelegationAddressUsingSubDelegation()` | 2 | The delegation will be registered. | The delegation was registered. | Pass
 
-### Revoke a delegation with sub-delegation
+### Revoke a delegation with sub-delegation rights
 
 In this example, we will revoke a delegation from The Collection using a wallet that has sub-delegation rights.
 
@@ -386,21 +386,21 @@ Revoke a delegation address on behalf of a delegator on The Collection for all u
 ##### Prerequisites
 
 1. Execute Test Case ID 1.
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: 1; ensure that the function returns back delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`
 
-1. Execute Test Case ID 4.
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+3. Execute Test Case ID 4.
+4. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `16`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
-1. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
-1. Use case number exists.
+5. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
+6. Use case number exists.
 
 ##### Invoke the test
 
@@ -446,13 +446,13 @@ Check the consolidation status of two addresses. Firstly, you need to register w
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `99`; ensure that the function returns back delegation address `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
 
-1. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
+3. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
 
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _delegationAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
@@ -461,7 +461,7 @@ Check the consolidation status of two addresses. Firstly, you need to register w
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+4. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
     - _delegatorAddress: `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
@@ -502,13 +502,13 @@ Find which addresses gave delegation rights to a specific wallet on The Collecti
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _useCase: `4`; ensure that the function returns back delegation address `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
 
-1. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
+3. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
 
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _delegationAddress: `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
@@ -517,7 +517,7 @@ Find which addresses gave delegation rights to a specific wallet on The Collecti
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+4. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
@@ -554,13 +554,13 @@ Find the active delegation addresses that gave delegation rights to a specific w
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _useCase: `8`; ensure that the function returns back delegation address `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
 
-1. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
+3. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
 
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _delegationAddress: `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
@@ -569,7 +569,7 @@ Find the active delegation addresses that gave delegation rights to a specific w
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+4. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
@@ -611,12 +611,12 @@ Use a global lock so as a wallet address does not accept any more delegations on
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _useCase: `4`; ensure that the function returns back delegation address `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
 
-1. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
+3. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
 
 ##### Invoke the test
 
@@ -661,13 +661,13 @@ Use a collection lock so as a wallet address does not accept any more delegation
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with inputdata
+2. Call the `retrieveDelegationAddresses()` function with inputdata
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _useCase: `4`; ensure that the function returns back delegation address `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
 
-1. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
+3. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
 
 ##### Invoke the test
 
@@ -714,13 +714,13 @@ Use a collection use case lock so as a wallet address does not accept any more d
     - _allTokens: `true`
     - _tokenid: `0`
 
-1. Call the `retrieveDelegationAddresses()` function with the following inputs:
+2. Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _useCase: `10`; ensure that the function returns back delegation address `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB`
 
-1. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
+3. Select the wallet `0x78731D3Ca6b7E34aC0F824c42a7cC18A495cabaB` from accounts
 
 ##### Invoke the test
 
