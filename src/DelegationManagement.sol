@@ -1,14 +1,24 @@
 // SPDX-License-Identifier: MIT
 
+//     _   ______________                                       
+//    / | / / ____/_  __/                                       
+//   /  |/ / /_    / /                                          
+//  / /|  / __/   / /                                           
+// /_/ |_/_/ ____/_/_    _______________  ______________  _   __
+//    / __ \/ ____/ /   / ____/ ____/   |/_  __/  _/ __ \/ | / /
+//   / / / / __/ / /   / __/ / / __/ /| | / /  / // / / /  |/ / 
+//  / /_/ / /___/ /___/ /___/ /_/ / ___ |/ / _/ // /_/ / /|  /  
+// /_____/_____/_____/_____/\____/_/  |_/_/ /___/\____/_/ |_/   
+                                                             
+
 /**
  *
  *  @title: Delegation Management Contract
  *  @date: 31-Mar-2023 @ 13:10
- *  @version: 5.20.11 - not deployed
+ *  @version: 5.20.11 - deployed sepolia
  *  @notes: This is an experimental contract for delegation registry
- *  @author: skynet2030 (skyn3t2030)
+ *  @author: skynet2030 (skyn3t2030) team
  *  @credits: to be added ...
- *  @modifications: final draft
  *
  */
 
