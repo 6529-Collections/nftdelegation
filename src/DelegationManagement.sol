@@ -110,10 +110,14 @@ contract DelegationManagementContract {
             bool subdelegationRightsCol;
             address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
-                for (uint i = 0; i < allDelegators.length; i++) {
+                for (uint i = 0; i < allDelegators.length; ) {
                     if (_delegatorAddress == allDelegators[i]) {
                         subdelegationRightsCol = true;
                         break;
+                    }
+
+                    unchecked {
+                        ++i;
                     }
                 }
             }
@@ -121,10 +125,14 @@ contract DelegationManagementContract {
             allDelegators = retrieveDelegators(msg.sender, ALL_COLLECTIONS, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
                 if (subdelegationRightsCol != true) {
-                    for (uint i = 0; i < allDelegators.length; i++) {
+                    for (uint i = 0; i < allDelegators.length; ) {
                         if (_delegatorAddress == allDelegators[i]) {
                             subdelegationRightsCol = true;
                             break;
+                        }
+
+                        unchecked {
+                            ++i;
                         }
                     }
                 }
@@ -183,52 +191,77 @@ contract DelegationManagementContract {
         // Revoke delegation Address from the delegatorHashes mapping
         count = 0;
         if (delegatorHashes[delegatorHash].length > 0) {
-            for (uint256 i = 0; i <= delegatorHashes[delegatorHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     count = count + 1;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             uint256[] memory delegationsPerUser = new uint256[](count);
             uint256 count1 = 0;
-            for (uint256 i = 0; i <= delegatorHashes[delegatorHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     delegationsPerUser[count1] = i;
                     count1 = count1 + 1;
                 }
+
+                unchecked {
+                    ++i;
+                }
             }
+
             if (count1 > 0) {
-                for (uint256 j = 0; j <= delegationsPerUser.length - 1; j++) {
+                for (uint256 j = 0; j < delegationsPerUser.length; ) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegationsPerUser[delegationsPerUser.length - 1 - j];
                     temp2 = delegatorHashes[delegatorHash].length - 1;
                     delegatorHashes[delegatorHash][temp1] = delegatorHashes[delegatorHash][temp2];
                     delegatorHashes[delegatorHash].pop();
-                }
+
+                    unchecked {
+                        ++j;
+                    }
+                }                
             }
             // Revoke delegator Address from the delegationAddressHashes mapping
             uint256 countDA = 0;
-            for (uint256 i = 0; i <= delegationAddressHashes[delegationAddressHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
                 if (msg.sender == delegationAddressHashes[delegationAddressHash][i]) {
                     countDA = countDA + 1;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             uint256[] memory delegatorsPerUser = new uint256[](countDA);
             uint256 countDA1 = 0;
-            for (uint256 i = 0; i <= delegationAddressHashes[delegationAddressHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
                 if (msg.sender == delegationAddressHashes[delegationAddressHash][i]) {
                     delegatorsPerUser[countDA1] = i;
                     countDA1 = countDA1 + 1;
                 }
+
+                unchecked {
+                    ++i;
+                }
             }
             if (countDA1 > 0) {
-                for (uint256 j = 0; j <= delegatorsPerUser.length - 1; j++) {
+                for (uint256 j = 0; j < delegatorsPerUser.length; ) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegatorsPerUser[delegatorsPerUser.length - 1 - j];
                     temp2 = delegationAddressHashes[delegationAddressHash].length - 1;
                     delegationAddressHashes[delegationAddressHash][temp1] = delegationAddressHashes[delegationAddressHash][temp2];
                     delegationAddressHashes[delegationAddressHash].pop();
+
+                    unchecked {
+                        ++j;
+                    }
                 }
             }
             // Delete global delegation data and emit event
@@ -247,21 +280,29 @@ contract DelegationManagementContract {
             bool subdelegationRightsCol;
             address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
-                for (uint i = 0; i < allDelegators.length; i++) {
+                for (uint i = 0; i < allDelegators.length; ) {
                     if (_delegatorAddress == allDelegators[i]) {
                         subdelegationRightsCol = true;
                         break;
                     }
-                }
+
+                    unchecked {
+                        ++i;
+                    }
+                }     
             }
             // Check subdelegation rights for All collections
             allDelegators = retrieveDelegators(msg.sender, ALL_COLLECTIONS, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
                 if (subdelegationRightsCol != true) {
-                    for (uint i = 0; i < allDelegators.length; i++) {
+                    for (uint i = 0; i < allDelegators.length; ) {
                         if (_delegatorAddress == allDelegators[i]) {
                             subdelegationRightsCol = true;
                             break;
+                        }
+
+                        unchecked {
+                            ++i;
                         }
                     }
                 }
@@ -276,52 +317,76 @@ contract DelegationManagementContract {
         uint256 count;
         count = 0;
         if (delegatorHashes[delegatorHash].length > 0) {
-            for (uint256 i = 0; i <= delegatorHashes[delegatorHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     count = count + 1;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             uint256[] memory delegationsPerUser = new uint256[](count);
             uint256 count1 = 0;
-            for (uint256 i = 0; i <= delegatorHashes[delegatorHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     delegationsPerUser[count1] = i;
                     count1 = count1 + 1;
                 }
+
+                unchecked {
+                    ++i;
+                }
             }
             if (count1 > 0) {
-                for (uint256 j = 0; j <= delegationsPerUser.length - 1; j++) {
+                for (uint256 j = 0; j < delegationsPerUser.length; ) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegationsPerUser[delegationsPerUser.length - 1 - j];
                     temp2 = delegatorHashes[delegatorHash].length - 1;
                     delegatorHashes[delegatorHash][temp1] = delegatorHashes[delegatorHash][temp2];
                     delegatorHashes[delegatorHash].pop();
+
+                    unchecked {
+                        ++j;
+                    }
                 }
             }
             // Revoke delegator Address from the delegationAddressHashes mapping
             uint256 countDA = 0;
-            for (uint256 i = 0; i <= delegationAddressHashes[delegationAddressHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
                 if (_delegatorAddress == delegationAddressHashes[delegationAddressHash][i]) {
                     countDA = countDA + 1;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             uint256[] memory delegatorsPerUser = new uint256[](countDA);
             uint256 countDA1 = 0;
-            for (uint256 i = 0; i <= delegationAddressHashes[delegationAddressHash].length - 1; i++) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
                 if (_delegatorAddress == delegationAddressHashes[delegationAddressHash][i]) {
                     delegatorsPerUser[countDA1] = i;
                     countDA1 = countDA1 + 1;
                 }
+
+                unchecked {
+                    ++i;
+                }
             }
             if (countDA1 > 0) {
-                for (uint256 j = 0; j <= delegatorsPerUser.length - 1; j++) {
+                for (uint256 j = 0; j < delegatorsPerUser.length; ) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegatorsPerUser[delegatorsPerUser.length - 1 - j];
                     temp2 = delegationAddressHashes[delegationAddressHash].length - 1;
                     delegationAddressHashes[delegationAddressHash][temp1] = delegationAddressHashes[delegationAddressHash][temp2];
                     delegationAddressHashes[delegationAddressHash].pop();
+
+                    unchecked {
+                        ++j;
+                    }
                 }
             }
             // Delete global delegation data and emit event
@@ -336,8 +401,12 @@ contract DelegationManagementContract {
 
     function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint8[] memory _useCases) public {
         require(_collectionAddresses.length < 6);
-        for (uint256 i = 0; i <= _collectionAddresses.length - 1; i++) {
+        for (uint256 i = 0; i < _collectionAddresses.length; ) {
             revokeDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _useCases[i]);
+
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -357,8 +426,12 @@ contract DelegationManagementContract {
 
     function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint8[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenIds) public {
         require(_collectionAddresses.length < 6);
-        for (uint256 i = 0; i <= _collectionAddresses.length - 1; i++) {
+        for (uint256 i = 0; i < _collectionAddresses.length; ) {
             registerDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _expiryDates[i], _useCases[i], _allTokens[i], _tokenIds[i]);
+
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -475,12 +548,16 @@ contract DelegationManagementContract {
         uint256[] memory activeUseCases = new uint256[](useCaseRegistered[_delegatorAddress].length);
         uint256 count = 0;
         bytes32 hash;
-        for (uint256 i = 0; i <= collectionsRegistered[_delegatorAddress].length - 1; i++) {
+        for (uint256 i = 0; i < collectionsRegistered[_delegatorAddress].length; ) {
             hash = keccak256(abi.encodePacked(_delegatorAddress, collectionsRegistered[_delegatorAddress][i], uint8(useCaseRegistered[_delegatorAddress][i])));
             if (delegatorHashes[hash].length > 0) {
                 activeCollections[count] = collectionsRegistered[_delegatorAddress][i];
                 activeUseCases[count] = useCaseRegistered[_delegatorAddress][i];
                 count = count + 1;
+            }
+
+            unchecked {
+                ++i;
             }
         }
         return (activeCollections, activeUseCases);
@@ -539,12 +616,16 @@ contract DelegationManagementContract {
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         bool status;
         if (globalDelegationHashes[hash].length > 0) {
-            for (uint256 i = 0; i <= globalDelegationHashes[hash].length - 1; i++) {
+            for (uint256 i = 0; i < globalDelegationHashes[hash].length; ) {
                 if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
                     status = true;
                     break;
                 } else {
                     status = false;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             return status;
@@ -573,10 +654,14 @@ contract DelegationManagementContract {
         bool subdelegationRights;
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, USE_CASE_SUB_DELEGATION);
         if (allDelegators.length > 0) {
-            for (uint i = 0; i <= allDelegators.length - 1; i++) {
+            for (uint i = 0; i < allDelegators.length; ) {
                 if (_delegatorAddress == allDelegators[i]) {
                     subdelegationRights = true;
                     break;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
         }
@@ -595,12 +680,16 @@ contract DelegationManagementContract {
         address[] memory allActiveDelegators = retrieveActiveDelegators(_delegationAddress, _collectionAddress, _date, _useCase);
         bool status;
         if (allActiveDelegators.length > 0) {
-            for (uint256 i = 0; i <= allActiveDelegators.length - 1; i++) {
+            for (uint256 i = 0; i < allActiveDelegators.length; ) {
                 if (_delegatorAddress == allActiveDelegators[i]) {
                     status = true;
                     break;
                 } else {
                     status = false;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             return status;
@@ -620,34 +709,58 @@ contract DelegationManagementContract {
         uint256 count2 = 0;
         uint256 k = 0;
         if (allDelegations.length > 0) {
-            for (uint256 i = 0; i <= allDelegations.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegations.length; ) {
                 globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, allDelegations[i], _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Removes duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory tokensIDs = new uint256[](k);
             bool[] memory allTokens = new bool[](k);
             uint256[] memory allExpirations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
                         tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             return (allDelegations, allExpirations, allTokens, tokensIDs);
@@ -673,37 +786,65 @@ contract DelegationManagementContract {
         uint256 count3 = 0;
         uint256 k = 0;
         if (allDelegations.length > 0) {
-            for (uint256 i = 0; i <= allDelegations.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegations.length; ) {
                 globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, allDelegations[i], _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Remove duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory allExpirations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             address[] memory allActive = new address[](allExpirations.length);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (allExpirations[y] > _date) {
                     allActive[count3] = allDelegations[y];
                     count3 = count3 + 1;
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             return (allActive);
@@ -725,38 +866,66 @@ contract DelegationManagementContract {
         uint256 count2 = 0;
         uint256 k = 0;
         if (allDelegations.length > 0) {
-            for (uint256 i = 0; i <= allDelegations.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegations.length; ) {
                 globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, allDelegations[i], _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Removes duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory allRegistrations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allRegistrations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].registeredDate;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             address recentDelegationAddress = allDelegations[0];
             uint256 time = allRegistrations[0];
-            for (uint256 i = 0; i <= allDelegations.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegations.length; ) {
                 if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
                     recentDelegationAddress = allDelegations[i];
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             return (recentDelegationAddress);
@@ -780,34 +949,58 @@ contract DelegationManagementContract {
         uint256 count2 = 0;
         uint256 k = 0;
         if (allDelegators.length > 0) {
-            for (uint256 i = 0; i <= allDelegators.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegators.length; ) {
                 globalHash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, _delegationAddress, _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Removes duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory tokensIDs = new uint256[](k);
             bool[] memory allTokens = new bool[](k);
             uint256[] memory allExpirations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
                         tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             return (allDelegators, allExpirations, allTokens, tokensIDs);
@@ -833,37 +1026,65 @@ contract DelegationManagementContract {
         uint256 count3 = 0;
         uint256 k = 0;
         if (allDelegators.length > 0) {
-            for (uint256 i = 0; i <= allDelegators.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegators.length; ) {
                 globalHash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, _delegationAddress, _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Remove duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory allExpirations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             address[] memory allActive = new address[](allExpirations.length);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (allExpirations[y] > _date) {
                     allActive[count3] = allDelegators[y];
                     count3 = count3 + 1;
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             return (allActive);
@@ -885,38 +1106,66 @@ contract DelegationManagementContract {
         uint256 count2 = 0;
         uint256 k = 0;
         if (allDelegators.length > 0) {
-            for (uint256 i = 0; i <= allDelegators.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegators.length; ) {
                 globalHash = keccak256(abi.encodePacked(allDelegators[i], _collectionAddress, _delegationAddress, _useCase));
                 allGlobalHashes[count1] = globalHash;
                 count1 = count1 + 1;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Removes duplicates
-            for (uint256 i = 0; i < allGlobalHashes.length - 1; i++) {
-                for (uint256 j = i + 1; j < allGlobalHashes.length; j++) {
+            for (uint256 i = 0; i < allGlobalHashes.length - 1; ) {
+                for (uint256 j = i + 1; j < allGlobalHashes.length; ) {
                     if (allGlobalHashes[i] == allGlobalHashes[j]) {
                         delete allGlobalHashes[i];
                     }
+
+                    unchecked {
+                        ++j;
+                    }
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
-            for (uint256 i = 0; i <= allGlobalHashes.length - 1; i++) {
+            for (uint256 i = 0; i < allGlobalHashes.length; ) {
                 k = globalDelegationHashes[allGlobalHashes[i]].length + k;
+
+                unchecked {
+                    ++i;
+                }
             }
             //Declare local arrays
             uint256[] memory allRegistrations = new uint256[](k);
-            for (uint256 y = 0; y <= k - 1; y++) {
+            for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
-                    for (uint256 w = 0; w <= globalDelegationHashes[allGlobalHashes[y]].length - 1; w++) {
+                    for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
                         allRegistrations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].registeredDate;
                         count2 = count2 + 1;
+
+                        unchecked {
+                            ++w;
+                        }
                     }
+                }
+
+                unchecked {
+                    ++y;
                 }
             }
             address recentDelegatorAddress = allDelegators[0];
             uint256 time = allRegistrations[0];
-            for (uint256 i = 0; i <= allDelegators.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegators.length; ) {
                 if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
                     recentDelegatorAddress = allDelegators[i];
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
             return (recentDelegatorAddress);
@@ -935,14 +1184,22 @@ contract DelegationManagementContract {
         bool wallet1Consolidation;
         bool wallet2Consolidation;
         if (allDelegationsWallet1.length > 0 && allDelegationsWallet2.length > 0) {
-            for (uint256 i = 0; i <= allDelegationsWallet1.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegationsWallet1.length; ) {
                 if (_wallet2 == allDelegationsWallet1[i]) {
                     wallet1Consolidation = true;
                 }
+
+                unchecked {
+                    ++i;
+                }
             }
-            for (uint256 i = 0; i <= allDelegationsWallet2.length - 1; i++) {
+            for (uint256 i = 0; i < allDelegationsWallet2.length; ) {
                 if (_wallet1 == allDelegationsWallet2[i]) {
                     wallet2Consolidation = true;
+                }
+
+                unchecked {
+                    ++i;
                 }
             }
         }
