@@ -744,14 +744,14 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
-            address[] memory alldelegationAddresses = new address[](k);
+            address[] memory allDelegationAddresses = new address[](k);
             uint256[] memory tokensIDs = new uint256[](k);
             bool[] memory allTokens = new bool[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
-                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
+                        allDelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
                         tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
@@ -767,7 +767,7 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            return (alldelegationAddresses, allExpirations, allTokens, tokensIDs);
+            return (allDelegationAddresses, allExpirations, allTokens, tokensIDs);
         } else {
             address[] memory allDelegations1 = new address[](0);
             uint256[] memory tokensIDs = new uint256[](0);
@@ -823,12 +823,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
-            address[] memory alldelegationAddresses = new address[](k);
+            address[] memory allDelegationAddresses = new address[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
-                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
+                        allDelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         count2 = count2 + 1;
 
@@ -845,7 +845,7 @@ contract DelegationManagementContract {
             address[] memory allActive = new address[](allExpirations.length);
             for (uint256 y = 0; y < k; ) {
                 if (allExpirations[y] > _date) {
-                    allActive[count3] = alldelegationAddresses[y];
+                    allActive[count3] = allDelegationAddresses[y];
                     count3 = count3 + 1;
                 }
 
@@ -905,12 +905,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
-            address[] memory alldelegationAddresses = new address[](k);
+            address[] memory allDelegationAddresses = new address[](k);
             uint256[] memory allRegistrations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
-                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
+                        allDelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allRegistrations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].registeredDate;
                         count2 = count2 + 1;
 
@@ -924,12 +924,12 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            address recentDelegationAddress = alldelegationAddresses[0];
+            address recentDelegationAddress = allDelegationAddresses[0];
             uint256 time = allRegistrations[0];
-            for (uint256 i = 0; i < alldelegationAddresses.length; ) {
+            for (uint256 i = 0; i < allDelegationAddresses.length; ) {
                 if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
-                    recentDelegationAddress = alldelegationAddresses[i];
+                    recentDelegationAddress = allDelegationAddresses[i];
                 }
 
                 unchecked {
