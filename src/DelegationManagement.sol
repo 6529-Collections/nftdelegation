@@ -3,7 +3,7 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 27-Mar-2023 @ 14:20
+ *  @date: 31-Mar-2023 @ 12:00
  *  @version: 5.20.11 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030)
@@ -28,6 +28,8 @@ contract DelegationManagementContract {
     mapping(bytes32 => address[]) public delegationAddressHashes;
 
     struct GlobalData {
+        address delegatorAddress;
+        address delegationAddress;
         uint256 registeredDate;
         uint256 expiryDate;
         bool allTokens;
@@ -90,10 +92,10 @@ contract DelegationManagementContract {
         useCaseRegistered[msg.sender].push(_useCase);
         // Push additional data to the globalDelegationHashes mapping
         if (_allTokens == true) {
-            GlobalData memory newdelegationGlobalData = GlobalData(block.timestamp, _expiryDate, true, 0);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         } else {
-            GlobalData memory newdelegationGlobalData = GlobalData(block.timestamp, _expiryDate, false, _tokenId);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         }
         emit RegisterDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
@@ -166,10 +168,10 @@ contract DelegationManagementContract {
         useCaseRegistered[_delegatorAddress].push(_useCase);
         // Push additional data to the globalDelegationHashes mapping
         if (_allTokens == true) {
-            GlobalData memory newdelegationGlobalData = GlobalData(block.timestamp, _expiryDate, true, 0);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         } else {
-            GlobalData memory newdelegationGlobalData = GlobalData(block.timestamp, _expiryDate, false, _tokenId);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         }
         emit RegisterDelegationUsingSubDelegation(_delegatorAddress, msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
@@ -742,12 +744,14 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory alldelegationAddresses = new address[](k);
             uint256[] memory tokensIDs = new uint256[](k);
             bool[] memory allTokens = new bool[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
                         tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
@@ -763,7 +767,7 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            return (allDelegations, allExpirations, allTokens, tokensIDs);
+            return (alldelegationAddresses, allExpirations, allTokens, tokensIDs);
         } else {
             address[] memory allDelegations1 = new address[](0);
             uint256[] memory tokensIDs = new uint256[](0);
@@ -819,10 +823,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory alldelegationAddresses = new address[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         count2 = count2 + 1;
 
@@ -839,7 +845,7 @@ contract DelegationManagementContract {
             address[] memory allActive = new address[](allExpirations.length);
             for (uint256 y = 0; y < k; ) {
                 if (allExpirations[y] > _date) {
-                    allActive[count3] = allDelegations[y];
+                    allActive[count3] = alldelegationAddresses[y];
                     count3 = count3 + 1;
                 }
 
@@ -899,10 +905,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory alldelegationAddresses = new address[](k);
             uint256[] memory allRegistrations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        alldelegationAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegationAddress;
                         allRegistrations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].registeredDate;
                         count2 = count2 + 1;
 
@@ -916,12 +924,12 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            address recentDelegationAddress = allDelegations[0];
+            address recentDelegationAddress = alldelegationAddresses[0];
             uint256 time = allRegistrations[0];
-            for (uint256 i = 0; i < allDelegations.length; ) {
+            for (uint256 i = 0; i < alldelegationAddresses.length; ) {
                 if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
-                    recentDelegationAddress = allDelegations[i];
+                    recentDelegationAddress = alldelegationAddresses[i];
                 }
 
                 unchecked {
@@ -982,12 +990,14 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory allDelegatorsAddresses = new address[](k);
             uint256[] memory tokensIDs = new uint256[](k);
             bool[] memory allTokens = new bool[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        allDelegatorsAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegatorAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         allTokens[count2] = globalDelegationHashes[allGlobalHashes[y]][w].allTokens;
                         tokensIDs[count2] = globalDelegationHashes[allGlobalHashes[y]][w].tokens;
@@ -1003,7 +1013,7 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            return (allDelegators, allExpirations, allTokens, tokensIDs);
+            return (allDelegatorsAddresses, allExpirations, allTokens, tokensIDs);
         } else {
             address[] memory allDelegations1 = new address[](0);
             uint256[] memory tokensIDs = new uint256[](0);
@@ -1059,10 +1069,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory allDelegatorsAddresses = new address[](k);
             uint256[] memory allExpirations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        allDelegatorsAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegatorAddress;
                         allExpirations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].expiryDate;
                         count2 = count2 + 1;
 
@@ -1079,7 +1091,7 @@ contract DelegationManagementContract {
             address[] memory allActive = new address[](allExpirations.length);
             for (uint256 y = 0; y < k; ) {
                 if (allExpirations[y] > _date) {
-                    allActive[count3] = allDelegators[y];
+                    allActive[count3] = allDelegatorsAddresses[y];
                     count3 = count3 + 1;
                 }
 
@@ -1139,10 +1151,12 @@ contract DelegationManagementContract {
                 }
             }
             //Declare local arrays
+            address[] memory allDelegatorsAddresses = new address[](k);
             uint256[] memory allRegistrations = new uint256[](k);
             for (uint256 y = 0; y < k; ) {
                 if (globalDelegationHashes[allGlobalHashes[y]].length > 0) {
                     for (uint256 w = 0; w < globalDelegationHashes[allGlobalHashes[y]].length; ) {
+                        allDelegatorsAddresses[count2] = globalDelegationHashes[allGlobalHashes[y]][w].delegatorAddress;
                         allRegistrations[count2] = globalDelegationHashes[allGlobalHashes[y]][w].registeredDate;
                         count2 = count2 + 1;
 
@@ -1156,12 +1170,12 @@ contract DelegationManagementContract {
                     ++y;
                 }
             }
-            address recentDelegatorAddress = allDelegators[0];
+            address recentDelegatorAddress = allDelegatorsAddresses[0];
             uint256 time = allRegistrations[0];
-            for (uint256 i = 0; i < allDelegators.length; ) {
+            for (uint256 i = 0; i < allDelegatorsAddresses.length; ) {
                 if (allRegistrations[i] >= time) {
                     time = allRegistrations[i];
-                    recentDelegatorAddress = allDelegators[i];
+                    recentDelegatorAddress = allDelegatorsAddresses[i];
                 }
 
                 unchecked {
