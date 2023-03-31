@@ -573,11 +573,7 @@ contract DelegationManagementContract {
     function retrieveDelegatorStatusOfDelegation(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
-        if (delegatorHashes[hash].length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return delegatorHashes[hash].length > 0;
     }
 
     /**
@@ -588,11 +584,7 @@ contract DelegationManagementContract {
     function retrieveDelegationAddressStatusOfDelegation(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
-        if (delegationAddressHashes[hash].length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return delegationAddressHashes[hash].length > 0;
     }
 
     /**
@@ -602,11 +594,7 @@ contract DelegationManagementContract {
     function retrieveGlobalStatusOfDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
-        if (globalDelegationHashes[hash].length > 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return globalDelegationHashes[hash].length > 0;
     }
 
     /**
@@ -641,11 +629,7 @@ contract DelegationManagementContract {
      */
 
     function retrieveStatusOfMostRecentDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
-        if (_delegationAddress == retrieveMostRecentDelegation(_delegatorAddress, _collectionAddress, _useCase)) {
-            return true;
-        } else {
-            return false;
-        }
+        return _delegationAddress == retrieveMostRecentDelegation(_delegatorAddress, _collectionAddress, _useCase);
     }
 
     /**
@@ -1196,31 +1180,29 @@ contract DelegationManagementContract {
         address[] memory allDelegationsWallet1 = retrieveDelegationAddresses(_wallet1, _collectionAddress, USE_CASE_CONSOLIDATION);
         address[] memory allDelegationsWallet2 = retrieveDelegationAddresses(_wallet2, _collectionAddress, USE_CASE_CONSOLIDATION);
         bool wallet1Consolidation;
-        bool wallet2Consolidation;
         if (allDelegationsWallet1.length > 0 && allDelegationsWallet2.length > 0) {
             for (uint256 i = 0; i < allDelegationsWallet1.length; ) {
-                if (_wallet2 == allDelegationsWallet1[i]) {
+                if (allDelegationsWallet1[i] == _wallet2) {
                     wallet1Consolidation = true;
+                    break;
                 }
 
                 unchecked {
                     ++i;
                 }
             }
-            for (uint256 i = 0; i < allDelegationsWallet2.length; ) {
-                if (_wallet1 == allDelegationsWallet2[i]) {
-                    wallet2Consolidation = true;
-                }
+            if (wallet1Consolidation) {
+                for (uint256 i = 0; i < allDelegationsWallet2.length; ) {
+                    if (allDelegationsWallet2[i] == _wallet1) {
+                        return true;
+                    }
 
-                unchecked {
-                    ++i;
+                    unchecked {
+                        ++i;
+                    }
                 }
             }
         }
-        if (wallet1Consolidation == true && wallet2Consolidation == true) {
-            return true;
-        } else {
-            return false;
-        }
+        return false;
     }
 }
