@@ -2,13 +2,12 @@
 
 ## Deployment
 
-Network  | Contract Address
-------------- | -------------
-Goerli Testnet  | [0x6a89AFF3B4ea4CF323C32740289C8a1d703aBeC8](https://goerli.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8)
+Network  | Contract Address | Version
+------------- | ------------- | -------------
+Sepolia Testnet  | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
 
 - Deployer Address: 0xAcf42B85eCb77d9332584119FD78a3DE9953c2a0
-- Contract created on Goerli during TxHash# [0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3](https://goerli.etherscan.io/tx/0x2e25c4122cd6209c3cf0a4be36abd0086d350854a2b9e3bc42122f26c0ddcac3)
-- Deployed version: 5.20.10
+- Contract created on Sepolia during TxHash# [0x83975f3acca9c5047496d398e867c8d82b63fceef1a4543748a21366599f40a3](https://sepolia.etherscan.io/tx/0x83975f3acca9c5047496d398e867c8d82b63fceef1a4543748a21366599f40a3)
 
 ## What is it?
 
