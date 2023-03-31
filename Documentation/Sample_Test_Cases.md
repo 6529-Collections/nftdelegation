@@ -24,7 +24,7 @@ If you followed the steps correctly, you'll see the contract appear under "Deplo
 
 Use the dropdown arrow at the end of each function row to add arguments and invoke the function. The contract execution log will show in the Remix terminal for every function invocation. Use the dropdown there to see the details of the function call, and look in "decoded output" for the expected values.
 
-You are always welcome to run the smart contract code and conduct the tests using other tools, or direcly through <https://etherscan.io> on the Goerli contract (see the [README](../README.md) for testnet deployment details).
+You are always welcome to run the smart contract code and conduct the tests using other tools, or direcly through <https://etherscan.io> on the Sepolia contract (see the [README](../README.md) for testnet deployment details).
 
 ## Scenarios
 
