@@ -606,8 +606,7 @@ contract DelegationManagementContract {
      */
 
     function retrieveTokenStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase, uint256 _tokenId) public view returns (bool) {
-        bytes32 hash;
-        hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
+        bytes32 hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
 
         for (uint256 i = 0; i < globalDelegationHashes[hash].length; ) {
             if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
