@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-//     _   ______________                                       
-//    / | / / ____/_  __/                                       
-//   /  |/ / /_    / /                                          
-//  / /|  / __/   / /                                           
+//     _   ______________
+//    / | / / ____/_  __/
+//   /  |/ / /_    / /
+//  / /|  / __/   / /
 // /_/ |_/_/ ____/_/_    _______________  ______________  _   __
 //    / __ \/ ____/ /   / ____/ ____/   |/_  __/  _/ __ \/ | / /
-//   / / / / __/ / /   / __/ / / __/ /| | / /  / // / / /  |/ / 
-//  / /_/ / /___/ /___/ /___/ /_/ / ___ |/ / _/ // /_/ / /|  /  
-// /_____/_____/_____/_____/\____/_/  |_/_/ /___/\____/_/ |_/   
-                                                             
+//   / / / / __/ / /   / __/ / / __/ /| | / /  / // / / /  |/ /
+//  / /_/ / /___/ /___/ /___/ /_/ / ___ |/ / _/ // /_/ / /|  /
+// /_____/_____/_____/_____/\____/_/  |_/_/ /___/\____/_/ |_/
 
 /**
  *
@@ -71,6 +70,15 @@ contract DelegationManagementContract {
     }
 
     /**
+     * @notice Use this as the incrementer in all for loops, in place of the "i++" pattern
+     */
+    function unchecked_inc(uint i) internal pure returns (uint) {
+        unchecked {
+            return i + 1;
+        }
+    }
+
+    /**
      * @notice Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
      * @notice _collectionAddress --> ALL_COLLECTIONS = Applies to all collections
      * @notice For all Tokens-- > _allTokens needs to be true, _tokenId does not matter
@@ -122,14 +130,10 @@ contract DelegationManagementContract {
             bool subdelegationRightsCol;
             address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
-                for (uint i = 0; i < allDelegators.length; ) {
+                for (uint i = 0; i < allDelegators.length; unchecked_inc(i)) {
                     if (_delegatorAddress == allDelegators[i]) {
                         subdelegationRightsCol = true;
                         break;
-                    }
-
-                    unchecked {
-                        ++i;
                     }
                 }
             }
@@ -137,14 +141,10 @@ contract DelegationManagementContract {
             allDelegators = retrieveDelegators(msg.sender, ALL_COLLECTIONS, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
                 if (subdelegationRightsCol != true) {
-                    for (uint i = 0; i < allDelegators.length; ) {
+                    for (uint i = 0; i < allDelegators.length; unchecked_inc(i)) {
                         if (_delegatorAddress == allDelegators[i]) {
                             subdelegationRightsCol = true;
                             break;
-                        }
-
-                        unchecked {
-                            ++i;
                         }
                     }
                 }
@@ -203,77 +203,53 @@ contract DelegationManagementContract {
         // Revoke delegation Address from the delegatorHashes mapping
         count = 0;
         if (delegatorHashes[delegatorHash].length > 0) {
-            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; unchecked_inc(i)) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     count = count + 1;
-                }
-
-                unchecked {
-                    ++i;
                 }
             }
             uint256[] memory delegationsPerUser = new uint256[](count);
             uint256 count1 = 0;
-            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; unchecked_inc(i)) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     delegationsPerUser[count1] = i;
                     count1 = count1 + 1;
                 }
-
-                unchecked {
-                    ++i;
-                }
             }
 
             if (count1 > 0) {
-                for (uint256 j = 0; j < delegationsPerUser.length; ) {
+                for (uint256 j = 0; j < delegationsPerUser.length; unchecked_inc(j)) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegationsPerUser[delegationsPerUser.length - 1 - j];
                     temp2 = delegatorHashes[delegatorHash].length - 1;
                     delegatorHashes[delegatorHash][temp1] = delegatorHashes[delegatorHash][temp2];
                     delegatorHashes[delegatorHash].pop();
-
-                    unchecked {
-                        ++j;
-                    }
-                }                
+                }
             }
             // Revoke delegator Address from the delegationAddressHashes mapping
             uint256 countDA = 0;
-            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; unchecked_inc(i)) {
                 if (msg.sender == delegationAddressHashes[delegationAddressHash][i]) {
                     countDA = countDA + 1;
-                }
-
-                unchecked {
-                    ++i;
                 }
             }
             uint256[] memory delegatorsPerUser = new uint256[](countDA);
             uint256 countDA1 = 0;
-            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; unchecked_inc(i)) {
                 if (msg.sender == delegationAddressHashes[delegationAddressHash][i]) {
                     delegatorsPerUser[countDA1] = i;
                     countDA1 = countDA1 + 1;
                 }
-
-                unchecked {
-                    ++i;
-                }
             }
             if (countDA1 > 0) {
-                for (uint256 j = 0; j < delegatorsPerUser.length; ) {
+                for (uint256 j = 0; j < delegatorsPerUser.length; unchecked_inc(j)) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegatorsPerUser[delegatorsPerUser.length - 1 - j];
                     temp2 = delegationAddressHashes[delegationAddressHash].length - 1;
                     delegationAddressHashes[delegationAddressHash][temp1] = delegationAddressHashes[delegationAddressHash][temp2];
                     delegationAddressHashes[delegationAddressHash].pop();
-
-                    unchecked {
-                        ++j;
-                    }
                 }
             }
             // Delete global delegation data and emit event
@@ -292,29 +268,21 @@ contract DelegationManagementContract {
             bool subdelegationRightsCol;
             address[] memory allDelegators = retrieveDelegators(msg.sender, _collectionAddress, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
-                for (uint i = 0; i < allDelegators.length; ) {
+                for (uint i = 0; i < allDelegators.length; unchecked_inc(i)) {
                     if (_delegatorAddress == allDelegators[i]) {
                         subdelegationRightsCol = true;
                         break;
                     }
-
-                    unchecked {
-                        ++i;
-                    }
-                }     
+                }
             }
             // Check subdelegation rights for All collections
             allDelegators = retrieveDelegators(msg.sender, ALL_COLLECTIONS, USE_CASE_SUB_DELEGATION);
             if (allDelegators.length > 0) {
                 if (subdelegationRightsCol != true) {
-                    for (uint i = 0; i < allDelegators.length; ) {
+                    for (uint i = 0; i < allDelegators.length; unchecked_inc(i)) {
                         if (_delegatorAddress == allDelegators[i]) {
                             subdelegationRightsCol = true;
                             break;
-                        }
-
-                        unchecked {
-                            ++i;
                         }
                     }
                 }
@@ -329,76 +297,52 @@ contract DelegationManagementContract {
         uint256 count;
         count = 0;
         if (delegatorHashes[delegatorHash].length > 0) {
-            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; unchecked_inc(i)) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     count = count + 1;
-                }
-
-                unchecked {
-                    ++i;
                 }
             }
             uint256[] memory delegationsPerUser = new uint256[](count);
             uint256 count1 = 0;
-            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; ) {
+            for (uint256 i = 0; i < delegatorHashes[delegatorHash].length; unchecked_inc(i)) {
                 if (_delegationAddress == delegatorHashes[delegatorHash][i]) {
                     delegationsPerUser[count1] = i;
                     count1 = count1 + 1;
                 }
-
-                unchecked {
-                    ++i;
-                }
             }
             if (count1 > 0) {
-                for (uint256 j = 0; j < delegationsPerUser.length; ) {
+                for (uint256 j = 0; j < delegationsPerUser.length; unchecked_inc(j)) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegationsPerUser[delegationsPerUser.length - 1 - j];
                     temp2 = delegatorHashes[delegatorHash].length - 1;
                     delegatorHashes[delegatorHash][temp1] = delegatorHashes[delegatorHash][temp2];
                     delegatorHashes[delegatorHash].pop();
-
-                    unchecked {
-                        ++j;
-                    }
                 }
             }
             // Revoke delegator Address from the delegationAddressHashes mapping
             uint256 countDA = 0;
-            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; unchecked_inc(i)) {
                 if (_delegatorAddress == delegationAddressHashes[delegationAddressHash][i]) {
                     countDA = countDA + 1;
-                }
-
-                unchecked {
-                    ++i;
                 }
             }
             uint256[] memory delegatorsPerUser = new uint256[](countDA);
             uint256 countDA1 = 0;
-            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; ) {
+            for (uint256 i = 0; i < delegationAddressHashes[delegationAddressHash].length; unchecked_inc(i)) {
                 if (_delegatorAddress == delegationAddressHashes[delegationAddressHash][i]) {
                     delegatorsPerUser[countDA1] = i;
                     countDA1 = countDA1 + 1;
                 }
-
-                unchecked {
-                    ++i;
-                }
             }
             if (countDA1 > 0) {
-                for (uint256 j = 0; j < delegatorsPerUser.length; ) {
+                for (uint256 j = 0; j < delegatorsPerUser.length; unchecked_inc(j)) {
                     uint256 temp1;
                     uint256 temp2;
                     temp1 = delegatorsPerUser[delegatorsPerUser.length - 1 - j];
                     temp2 = delegationAddressHashes[delegationAddressHash].length - 1;
                     delegationAddressHashes[delegationAddressHash][temp1] = delegationAddressHashes[delegationAddressHash][temp2];
                     delegationAddressHashes[delegationAddressHash].pop();
-
-                    unchecked {
-                        ++j;
-                    }
                 }
             }
             // Delete global delegation data and emit event
@@ -413,12 +357,8 @@ contract DelegationManagementContract {
 
     function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint8[] memory _useCases) public {
         require(_collectionAddresses.length < 6);
-        for (uint256 i = 0; i < _collectionAddresses.length; ) {
+        for (uint256 i = 0; i < _collectionAddresses.length; unchecked_inc(i)) {
             revokeDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _useCases[i]);
-
-            unchecked {
-                ++i;
-            }
         }
     }
 
@@ -438,12 +378,8 @@ contract DelegationManagementContract {
 
     function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint8[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenIds) public {
         require(_collectionAddresses.length < 6);
-        for (uint256 i = 0; i < _collectionAddresses.length; ) {
+        for (uint256 i = 0; i < _collectionAddresses.length; unchecked_inc(i)) {
             registerDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _expiryDates[i], _useCases[i], _allTokens[i], _tokenIds[i]);
-
-            unchecked {
-                ++i;
-            }
         }
     }
 
@@ -560,16 +496,12 @@ contract DelegationManagementContract {
         uint256[] memory activeUseCases = new uint256[](useCaseRegistered[_delegatorAddress].length);
         uint256 count = 0;
         bytes32 hash;
-        for (uint256 i = 0; i < collectionsRegistered[_delegatorAddress].length; ) {
+        for (uint256 i = 0; i < collectionsRegistered[_delegatorAddress].length; unchecked_inc(i)) {
             hash = keccak256(abi.encodePacked(_delegatorAddress, collectionsRegistered[_delegatorAddress][i], uint8(useCaseRegistered[_delegatorAddress][i])));
             if (delegatorHashes[hash].length > 0) {
                 activeCollections[count] = collectionsRegistered[_delegatorAddress][i];
                 activeUseCases[count] = useCaseRegistered[_delegatorAddress][i];
                 count = count + 1;
-            }
-
-            unchecked {
-                ++i;
             }
         }
         return (activeCollections, activeUseCases);
@@ -616,16 +548,12 @@ contract DelegationManagementContract {
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         bool status;
         if (globalDelegationHashes[hash].length > 0) {
-            for (uint256 i = 0; i < globalDelegationHashes[hash].length; ) {
+            for (uint256 i = 0; i < globalDelegationHashes[hash].length; unchecked_inc(i)) {
                 if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
                     status = true;
                     break;
                 } else {
                     status = false;
-                }
-
-                unchecked {
-                    ++i;
                 }
             }
             return status;
