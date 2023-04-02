@@ -608,24 +608,17 @@ contract DelegationManagementContract {
     function retrieveTokenStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase, uint256 _tokenId) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
-        bool status;
-        if (globalDelegationHashes[hash].length > 0) {
-            for (uint256 i = 0; i < globalDelegationHashes[hash].length; ) {
-                if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
-                    status = true;
-                    break;
-                } else {
-                    status = false;
-                }
 
-                unchecked {
-                    ++i;
-                }
+        for (uint256 i = 0; i < globalDelegationHashes[hash].length; ) {
+            if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
+                return true;
             }
-            return status;
-        } else {
-            return false;
+            
+            unchecked {
+                ++i;
+            }
         }
+        return false;
     }
 
     /**
@@ -641,51 +634,38 @@ contract DelegationManagementContract {
      */
 
     function retrieveSubDelegationStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress) public view returns (bool) {
-        bool subdelegationRights;
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, USE_CASE_SUB_DELEGATION);
-        if (allDelegators.length > 0) {
-            for (uint i = 0; i < allDelegators.length; ) {
-                if (_delegatorAddress == allDelegators[i]) {
-                    subdelegationRights = true;
-                    break;
-                }
 
-                unchecked {
-                    ++i;
-                }
+        for (uint256 i = 0; i < allDelegators.length; i++) {
+            if (_delegatorAddress == allDelegators[i]) {
+                return true;
+            }
+
+            unchecked {
+                ++i;
             }
         }
-        if (subdelegationRights == true) {
-            return (true);
-        } else {
-            return (false);
-        }
-    }
 
+        return false;
+    }
     /**
      * @notice Checks the status of an active delegator for a delegation Address
      */
 
     function retrieveStatusOfActiveDelegator(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _date, uint8 _useCase) public view returns (bool) {
         address[] memory allActiveDelegators = retrieveActiveDelegators(_delegationAddress, _collectionAddress, _date, _useCase);
-        bool status;
-        if (allActiveDelegators.length > 0) {
-            for (uint256 i = 0; i < allActiveDelegators.length; ) {
-                if (_delegatorAddress == allActiveDelegators[i]) {
-                    status = true;
-                    break;
-                } else {
-                    status = false;
-                }
 
-                unchecked {
-                    ++i;
-                }
+        for (uint256 i = 0; i < allActiveDelegators.length; ) {
+            if (_delegatorAddress == allActiveDelegators[i]) {
+                return true;
             }
-            return status;
-        } else {
-            return false;
+
+            unchecked {
+                ++i;
+            }
         }
+
+        return false;
     }
 
     // Retrieve Delegations delegated by a Delegator
