@@ -100,14 +100,11 @@ contract DelegationManagementContract {
         // Store Delegation history
         collectionsRegistered[msg.sender].push(_collectionAddress);
         useCaseRegistered[msg.sender].push(_useCase);
-        // Push additional data to the globalDelegationHashes mapping
-        if (_allTokens == true) {
-            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
-            globalDelegationHashes[globalHash].push(newdelegationGlobalData);
-        } else {
-            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
-            globalDelegationHashes[globalHash].push(newdelegationGlobalData);
-        }
+        // Push additional data to the globalDelegationHashes mapping, ensuring 0 as _tokenId, if _allTokens is true
+        _tokenId = _allTokens ? 0 : _tokenId;
+        GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, _allTokens, _tokenId);
+        globalDelegationHashes[globalHash].push(newdelegationGlobalData);
+
         emit RegisterDelegation(msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
     }
 
@@ -176,14 +173,11 @@ contract DelegationManagementContract {
         // Store Delegation history
         collectionsRegistered[_delegatorAddress].push(_collectionAddress);
         useCaseRegistered[_delegatorAddress].push(_useCase);
-        // Push additional data to the globalDelegationHashes mapping
-        if (_allTokens == true) {
-            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
-            globalDelegationHashes[globalHash].push(newdelegationGlobalData);
-        } else {
-            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
-            globalDelegationHashes[globalHash].push(newdelegationGlobalData);
-        }
+        // Push additional data to the globalDelegationHashes mapping, ensuring 0 as _tokenId, if _allTokens is true
+        _tokenId = _allTokens ? 0 : _tokenId;
+        GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, _allTokens, _tokenId);
+        globalDelegationHashes[globalHash].push(newdelegationGlobalData);
+        
         emit RegisterDelegationUsingSubDelegation(_delegatorAddress, msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
     }
 
