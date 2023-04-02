@@ -1,15 +1,14 @@
 // SPDX-License-Identifier: MIT
 
-//     _   ______________                                       
-//    / | / / ____/_  __/                                       
-//   /  |/ / /_    / /                                          
-//  / /|  / __/   / /                                           
+//     _   ______________
+//    / | / / ____/_  __/
+//   /  |/ / /_    / /
+//  / /|  / __/   / /
 // /_/ |_/_/ ____/_/_    _______________  ______________  _   __
 //    / __ \/ ____/ /   / ____/ ____/   |/_  __/  _/ __ \/ | / /
-//   / / / / __/ / /   / __/ / / __/ /| | / /  / // / / /  |/ / 
-//  / /_/ / /___/ /___/ /___/ /_/ / ___ |/ / _/ // /_/ / /|  /  
-// /_____/_____/_____/_____/\____/_/  |_/_/ /___/\____/_/ |_/   
-                                                             
+//   / / / / __/ / /   / __/ / / __/ /| | / /  / // / / /  |/ /
+//  / /_/ / /___/ /___/ /___/ /_/ / ___ |/ / _/ // /_/ / /|  /
+// /_____/_____/_____/_____/\____/_/  |_/_/ /___/\____/_/ |_/
 
 /**
  *
@@ -177,7 +176,7 @@ contract DelegationManagementContract {
         _tokenId = _allTokens ? 0 : _tokenId;
         GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, _allTokens, _tokenId);
         globalDelegationHashes[globalHash].push(newdelegationGlobalData);
-        
+
         emit RegisterDelegationUsingSubDelegation(_delegatorAddress, msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
     }
 
@@ -231,7 +230,7 @@ contract DelegationManagementContract {
                     unchecked {
                         ++j;
                     }
-                }                
+                }
             }
             // Revoke delegator Address from the delegationAddressHashes mapping
             uint256 countDA = 0;
@@ -295,7 +294,7 @@ contract DelegationManagementContract {
                     unchecked {
                         ++i;
                     }
-                }     
+                }
             }
             // Check subdelegation rights for All collections
             allDelegators = retrieveDelegators(msg.sender, ALL_COLLECTIONS, USE_CASE_SUB_DELEGATION);
@@ -612,7 +611,7 @@ contract DelegationManagementContract {
             if ((globalDelegationHashes[hash][i].allTokens == false) && (globalDelegationHashes[hash][i].tokens == _tokenId)) {
                 return true;
             }
-            
+
             unchecked {
                 ++i;
             }
@@ -647,6 +646,7 @@ contract DelegationManagementContract {
 
         return false;
     }
+
     /**
      * @notice Checks the status of an active delegator for a delegation Address
      */
