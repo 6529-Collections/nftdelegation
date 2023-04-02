@@ -1187,32 +1187,10 @@ contract DelegationManagementContract {
      */
 
     function checkConsolidationStatus(address _wallet1, address _wallet2, address _collectionAddress) public view returns (bool) {
-        address[] memory allDelegationsWallet1 = retrieveDelegationAddresses(_wallet1, _collectionAddress, USE_CASE_CONSOLIDATION);
-        address[] memory allDelegationsWallet2 = retrieveDelegationAddresses(_wallet2, _collectionAddress, USE_CASE_CONSOLIDATION);
-        bool wallet1Consolidation;
-        if (allDelegationsWallet1.length > 0 && allDelegationsWallet2.length > 0) {
-            for (uint256 i = 0; i < allDelegationsWallet1.length; ) {
-                if (allDelegationsWallet1[i] == _wallet2) {
-                    wallet1Consolidation = true;
-                    break;
-                }
+        bool wallet1HasWallet2Consolidation = retrieveGlobalStatusOfDelegation(_wallet1, _collectionAddress, _wallet2, USE_CASE_CONSOLIDATION);
+        bool wallet2HasWallet1Consolidation = retrieveGlobalStatusOfDelegation(_wallet2, _collectionAddress, _wallet1, USE_CASE_CONSOLIDATION);
 
-                unchecked {
-                    ++i;
-                }
-            }
-            if (wallet1Consolidation) {
-                for (uint256 i = 0; i < allDelegationsWallet2.length; ) {
-                    if (allDelegationsWallet2[i] == _wallet1) {
-                        return true;
-                    }
-
-                    unchecked {
-                        ++i;
-                    }
-                }
-            }
-        }
-        return false;
+        // Consolidation is true when both wallets delegate consolidation to each other:
+        return wallet1HasWallet2Consolidation && wallet2HasWallet1Consolidation;
     }
 }
