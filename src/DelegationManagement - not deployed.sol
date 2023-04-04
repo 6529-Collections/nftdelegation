@@ -14,7 +14,7 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 04-Apr-2023 
+ *  @date: 04-Apr-2023 - 13:04
  *  @version: 5.20.12 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030) team
@@ -83,12 +83,15 @@ contract DelegationManagementContract {
         bytes32 globalHash;
         bytes32 collectionLockHash;
         bytes32 collectionUsecaseLockHash;
+        bytes32 collectionUsecaseLockHashAll;
         // Locks
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
+        collectionUsecaseLockHashAll = keccak256(abi.encodePacked(ALL_COLLECTIONS, _delegationAddress, _useCase));
         require(globalLock[_delegationAddress] == false);
         require(collectionLock[collectionLockHash] == false);
         require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
+        require(collectionUsecaseLock[collectionUsecaseLockHashAll] == false);
         // Push data to mappings
         globalHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _delegationAddress, _useCase));
         delegatorHash = keccak256(abi.encodePacked(msg.sender, _collectionAddress, _useCase));
@@ -159,12 +162,15 @@ contract DelegationManagementContract {
         bytes32 globalHash;
         bytes32 collectionLockHash;
         bytes32 collectionUsecaseLockHash;
+        bytes32 collectionUsecaseLockHashAll;
         // Locks
         collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
+        collectionUsecaseLockHashAll = keccak256(abi.encodePacked(ALL_COLLECTIONS, _delegationAddress, _useCase));
         require(globalLock[_delegationAddress] == false);
         require(collectionLock[collectionLockHash] == false);
         require(collectionUsecaseLock[collectionUsecaseLockHash] == false);
+        require(collectionUsecaseLock[collectionUsecaseLockHashAll] == false);
         // Push data to mappings
         globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         delegatorHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
@@ -460,8 +466,12 @@ contract DelegationManagementContract {
      */
 
     function setCollectionLock(address _collectionAddress, bool _status) public {
-        bytes32 collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender));
-        collectionLock[collectionLockHash] = _status;
+        if (_collectionAddress == ALL_COLLECTIONS) {
+            setGlobalLock(_status);
+        } else {
+            bytes32 collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender));
+            collectionLock[collectionLockHash] = _status;
+        }
     }
 
     /**
@@ -472,8 +482,8 @@ contract DelegationManagementContract {
         if (_useCase==1) {
             setCollectionLock(_collectionAddress, _status);
         } else {
-        bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender, _useCase));
-        collectionUsecaseLock[collectionUsecaseLockHash] = _status;
+            bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender, _useCase));
+            collectionUsecaseLock[collectionUsecaseLockHash] = _status;
         }
     }
 
@@ -492,9 +502,13 @@ contract DelegationManagementContract {
      */
 
     function retrieveCollectionLockStatus(address _collectionAddress, address _delegationAddress) public view returns (bool) {
-        bytes32 collectionLockHash;
-        collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
-        return collectionLock[collectionLockHash];
+        if (_collectionAddress == ALL_COLLECTIONS) {
+            return retrieveGlobalLockStatus(_delegationAddress);
+        } else {
+            bytes32 collectionLockHash;
+            collectionLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress));
+            return collectionLock[collectionLockHash];
+        }
     }
 
     /**
@@ -505,9 +519,21 @@ contract DelegationManagementContract {
         if (_useCase == 1) {
             return retrieveCollectionLockStatus(_collectionAddress, _delegationAddress);
         } else {
-        bytes32 collectionUsecaseLockHash;
-        collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
-        return collectionUsecaseLock[collectionUsecaseLockHash];
+            bytes32 collectionUsecaseLockHash;
+            collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
+            return collectionUsecaseLock[collectionUsecaseLockHash];
+        }
+    }
+
+    /**
+     * @notice Retrieve Collection Use Case Lock Status for both specific colleciton and ALL_COLLECTIONS
+     */
+
+    function retrieveCollectionUseCaseLockStatusOneCall(address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+        if (_useCase == 1) {
+            return retrieveCollectionLockStatus(_collectionAddress, _delegationAddress);
+        } else {
+            return retrieveCollectionUseCaseLockStatus(_collectionAddress, _delegationAddress, _useCase) || retrieveCollectionUseCaseLockStatus(ALL_COLLECTIONS, _delegationAddress, _useCase);
         }
     }
 
