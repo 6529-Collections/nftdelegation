@@ -2,12 +2,15 @@
 
 ## Deployment
 
+Network  | Deployer | Contract Address | Version
+------------- | ------------- | ------------- | -------------
+Sepolia Testnet  | 0xAcf42B85eCb77d9332584119FD78a3DE9953c2a0 | [0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7](https://sepolia.etherscan.io/address/0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7) | 5.20.12
+
+### Previous Deployments
+
 Network  | Contract Address | Version
 ------------- | ------------- | -------------
 Sepolia Testnet  | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
-
-- Deployer Address: 0xAcf42B85eCb77d9332584119FD78a3DE9953c2a0
-- Contract created on Sepolia during TxHash# [0x83975f3acca9c5047496d398e867c8d82b63fceef1a4543748a21366599f40a3](https://sepolia.etherscan.io/tx/0x83975f3acca9c5047496d398e867c8d82b63fceef1a4543748a21366599f40a3)
 
 ## What is it?
 
