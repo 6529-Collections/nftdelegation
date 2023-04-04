@@ -14,7 +14,7 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 03-Apr-2023 @ 23:16
+ *  @date: 04-Apr-2023 
  *  @version: 5.20.12 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030) team
@@ -469,8 +469,12 @@ contract DelegationManagementContract {
      */
 
     function setCollectionUsecaseLock(address _collectionAddress, uint8 _useCase, bool _status) public {
+        if (_useCase==1) {
+            setCollectionLock(_collectionAddress, _status);
+        } else {
         bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender, _useCase));
         collectionUsecaseLock[collectionUsecaseLockHash] = _status;
+        }
     }
 
     // A full list of Available Getter functions
