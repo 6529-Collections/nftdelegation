@@ -14,8 +14,8 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 04-Apr-2023 - 13:04
- *  @version: 5.20.12 - not deployed
+ *  @date: 04-Apr-2023 - 14:55
+ *  @version: 5.20.12 - deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030) team
  *  @contributors: https://github.com/6529-Collections/nftdelegation/graphs/contributors
