@@ -502,9 +502,13 @@ contract DelegationManagementContract {
      */
 
     function retrieveCollectionUseCaseLockStatus(address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+        if (_useCase == 1) {
+            return retrieveCollectionLockStatus(_collectionAddress, _delegationAddress);
+        } else {
         bytes32 collectionUsecaseLockHash;
         collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, _delegationAddress, _useCase));
         return collectionUsecaseLock[collectionUsecaseLockHash];
+        }
     }
 
     /**
