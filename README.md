@@ -1,6 +1,6 @@
 # Delegation Management
 
-## Deployment
+## Latest Deployment
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
