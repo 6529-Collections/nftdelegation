@@ -8,9 +8,9 @@ Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0xf94423086613c6c1f1d3098D8cAD99427
 
 #### Previous Deployment
 
-Network  | Contract Address | Version
-------------- | ------------- | -------------
-Sepolia Testnet  | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
+Network  | Deployer | Contract Address | Version
+------------- | ------------- | ------------- | -------------
+Sepolia Testnet  |  0xAcf42B8...DE9953c2a0 | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
 
 ## What is it?
 
