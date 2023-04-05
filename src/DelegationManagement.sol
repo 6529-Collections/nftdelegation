@@ -27,8 +27,9 @@ pragma solidity ^0.8.18;
 contract DelegationManagementContract {
     // Constant declarations
     address constant ALL_COLLECTIONS = 0x8888888888888888888888888888888888888888;
-    uint8 constant USE_CASE_SUB_DELEGATION = 16;
+    uint8 constant USE_CASE_SUB_DELEGATION = 98;
     uint8 constant USE_CASE_CONSOLIDATION = 99;
+    uint8 constant USE_CASE_ALL_COUNTER = 16;
 
     // Variable declarations
     uint256 useCaseCounter;
@@ -65,11 +66,6 @@ contract DelegationManagementContract {
     mapping(bytes32 => bool) public collectionLock;
     mapping(bytes32 => bool) public collectionUsecaseLock;
 
-    // Constructor
-    constructor() {
-        useCaseCounter = 17;
-    }
-
     /**
      * @notice Delegator assigns a delegation address for a specific use case on a specific NFT collection for a certain duration
      * @notice _collectionAddress --> ALL_COLLECTIONS = Applies to all collections
@@ -77,7 +73,7 @@ contract DelegationManagementContract {
      */
 
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION));
+        require((_useCase > 0 && _useCase < USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -156,7 +152,7 @@ contract DelegationManagementContract {
             require((subdelegationRightsCol == true));
         }
         // If check passed then register delegation address for Delegator
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION));
+        require((_useCase > 0 && _useCase < USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
