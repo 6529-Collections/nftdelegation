@@ -29,7 +29,7 @@ contract DelegationManagementContract {
     address constant ALL_COLLECTIONS = 0x8888888888888888888888888888888888888888;
     uint8 constant USE_CASE_SUB_DELEGATION = 98;
     uint8 constant USE_CASE_CONSOLIDATION = 99;
-    uint8 constant USE_CASE_ALL_COUNTER = 16;
+    uint8 constant USE_CASE_ALL_COUNTER = 15;
 
     // Variable declarations
     uint256 useCaseCounter;
@@ -73,7 +73,7 @@ contract DelegationManagementContract {
      */
 
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
-        require((_useCase > 0 && _useCase < USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
+        require((_useCase > 0 && _useCase <= USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -152,7 +152,7 @@ contract DelegationManagementContract {
             require((subdelegationRightsCol == true));
         }
         // If check passed then register delegation address for Delegator
-        require((_useCase > 0 && _useCase < USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
+        require((_useCase > 0 && _useCase <= USE_CASE_ALL_COUNTER) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
