@@ -31,7 +31,7 @@ contract DelegationManagementContract {
     uint8 constant USE_CASE_CONSOLIDATION = 99;
 
     // Variable declarations
-    uint256 useCaseCounter;
+    uint256 public useCaseCounter;
 
     // Mapping declarations
     mapping(bytes32 => address[]) public delegatorHashes;
@@ -492,8 +492,10 @@ contract DelegationManagementContract {
      */
 
     function updateUseCaseCounter() public {
-        require(useCaseCounter<=60);
         useCaseCounter = useCaseCounter + 1;
+        if (useCaseCounter == 98) {
+            useCaseCounter = 100;
+        }
     }
 
     // A full list of Available Getter functions
