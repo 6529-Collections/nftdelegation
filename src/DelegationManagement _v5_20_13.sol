@@ -14,8 +14,8 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 04-Apr-2023 - 14:55
- *  @version: 5.20.12 - deployed
+ *  @date: 11-Apr-2023 - 10:39
+ *  @version: 5.20.13 - not deployed
  *  @notes: This is an experimental contract for delegation registry
  *  @author: skynet2030 (skyn3t2030) team
  *  @contributors: https://github.com/6529-Collections/nftdelegation/graphs/contributors
@@ -27,7 +27,7 @@ pragma solidity ^0.8.18;
 contract DelegationManagementContract {
     // Constant declarations
     address constant ALL_COLLECTIONS = 0x8888888888888888888888888888888888888888;
-    uint8 constant USE_CASE_SUB_DELEGATION = 16;
+    uint8 constant USE_CASE_SUB_DELEGATION = 98;
     uint8 constant USE_CASE_CONSOLIDATION = 99;
 
     // Variable declarations
@@ -67,7 +67,7 @@ contract DelegationManagementContract {
 
     // Constructor
     constructor() {
-        useCaseCounter = 17;
+        useCaseCounter = 20;
     }
 
     /**
@@ -77,7 +77,7 @@ contract DelegationManagementContract {
      */
 
     function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION));
+        require((_useCase > 0 && _useCase <= useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -156,7 +156,7 @@ contract DelegationManagementContract {
             require((subdelegationRightsCol == true));
         }
         // If check passed then register delegation address for Delegator
-        require((_useCase > 0 && _useCase < useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION));
+        require((_useCase > 0 && _useCase <= useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -485,6 +485,15 @@ contract DelegationManagementContract {
             bytes32 collectionUsecaseLockHash = keccak256(abi.encodePacked(_collectionAddress, msg.sender, _useCase));
             collectionUsecaseLock[collectionUsecaseLockHash] = _status;
         }
+    }
+
+    /**
+     * @notice This function updates the number of Use Cases in case more usecases are needed
+     */
+
+    function updateUseCaseCounter() public {
+        require(useCaseCounter<=60);
+        useCaseCounter = useCaseCounter + 1;
     }
 
     // A full list of Available Getter functions
@@ -1237,4 +1246,5 @@ contract DelegationManagementContract {
         return false;
         }
     }
+
 }
