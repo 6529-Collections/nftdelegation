@@ -14,10 +14,10 @@
 /**
  *
  *  @title: Delegation Management Contract
- *  @date: 11-Apr-2023 - 11:18
+ *  @date: 13-Apr-2023 - 15:48
  *  @version: 5.20.13 - not deployed
  *  @notes: This is an experimental contract for delegation registry
- *  @author: skynet2030 (skyn3t2030) team
+ *  @author: 6529 team
  *  @contributors: https://github.com/6529-Collections/nftdelegation/graphs/contributors
  *
  */
@@ -27,8 +27,8 @@ pragma solidity ^0.8.18;
 contract DelegationManagementContract {
     // Constant declarations
     address constant ALL_COLLECTIONS = 0x8888888888888888888888888888888888888888;
-    uint8 constant USE_CASE_SUB_DELEGATION = 98;
-    uint8 constant USE_CASE_CONSOLIDATION = 99;
+    uint256 constant USE_CASE_SUB_DELEGATION = 998;
+    uint256 constant USE_CASE_CONSOLIDATION = 999;
 
     // Variable declarations
     uint256 public useCaseCounter;
@@ -50,11 +50,11 @@ contract DelegationManagementContract {
     mapping(bytes32 => GlobalData[]) public globalDelegationHashes;
 
     // Events declaration
-    event RegisterDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase, bool allTokens, uint256 _tokenId);
-    event RegisterDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase, bool allTokens, uint256 _tokenId);
-    event RevokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase);
-    event RevokeDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint8 useCase);
-    event UpdateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint8 useCase, bool allTokens, uint256 _tokenId);
+    event RegisterDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase, bool allTokens, uint256 _tokenId);
+    event RegisterDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase, bool allTokens, uint256 _tokenId);
+    event RevokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
+    event RevokeDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
+    event UpdateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint256 useCase, bool allTokens, uint256 _tokenId);
 
     // Registry for all collections & usecases for a Delegator
     mapping(address => address[]) public collectionsRegistered;
@@ -67,7 +67,7 @@ contract DelegationManagementContract {
 
     // Constructor
     constructor() {
-        useCaseCounter = 20;
+        useCaseCounter = 999;
     }
 
     /**
@@ -76,8 +76,8 @@ contract DelegationManagementContract {
      * @notice For all Tokens-- > _allTokens needs to be true, _tokenId does not matter
      */
 
-    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
-        require((_useCase > 0 && _useCase <= useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
+    function registerDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase, bool _allTokens, uint256 _tokenId) public {
+        require((_useCase > 0 && _useCase <= useCaseCounter));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -119,7 +119,7 @@ contract DelegationManagementContract {
      * @notice A delegation Address that has subDelegation rights given by a Delegator can register Delegations on behalf of Delegator
      */
 
-    function registerDelegationAddressUsingSubDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
+    function registerDelegationAddressUsingSubDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _expiryDate, uint256 _useCase, bool _allTokens, uint256 _tokenId) public {
         // Check subdelegation rights for the specific collection
         {
             bool subdelegationRightsCol;
@@ -156,7 +156,7 @@ contract DelegationManagementContract {
             require((subdelegationRightsCol == true));
         }
         // If check passed then register delegation address for Delegator
-        require((_useCase > 0 && _useCase <= useCaseCounter) || (_useCase == USE_CASE_CONSOLIDATION) || (_useCase == USE_CASE_SUB_DELEGATION));
+        require((_useCase > 0 && _useCase <= useCaseCounter));
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -198,7 +198,7 @@ contract DelegationManagementContract {
      * @notice This function does not remove the delegation from the collectionsRegistered or useCaseRegistered as we want to track delegations history
      */
 
-    function revokeDelegationAddress(address _collectionAddress, address _delegationAddress, uint8 _useCase) public {
+    function revokeDelegationAddress(address _collectionAddress, address _delegationAddress, uint256 _useCase) public {
         bytes32 delegatorHash;
         bytes32 delegationAddressHash;
         bytes32 globalHash;
@@ -292,7 +292,7 @@ contract DelegationManagementContract {
      * @notice This function supports the revoking of a Delegation Address using an address with Subdelegation rights
      */
 
-    function revokeDelegationAddressUsingSubdelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public {
+    function revokeDelegationAddressUsingSubdelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _useCase) public {
         // Check subdelegation rights for the specific collection
         {
             bool subdelegationRightsCol;
@@ -432,7 +432,7 @@ contract DelegationManagementContract {
      * @notice Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
      */
 
-    function updateDelegationAddress(address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint8 _useCase, bool _allTokens, uint256 _tokenId) public {
+    function updateDelegationAddress(address _collectionAddress, address _olddelegationAddress, address _newdelegationAddress, uint256 _expiryDate, uint256 _useCase, bool _allTokens, uint256 _tokenId) public {
         revokeDelegationAddress(_collectionAddress, _olddelegationAddress, _useCase);
         registerDelegationAddress(_collectionAddress, _newdelegationAddress, _expiryDate, _useCase, _allTokens, _tokenId);
         emit UpdateDelegation(msg.sender, _collectionAddress, _olddelegationAddress, _newdelegationAddress, _useCase, _allTokens, _tokenId);
@@ -478,7 +478,7 @@ contract DelegationManagementContract {
      * @notice Set collection usecase Lock status (hot wallet)
      */
 
-    function setCollectionUsecaseLock(address _collectionAddress, uint8 _useCase, bool _status) public {
+    function setCollectionUsecaseLock(address _collectionAddress, uint256 _useCase, bool _status) public {
         if (_useCase==1) {
             setCollectionLock(_collectionAddress, _status);
         } else {
@@ -493,9 +493,6 @@ contract DelegationManagementContract {
 
     function updateUseCaseCounter() public {
         useCaseCounter = useCaseCounter + 1;
-        if (useCaseCounter == 98) {
-            useCaseCounter = 100;
-        }
     }
 
     // A full list of Available Getter functions
@@ -526,7 +523,7 @@ contract DelegationManagementContract {
      * @notice Retrieve Collection Use Case Lock Status
      */
 
-    function retrieveCollectionUseCaseLockStatus(address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveCollectionUseCaseLockStatus(address _collectionAddress, address _delegationAddress, uint256 _useCase) public view returns (bool) {
         if (_useCase == 1) {
             return retrieveCollectionLockStatus(_collectionAddress, _delegationAddress);
         } else {
@@ -540,7 +537,7 @@ contract DelegationManagementContract {
      * @notice Retrieve Collection Use Case Lock Status for both specific colleciton and ALL_COLLECTIONS
      */
 
-    function retrieveCollectionUseCaseLockStatusOneCall(address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveCollectionUseCaseLockStatusOneCall(address _collectionAddress, address _delegationAddress, uint256 _useCase) public view returns (bool) {
         if (_useCase == 1) {
             return retrieveCollectionLockStatus(_collectionAddress, _delegationAddress);
         } else {
@@ -552,7 +549,7 @@ contract DelegationManagementContract {
      * @notice Support function to retrieve the hash given specific parameters
      */
 
-    function retrieveLocalHash(address _walletAddress, address _collectionAddress, uint8 _useCase) public pure returns (bytes32) {
+    function retrieveLocalHash(address _walletAddress, address _collectionAddress, uint256 _useCase) public pure returns (bytes32) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_walletAddress, _collectionAddress, _useCase));
         return (hash);
@@ -562,7 +559,7 @@ contract DelegationManagementContract {
      * @notice Support function to retrieve the global hash given specific parameters
      */
 
-    function retrieveGlobalHash(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public pure returns (bytes32) {
+    function retrieveGlobalHash(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _useCase) public pure returns (bytes32) {
         bytes32 globalHash;
         globalHash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         return (globalHash);
@@ -572,7 +569,7 @@ contract DelegationManagementContract {
      * @notice Returns an array of all delegation addresses (active AND inactive) assigned by a delegator for a specific use case on a specific NFT collection
      */
 
-    function retrieveDelegationAddresses(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (address[] memory) {
+    function retrieveDelegationAddresses(address _delegatorAddress, address _collectionAddress, uint256 _useCase) public view returns (address[] memory) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
         return (delegatorHashes[hash]);
@@ -582,7 +579,7 @@ contract DelegationManagementContract {
      * @notice Returns an array of all delegators (active AND inactive) that delegated to a delegationAddress for a specific use case on a specific NFT collection
      */
 
-    function retrieveDelegators(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (address[] memory) {
+    function retrieveDelegators(address _delegationAddress, address _collectionAddress, uint256 _useCase) public view returns (address[] memory) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         return (delegationAddressHashes[hash]);
@@ -625,7 +622,7 @@ contract DelegationManagementContract {
      * @notice false means that the cold wallet did not register a delegation or the delegation was revoked from the delegatorHashes mapping
      */
 
-    function retrieveDelegatorStatusOfDelegation(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveDelegatorStatusOfDelegation(address _delegatorAddress, address _collectionAddress, uint256 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _useCase));
         return delegatorHashes[hash].length > 0;
@@ -636,7 +633,7 @@ contract DelegationManagementContract {
      * @notice false means that a delegation address is not registered or it was revoked from the delegationAddressHashes mapping
      */
 
-    function retrieveDelegationAddressStatusOfDelegation(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveDelegationAddressStatusOfDelegation(address _delegationAddress, address _collectionAddress, uint256 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         return delegationAddressHashes[hash].length > 0;
@@ -646,7 +643,7 @@ contract DelegationManagementContract {
      * @notice Returns the status of a delegation given the delegator address as well as the delegation address
      */
 
-    function retrieveGlobalStatusOfDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveGlobalStatusOfDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _useCase) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         return globalDelegationHashes[hash].length > 0;
@@ -656,7 +653,7 @@ contract DelegationManagementContract {
      * @notice Returns the status of a delegation given the delegator address, the collection address, the delegation address as well as a specific token id
      */
 
-    function retrieveTokenStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase, uint256 _tokenId) public view returns (bool) {
+    function retrieveTokenStatus(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _useCase, uint256 _tokenId) public view returns (bool) {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegatorAddress, _collectionAddress, _delegationAddress, _useCase));
         bool status;
@@ -683,7 +680,7 @@ contract DelegationManagementContract {
      * @notice Checks if the delegation address performing actions is the most recent delegated by the specific delegator
      */
 
-    function retrieveStatusOfMostRecentDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint8 _useCase) public view returns (bool) {
+    function retrieveStatusOfMostRecentDelegation(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _useCase) public view returns (bool) {
         return _delegationAddress == retrieveMostRecentDelegation(_delegatorAddress, _collectionAddress, _useCase);
     }
 
@@ -717,7 +714,7 @@ contract DelegationManagementContract {
      * @notice Checks the status of an active delegator for a delegation Address
      */
 
-    function retrieveStatusOfActiveDelegator(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _date, uint8 _useCase) public view returns (bool) {
+    function retrieveStatusOfActiveDelegator(address _delegatorAddress, address _collectionAddress, address _delegationAddress, uint256 _date, uint256 _useCase) public view returns (bool) {
         address[] memory allActiveDelegators = retrieveActiveDelegators(_delegationAddress, _collectionAddress, _date, _useCase);
         bool status;
         if (allActiveDelegators.length > 0) {
@@ -742,7 +739,7 @@ contract DelegationManagementContract {
     // Retrieve Delegations delegated by a Delegator
     // This set of functions is used to retrieve info for a Delegator (cold address)
 
-    function retrieveDelegationAddressesTokensIDsandExpiredDates(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
+    function retrieveDelegationAddressesTokensIDsandExpiredDates(address _delegatorAddress, address _collectionAddress, uint256 _useCase) public view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
         address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegations.length);
@@ -820,7 +817,7 @@ contract DelegationManagementContract {
      * @notice Returns an array of all active delegation addresses on a certain date for a specific use case on a specific NFT collection given a delegation Address
      */
 
-    function retrieveActiveDelegations(address _delegatorAddress, address _collectionAddress, uint256 _date, uint8 _useCase) public view returns (address[] memory) {
+    function retrieveActiveDelegations(address _delegatorAddress, address _collectionAddress, uint256 _date, uint256 _useCase) public view returns (address[] memory) {
         address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegations.length);
@@ -903,7 +900,7 @@ contract DelegationManagementContract {
      * @notice Returns the most recent delegation address delegated for a specific use case on a specific NFT collection
      */
 
-    function retrieveMostRecentDelegation(address _delegatorAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
+    function retrieveMostRecentDelegation(address _delegatorAddress, address _collectionAddress, uint256 _useCase) public view returns (address) {
         address[] memory allDelegations = retrieveDelegationAddresses(_delegatorAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegations.length);
@@ -988,7 +985,7 @@ contract DelegationManagementContract {
      * @notice Returns an array of all token ids delegated by a Delegator for a specific usecase on specific collection given a delegation Address
      */
 
-    function retrieveDelegatorsTokensIDsandExpiredDates(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
+    function retrieveDelegatorsTokensIDsandExpiredDates(address _delegationAddress, address _collectionAddress, uint256 _useCase) public view returns (address[] memory, uint256[] memory, bool[] memory, uint256[] memory) {
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegators.length);
@@ -1066,7 +1063,7 @@ contract DelegationManagementContract {
      * @notice Returns an array of all active delegators on a certain date for a specific use case on a specific NFT collection given a delegation Address
      */
 
-    function retrieveActiveDelegators(address _delegationAddress, address _collectionAddress, uint256 _date, uint8 _useCase) public view returns (address[] memory) {
+    function retrieveActiveDelegators(address _delegationAddress, address _collectionAddress, uint256 _date, uint256 _useCase) public view returns (address[] memory) {
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegators.length);
@@ -1149,7 +1146,7 @@ contract DelegationManagementContract {
      * @notice Returns the most recent delegator for a specific use case on a specific NFT collection given a delegation Address
      */
 
-    function retrieveMostRecentDelegator(address _delegationAddress, address _collectionAddress, uint8 _useCase) public view returns (address) {
+    function retrieveMostRecentDelegator(address _delegationAddress, address _collectionAddress, uint256 _useCase) public view returns (address) {
         address[] memory allDelegators = retrieveDelegators(_delegationAddress, _collectionAddress, _useCase);
         bytes32 globalHash;
         bytes32[] memory allGlobalHashes = new bytes32[](allDelegators.length);
