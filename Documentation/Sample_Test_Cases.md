@@ -433,7 +433,7 @@ In this group of test cases, a wallet will check the consolidation status of two
 
 ##### Objective
 
-Check the consolidation status of two addresses. Firstly, you need to register wallet `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` using wallet `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` on The Collection for the consolidation use case #99. Secondly, register wallet `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` using wallet `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` on The Collection for the consolidation use case #99. Finally, call the `checkConsolidationStatus()` function.
+Check the consolidation status of two addresses. Firstly, you need to register wallet `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` using wallet `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` on The Collection for the consolidation use case #999. Secondly, register wallet `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4` using wallet `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` on The Collection for the consolidation use case #999. Finally, call the `checkConsolidationStatus()` function.
 
 ##### Prerequisites
 
