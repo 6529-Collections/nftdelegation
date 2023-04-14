@@ -158,7 +158,7 @@ Function | Use-Case  | Expected Output | Actual Output | Status
 
 ##### Objective
 
-Register a delegation address on The Collection for the sub-delegation rights use case 16.
+Register a delegation address on The Collection for the sub-delegation rights use case 998.
 
 ##### Prerequisites
 
@@ -172,7 +172,7 @@ Call the function `registerDelegationAddress()` with the following inputs:
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _delegationAddress: `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`
 - _expiryDate: `1682080764` (21 Apr 2023)
-- _useCase: `16`
+- _useCase: `998`
 - _allTokens: `true`
 - _tokenid: `0`
 
@@ -182,19 +182,19 @@ Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-- _useCase: `16`
+- _useCase: `998`
 
 We expect the function will return the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
-`registerDelegationAddress()` | `16` | The delegation will be registered. | The delegation was registered. | Pass
+`registerDelegationAddress()` | `998` | The delegation will be registered. | The delegation was registered. | Pass
 
 #### Test Case ID: 5
 
 ##### Objective
 
-Register a delegation address on The Collection for consolidation purposes use case #99.
+Register a delegation address on The Collection for consolidation purposes use case #999.
 
 ##### Prerequisites
 
@@ -208,7 +208,7 @@ Call the function `registerDelegationAddress()` with the following inputs:
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
 - _delegationAddress: `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`
 - _expiryDate: `1682080764` (21 Apr 2023)
-- _useCase: `99`
+- _useCase: `999`
 - _allTokens: `true`
 - _tokenid: `0`
 
@@ -218,13 +218,13 @@ Call the `retrieveDelegationAddresses()` function with the following inputs:
 
 - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
 - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-- _useCase: `99`
+- _useCase: `999`
 
 We expect the function will return the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
-`registerDelegationAddress()` | `99` | The delegation will be registered. | The delegation was registered. | Pass
+`registerDelegationAddress()` | `999` | The delegation will be registered. | The delegation was registered. | Pass
 
 ### Revoke a delegation
 
@@ -339,7 +339,7 @@ Register a delegation address on behalf of a delegator on The Collection for min
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-    - _useCase: `16`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
+    - _useCase: `998`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
 3. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
 4. Use case number exists.
@@ -397,7 +397,7 @@ Revoke a delegation address on behalf of a delegator on The Collection for all u
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-    - _useCase: `16`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
+    - _useCase: `998`; ensure that a delegation Address was registered for the sub-delegation use case. If you have already executed Test Case ID 4 you should be able to view as a result the delegation address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148`.
 
 5. Select the wallet address `0xdD870fA1b7C4700F2BD7f44238821C26f7392148` from accounts.
 6. Use case number exists.
@@ -442,7 +442,7 @@ Check the consolidation status of two addresses. Firstly, you need to register w
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _delegationAddress: `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
     - _expiryDate: `1682080764` (21 Apr 2023)
-    - _useCase: `99`
+    - _useCase: `999`
     - _allTokens: `true`
     - _tokenid: `0`
 
@@ -450,14 +450,14 @@ Check the consolidation status of two addresses. Firstly, you need to register w
 
     - _delegatorAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-    - _useCase: `99`; ensure that the function returns back delegation address `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
+    - _useCase: `999`; ensure that the function returns back delegation address `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
 
 3. Execute the `registerDelegationAddress()` function using the wallet account `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7` with the following input data:
 
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
     - _delegationAddress: `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`
     - _expiryDate: `1682080764` (21 Apr 2023)
-    - _useCase: `99`
+    - _useCase: `999`
     - _allTokens: `true`
     - _tokenid: `0`
 
@@ -465,7 +465,7 @@ Check the consolidation status of two addresses. Firstly, you need to register w
 
     - _delegatorAddress: `0x03C6FcED478cBbC9a4FAB34eF9f40767739D1Ff7`
     - _collectionAddress: `0x33FD426905F149f8376e227d0C9D3340AaD17aF1`
-    - _useCase: `99`; ensure that the function returns back delegation address `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`.
+    - _useCase: `999`; ensure that the function returns back delegation address `0x5B38Da6a701c568545dCfcB03FcB875f56beddC4`.
 
 ##### Invoke the test
 
@@ -477,7 +477,7 @@ Call the function `checkConsolidationStatus()` with the following inputs:
 
 Function | Use-Case  | Expected Output | Actual Output | Status
 ------------- | ------------- | ------------- | ------------- | -------------
-`checkConsolidationStatus()` | `99` | Consolidation status will exist | Consolidation status exists | Pass
+`checkConsolidationStatus()` | `999` | Consolidation status will exist | Consolidation status exists | Pass
 
 ### Retrieve delegators
 
