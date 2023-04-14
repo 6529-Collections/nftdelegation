@@ -4,7 +4,7 @@
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
-Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x4ccd865ce2efd156a53d5e87ee981b9a7e052a62](https://sepolia.etherscan.io/address/0x4ccd865ce2efd156a53d5e87ee981b9a7e052a62) | 5.20.13
+Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x3737385Fe0f3C1025cC13C6a1848b545c868783f](https://sepolia.etherscan.io/address/0x3737385Fe0f3C1025cC13C6a1848b545c868783f) | 5.20.13
 
 #### Previous Deployment
 
