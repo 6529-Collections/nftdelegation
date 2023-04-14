@@ -14,7 +14,7 @@
 /**
  *
  *  @title: NFTDelegation.com Management Contract
- *  @date: 14-Apr-2023 - 10:23
+ *  @date: 14-Apr-2023 - 11:17
  *  @version: 5.20.13
  *  @notes: An advanced open-source trustless delegation and consolidation management contract.
  *  @author: 6529 team
@@ -417,7 +417,7 @@ contract DelegationManagementContract {
      * @notice Batch revoking (up to 5 delegation addresses)
      */
 
-    function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint8[] memory _useCases) public {
+    function batchRevocations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _useCases) public {
         require(_collectionAddresses.length < 6);
         for (uint256 i = 0; i < _collectionAddresses.length; ) {
             revokeDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _useCases[i]);
@@ -442,7 +442,7 @@ contract DelegationManagementContract {
      * @notice Batch registrations function (up to 5 delegation addresses)
      */
 
-    function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint8[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenIds) public {
+    function batchDelegations(address[] memory _collectionAddresses, address[] memory _delegationAddresses, uint256[] memory _expiryDates, uint256[] memory _useCases, bool[] memory _allTokens, uint256[] memory _tokenIds) public {
         require(_collectionAddresses.length < 6);
         for (uint256 i = 0; i < _collectionAddresses.length; ) {
             registerDelegationAddress(_collectionAddresses[i], _delegationAddresses[i], _expiryDates[i], _useCases[i], _allTokens[i], _tokenIds[i]);
@@ -603,7 +603,7 @@ contract DelegationManagementContract {
         uint256 count = 0;
         bytes32 hash;
         for (uint256 i = 0; i < collectionsRegistered[_delegatorAddress].length; ) {
-            hash = keccak256(abi.encodePacked(_delegatorAddress, collectionsRegistered[_delegatorAddress][i], uint8(useCaseRegistered[_delegatorAddress][i])));
+            hash = keccak256(abi.encodePacked(_delegatorAddress, collectionsRegistered[_delegatorAddress][i], useCaseRegistered[_delegatorAddress][i]));
             if (delegatorHashes[hash].length > 0) {
                 activeCollections[count] = collectionsRegistered[_delegatorAddress][i];
                 activeUseCases[count] = useCaseRegistered[_delegatorAddress][i];
