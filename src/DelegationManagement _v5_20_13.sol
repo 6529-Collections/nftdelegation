@@ -14,8 +14,8 @@
 /**
  *
  *  @title: NFTDelegation.com Management Contract
- *  @date: 13-Apr-2023 - 18:17
- *  @version: 5.20.13 - not deployed
+ *  @date: 14-Apr-2023 - 10:23
+ *  @version: 5.20.13
  *  @notes: An advanced open-source trustless delegation and consolidation management contract.
  *  @author: 6529 team
  *  @contributors: https://github.com/6529-Collections/nftdelegation/graphs/contributors
