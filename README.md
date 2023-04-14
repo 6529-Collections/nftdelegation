@@ -4,12 +4,13 @@
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
-Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7](https://sepolia.etherscan.io/address/0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7) | 5.20.12
+Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x4ccd865ce2efd156a53d5e87ee981b9a7e052a62](https://sepolia.etherscan.io/address/0x4ccd865ce2efd156a53d5e87ee981b9a7e052a62) | 5.20.13
 
 #### Previous Deployment
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
+Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7](https://sepolia.etherscan.io/address/0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7) | 5.20.12
 Sepolia Testnet  |  0xAcf42B8...DE9953c2a0 | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
 
 ## What is it?
@@ -59,8 +60,9 @@ Use-Case  | Action
 13 | IP Licensing
 14 | NFT rentals
 15 | View Access
-16 | Sub-delegation
-99 | Consolidation
+16 | Manage Access
+998 | Sub-delegation
+999 | Consolidation
 
 ## Features
 
@@ -94,13 +96,13 @@ Want to learn more? [Explore documentation](https://github.com/6529-Collections/
 Sub-delegation can be used to minimize the amount of delegation transactions performed with your "Vault Wallet" by delegating all contract interactions to a "Delegated Wallet". This way you ensure your Vault stays as cold as you want.
 
 ### How it works
-With your "Vault Wallet" you only need to perform 1 transaction to your "Delegated Wallet" by using `registerDelegationAddress` and Use-Case 16 (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your "Delegated Wallet" that has sub-delegation rights to call `registerDelegationAddressUsingSubDelegation` to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
+With your "Vault Wallet" you only need to perform 1 transaction to your "Delegated Wallet" by using `registerDelegationAddress` and Use-Case 998 (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your "Delegated Wallet" that has sub-delegation rights to call `registerDelegationAddressUsingSubDelegation` to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
 
 ## What is Consolidation?
 Consolidation Use-Case is essential when you want to prove the ownership relationship between two addresses, ex. combine the TDH (Total Days Held) that you hold in various vaults on [seize.io](https://seize.io). TDH is the total number of days that the NFTs (Memes or Gradients) are held from an address.
 
 ### How it works
-To achieve a consolidation status between two wallets both wallets need to register a Consolidation Use-Case for each other. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with Use-Case 99 from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
+To achieve a consolidation status between two wallets both wallets need to register a Consolidation Use-Case for each other. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with Use-Case 999 from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
 
 The consolidation status will be true if both are registered.
 
