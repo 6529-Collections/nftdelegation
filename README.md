@@ -4,12 +4,13 @@
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
-Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x3737385Fe0f3C1025cC13C6a1848b545c868783f](https://sepolia.etherscan.io/address/0x3737385Fe0f3C1025cC13C6a1848b545c868783f) | 5.20.13
+Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0xA63c180Dd6574bDB2DC8761C9fc45FFA3CD6FeE3](https://sepolia.etherscan.io/address/0xA63c180Dd6574bDB2DC8761C9fc45FFA3CD6FeE3) | 5.20.14
 
 #### Previous Deployment
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
+Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x3737385Fe0f3C1025cC13C6a1848b545c868783f](https://sepolia.etherscan.io/address/0x3737385Fe0f3C1025cC13C6a1848b545c868783f) | 5.20.13
 Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7](https://sepolia.etherscan.io/address/0xf94423086613c6c1f1d3098D8cAD99427B9FD0E7) | 5.20.12
 Sepolia Testnet  |  0xAcf42B8...DE9953c2a0 | [0x6a89aff3b4ea4cf323c32740289c8a1d703abec8](https://sepolia.etherscan.io/address/0x6a89aff3b4ea4cf323c32740289c8a1d703abec8) | 5.20.11
 
