@@ -14,8 +14,8 @@
 /**
  *
  *  @title: NFTDelegation.com Management Contract
- *  @date: 20-Apr-2023 - 16:27
- *  @version: 5.20.15
+ *  @date: 17-Apr-2023 - 10:31
+ *  @version: 5.20.14
  *  @notes: An advanced open-source trustless delegation and consolidation management contract.
  *  @author: 6529 team
  *  @contributors: https://github.com/6529-Collections/nftdelegation/graphs/contributors
@@ -55,6 +55,12 @@ contract DelegationManagementContract {
     event RevokeDelegation(address indexed from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
     event RevokeDelegationUsingSubDelegation(address indexed delegator, address from, address indexed collectionAddress, address indexed delegationAddress, uint256 useCase);
     event UpdateDelegation(address indexed from, address indexed collectionAddress, address olddelegationAddress, address indexed newdelegationAddress, uint256 useCase, bool allTokens, uint256 _tokenId);
+
+    // Registry for all collections per usecase per Delegator
+    mapping (address => mapping (uint => address[]) ) public collectionsRegisteredPerDelegator;
+
+    // Registry for all collections per usecase per Delegation Address
+    mapping (address => mapping (uint => address[]) ) public collectionsRegisteredPerDelAdd;
 
     // Locks declarations
     mapping(address => bool) public globalLock;
@@ -96,6 +102,9 @@ contract DelegationManagementContract {
         delegatorHashes[delegatorHash].push(_delegationAddress);
         // Stores delegators addresses on a delegation address hash
         delegationAddressHashes[delegationAddressHash].push(msg.sender);
+        // Store Delegator and Delegation Address collection history
+        collectionsRegisteredPerDelegator[msg.sender][_useCase].push(_collectionAddress);
+        collectionsRegisteredPerDelAdd[_delegationAddress][_useCase].push(_collectionAddress);
         // Push additional data to the globalDelegationHashes mapping
         if (_allTokens == true) {
             GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
@@ -172,12 +181,15 @@ contract DelegationManagementContract {
         delegatorHashes[delegatorHash].push(_delegationAddress);
         // Stores delegators addresses on a delegation address hash
         delegationAddressHashes[delegationAddressHash].push(_delegatorAddress);
+        // Store Delegator and Delegation Address collection history
+        collectionsRegisteredPerDelegator[_delegatorAddress][_useCase].push(_collectionAddress);
+        collectionsRegisteredPerDelAdd[_delegationAddress][_useCase].push(_collectionAddress);
         // Push additional data to the globalDelegationHashes mapping
         if (_allTokens == true) {
-            GlobalData memory newdelegationGlobalData = GlobalData(_delegatorAddress, _delegationAddress, block.timestamp, _expiryDate, true, 0);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, true, 0);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         } else {
-            GlobalData memory newdelegationGlobalData = GlobalData(_delegatorAddress, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
+            GlobalData memory newdelegationGlobalData = GlobalData(msg.sender, _delegationAddress, block.timestamp, _expiryDate, false, _tokenId);
             globalDelegationHashes[globalHash].push(newdelegationGlobalData);
         }
         emit RegisterDelegationUsingSubDelegation(_delegatorAddress, msg.sender, _collectionAddress, _delegationAddress, _useCase, _allTokens, _tokenId);
@@ -573,6 +585,66 @@ contract DelegationManagementContract {
         bytes32 hash;
         hash = keccak256(abi.encodePacked(_delegationAddress, _collectionAddress, _useCase));
         return (delegationAddressHashes[hash]);
+    }
+
+    /**
+     * @notice Returns all collections per delegator address per use case
+     */
+
+    function retrieveFullHistoryOfDelegator(address _delegatorAddress, uint256 _useCase) public view returns (address[] memory) {
+        return (collectionsRegisteredPerDelegator[_delegatorAddress][_useCase]);
+    }
+
+    /**
+     * @notice Returns all collections per delegation address per use case
+     */
+
+    function retrieveFullHistoryOfDelAddress(address _delegationAddress, uint256 _useCase) public view returns (address[] memory) {
+        return (collectionsRegisteredPerDelAdd[_delegationAddress][_useCase]);
+    }
+
+    /**
+     * @notice Returns the active collections per usecase history given a delegator address
+     */
+
+    function retrieveActiveHistoryPerDelegator(address _delegatorAddress, uint256 _useCase) public view returns (address[] memory) {
+        address[] memory activeCollections = new address[](collectionsRegisteredPerDelegator[_delegatorAddress][_useCase].length);
+        uint256 count = 0;
+        bytes32 hash;
+        for (uint256 i = 0; i < collectionsRegisteredPerDelegator[_delegatorAddress][_useCase].length; ) {
+            hash = keccak256(abi.encodePacked(_delegatorAddress, collectionsRegisteredPerDelegator[_delegatorAddress][_useCase][i], _useCase));
+            if (delegatorHashes[hash].length > 0) {
+                activeCollections[count] = collectionsRegisteredPerDelegator[_delegatorAddress][_useCase][i];
+                count = count + 1;
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
+        return (activeCollections);
+    }
+
+    /**
+     * @notice Returns the active collections per usecase history given a delegation address
+     */
+
+    function retrieveActiveHistoryPerDelegationAddress(address _delegationAddress, uint256 _useCase) public view returns (address[] memory) {
+        address[] memory activeCollections = new address[](collectionsRegisteredPerDelAdd[_delegationAddress][_useCase].length);
+        uint256 count = 0;
+        bytes32 hash;
+        for (uint256 i = 0; i < collectionsRegisteredPerDelAdd[_delegationAddress][_useCase].length; ) {
+            hash = keccak256(abi.encodePacked(_delegationAddress, collectionsRegisteredPerDelAdd[_delegationAddress][_useCase][i], _useCase));
+            if (delegationAddressHashes[hash].length > 0) {
+                activeCollections[count] = collectionsRegisteredPerDelAdd[_delegationAddress][_useCase][i];
+                count = count + 1;
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
+        return (activeCollections);
     }
 
     /**
