@@ -47,7 +47,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 
 Use-Case  | Action
 ------------- | -------------
-1  | All (1-15)
+1  | All (1-16)
 2  | Minting / Allowlist
 3 | Airdrops
 4 | Voting / Governance
