@@ -12,7 +12,7 @@ The simplest approach to run these sample test cases is via the online solidity 
 1. Create a new Workspace, from a "Blank" template, named something like "NFT Delegation Tests".
 1. Under File Explorer click the "Create New File" icon: 📄.
 1. Name the file `testCases.sol`
-1. Navigate to the smart contract code, in the `src` folder on the [nftdelegation repository](https://github.com/6529-Collections/nftdelegation/blob/main/src/DelegationManagement.sol)
+1. Navigate to the smart contract code, in the `src` folder on the [nftdelegation repository](https://github.com/6529-Collections/nftdelegation/blob/main/smart_contracts/DelegationManagement.sol)
 1. Copy the source code and paste it into your newly-created `testCases.sol` editor pane. Accept the warning about pasted code.
 1. Navigate to the "Solidity compiler" side tab. Click "Compile testCases.sol"
 1. You may see a warning about the size of the contract. You can disregard this, as it does not affect the testing process (or you can enable the optimizer under "Advanced Configurations", with a value of `200`, and recompile).
