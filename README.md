@@ -34,11 +34,11 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 \
 [Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
 
-## Use Cases
+## Normal Use Cases
 
-Use-Case  | Action
+#N  | Use Case
 ------------- | -------------
-1  | All (1-16)
+1  | All
 2  | Minting / Allowlist
 3 | Airdrops
 4 | Voting / Governance
@@ -54,6 +54,11 @@ Use-Case  | Action
 14 | NFT rentals
 15 | View Access
 16 | Manage Access
+
+## Advanced Use Cases
+
+#N  | Use Case
+------------- | -------------
 998 | Sub-delegation
 999 | Consolidation
 
@@ -65,8 +70,8 @@ Current implementation enables the following functionality:
   2. Delegator revokes delegation rights from a delagation address on a specific NFT collection given a specific use case
   3. Delegator updates a delegation address for a specific use case on a specific NFT collection for a certain duration
   4. Batch registrations of delegation addresses
-  5. Batch reocations of delegation addresses
-  6. Functions to change the status of a Global/Collection/Collection&UseCase Lock
+  5. Batch revocations of delegation addresses
+  6. Functions to change the status of a Global/Collection/Collection & UseCase Lock
   7. Function that returns an array of all delegations (active AND inactive) assigned by a delegator on a specific use case on a specific NFT collection
   8. Function that returns an array of all delegators (active AND inactive) given a delegation Address for a specific use case on a specific NFT collection
   9. Function that returns an array of all active delegations on a certain date for a specific use case on a specific NFT collection
@@ -75,29 +80,26 @@ Current implementation enables the following functionality:
   12. Retrieve function to get the status (true/false) of a delegation given a token id
   13. Retrieve function to check if the delegation address performing any actions is the most recently delegated one
   14. Retrieve function to check the status (true/false) of an active delegator on a given date
-  15. Retrieve functions to get the tokens ids assigned as well as the expiry dates of a delegation address/delegator
+  15. Retrieve functions to get the tokens ids as well as the expiry dates of a delegation given a delegator/delegation address
   16. Retrieve function to get the most recent delegation address delegated on a specific usecase
   17. Retrieve function to get the most recent delegator given a delegation Address
-  18. Function to support the subDelegation process
-  19. Function to check if consolidation between 2 addresses exists
-  20. Functions to retrieve the status of a Global/Collection/Collection&UseCase Lock
-  21. Other functions that support smart contract's processes like retrieving of hashes etc.
+  18. Function to support the Sub-Delegation process
+  19. Function to check the consolidation between 2 addresses
+  20. Other functions that support the smart contract's processes like retrieving of hashes etc.
 
 Want to learn more? [Explore documentation](https://github.com/6529-Collections/nftdelegation/tree/main/Documentation)
 
 ## Why use sub-delegation if I can delegate directly with my "Vault Wallet"?
-Sub-delegation can be used to minimize the amount of delegation transactions performed with your "Vault Wallet" by delegating all contract interactions to a "Delegated Wallet". This way you ensure your Vault stays as cold as you want.
+Sub-delegation allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
 
 ### How it works
-With your "Vault Wallet" you only need to perform 1 transaction to your "Delegated Wallet" by using `registerDelegationAddress` and Use-Case 998 (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your "Delegated Wallet" that has sub-delegation rights to call `registerDelegationAddressUsingSubDelegation` to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
+With your "Vault Wallet" you just need to perform one transaction registering a delegation address with sub-delegation rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
 
 ## What is Consolidation?
-Consolidation Use-Case is essential when you want to prove the ownership relationship between two addresses, ex. combine the TDH (Total Days Held) that you hold in various vaults on [seize.io](https://seize.io). TDH is the total number of days that the NFTs (Memes or Gradients) are held from an address.
+A consolidation is used when you want to establish an ownership connection between two addresses, such as combining the Total Days Held (TDH) of multiple wallets that you control on [seize.io](https://seize.io).
 
 ### How it works
-To achieve a consolidation status between two wallets both wallets need to register a Consolidation Use-Case for each other. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with Use-Case 999 from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
-
-The consolidation status will be true if both are registered.
+To create a consolidation between two wallets (e.g., Wallet A and Wallet B), both wallets must register a consolidation with each other.. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with consolidation from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
 
 ## Free from Dependencies
 
