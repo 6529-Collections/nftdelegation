@@ -1,6 +1,12 @@
 # Delegation Management
 
-## Latest Deployment
+## Mainet Deployment
+
+Network  | Deployer | Contract Address | Version
+------------- | ------------- | ------------- | -------------
+Ethereum Testnet  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://etherscan.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d) | 5.20.15
+
+## Testnet Deployments
 
 Network  | Deployer | Contract Address | Version
 ------------- | ------------- | ------------- | -------------
