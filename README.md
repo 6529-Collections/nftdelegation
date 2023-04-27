@@ -34,13 +34,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
   4. or any other activity that relates to the above use-cases
 - Overall, this contract proposal is useful for use-cases where dApps require a global, on-chain registry that maps the "delegation" relationship between wallet addresses.
 
-## Documentation
-
-[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
-\
-[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
-
-## Normal Use Cases
+## Use Cases
 
 #N  | Use Case
 ------------- | -------------
@@ -60,21 +54,18 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 14 | NFT rentals
 15 | View Access
 16 | Manage Access
-
-## Advanced Use Cases
-
-#N  | Use Case
-------------- | -------------
+17 to 997 | Reserved by NFTDelegation.com for future use cases
 998 | Sub-delegation
 999 | Consolidation
+1000+ | Application-specific use cases
 
-## Additional Use Cases
+### Use Case Descriptions
 
-The 6529.io team reserved for future use the Use Cases that range from #1 to #999.
-
-The NFTDelegation.com smart contract allows any team to create a new Use Case that can be used exclusively for their communites or applications.
-
-To achieve this you need to call the updateUseCaseCounter() function that exists on the smart contract. By calling that function the existing numbering of the Use Cases increases by 1, ex. if you are the first one who calls the updateUseCaseCounter() function Use Case #1000 will be created and can be used during the registration of a Delegation etc.
+- Use cases #1 to #16 are active canonical (official) use cases.
+- #17 to #999 are reserved for additional (official) use cases. NFTDelegation.com will update the guide for official use cases from time to time.
+- #998 is for Sub-Delegation (giving the right to another address to add or remove delegations on the initial address's behalf).
+- #999 is for Consolidation (linking addresses together).
+- #1,000+ are available to any team who wants to create an application-specific use case. Any team can call the updateUseCaseCounter() function to increment/create another use case for their own use.
 
 ## Features
 
@@ -102,6 +93,12 @@ Current implementation enables the following functionality:
   20. Other functions that support the smart contract's processes like retrieving of hashes etc.
 
 Want to learn more? [Explore documentation](https://github.com/6529-Collections/nftdelegation/tree/main/Documentation)
+
+## Documentation
+
+[Write Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md)\
+\
+[Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
 
 ## Why use sub-delegation if I can delegate directly with my "Vault Wallet"?
 Sub-delegation allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
