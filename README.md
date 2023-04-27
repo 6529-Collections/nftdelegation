@@ -62,6 +62,14 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 998 | Sub-delegation
 999 | Consolidation
 
+## Additional Use Cases
+
+The 6529.io team reserved for future use the Use Cases that range from #1 to #999.
+
+The NFTDelegation.com smart contract allows any team to create a new Use Case that can be used exclusively for their communites or applications.
+
+To achieve this you need to call the updateUseCaseCounter() function that exists on the smart contract. By calling that function the existing numbering of the Use Cases increases by 1, ex. if you are the first one who calls the updateUseCaseCounter() function Use Case #1000 will be created and can be used during the registration of a Delegation etc.
+
 ## Features
 
 Current implementation enables the following functionality:
