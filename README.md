@@ -36,6 +36,8 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 
 ## Use Cases
 
+### Active (Canonical) Use Cases
+
 #N  | Use Case
 ------------- | -------------
 1  | All
@@ -54,18 +56,46 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 14 | NFT rentals
 15 | View Access
 16 | Manage Access
-17 to 997 | Reserved by NFTDelegation.com for future use cases
+17 to 949 | Reserved by NFTDelegation.com for future Active (Canonical) Use Cases
+
+### Special Use Cases
+
+#N  | Use Case
+------------- | -------------
+950 to 997 | Reserved for Future Special Use Cases
 998 | Sub-delegation
 999 | Consolidation
+
+Note: Special Use Cases are not captured by Use Case #1 ("All").
+
+### Application Specific Use Cases
+
+#N  | Use Case
+------------- | -------------
 1000+ | Application-specific use cases
 
 ### Use Case Descriptions
 
+### Active (Canonical) Use Cases
+
 - Use cases #1 to #16 are active canonical (official) use cases.
-- #17 to #999 are reserved for additional (official) use cases. NFTDelegation.com will update the guide for official use cases from time to time.
+
+- #17 to #949 are reserved for additional Active (Canonical) use cases, to be added from time to time by NFTDelegation.com.
+
+### Special Use Cases
+
+- #950 to #997 are reserved for future Special use cases.
+
 - #998 is for Sub-Delegation (giving the right to another address to add or remove delegations on the initial address's behalf).
+
 - #999 is for Consolidation (linking addresses together).
-- #1,000+ are available to any team who wants to create an application-specific use case. Any team can call the updateUseCaseCounter() function to increment/create another use case for their own use.
+
+### Application Specific Use Cases
+
+- #1,000+ are available to any team who wants to create an application-specific use case.
+
+- Any team can call the updateUseCaseCounter() function to increment/create another use case for their own use.
+
 
 ## Features
 
