@@ -1,6 +1,6 @@
 ## Purpose
 
-This smart contract demonstrates how the NFTDelegation.com smart contract can be used on your own smart contract for making calls.
+This smart contract demonstrates how the NFTDelegation.com smart contract can be used on your own smart contract for making external calls.
 
 ### Steps
 
