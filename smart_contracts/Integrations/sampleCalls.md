@@ -9,7 +9,7 @@ This smart contract demonstrates how the NFTDelegation.com smart contract can be
     import "/INFTDelegationRead.sol";
     ```
 
-2. For using the Read Interface declare a variable as below:
+2. Declare the Read Interface variable as below:
     ```ruby
     INFTDelegationRead public dmcRead;
     ```
