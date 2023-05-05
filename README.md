@@ -1,4 +1,4 @@
-# Delegation Management
+# NFTDelegation.com
 
 ## Mainet Deployment
 
@@ -63,7 +63,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 #N  | Use Case
 ------------- | -------------
 950 to 997 | Reserved for Future Special Use Cases
-998 | Sub-delegation
+998 | Delegation Management (Sub-delegation)
 999 | Consolidation
 
 Note: Special Use Cases are not captured by Use Case #1 ("All").
@@ -86,7 +86,7 @@ Note: Special Use Cases are not captured by Use Case #1 ("All").
 
 - #950 to #997 are reserved for future Special use cases.
 
-- #998 is for Sub-Delegation (giving the right to another address to add or remove delegations on the initial address's behalf).
+- #998 is for Delegation Management (Sub-delegation) (giving the right to another address to add or remove delegations on the initial address's behalf).
 
 - #999 is for Consolidation (linking addresses together).
 
@@ -130,8 +130,8 @@ Want to learn more? [Explore documentation](https://github.com/6529-Collections/
 \
 [Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
 
-## Why use sub-delegation if I can delegate directly with my "Vault Wallet"?
-Sub-delegation allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
+## Why use Delegation Management (Sub-delegation) if I can delegate directly with my "Vault Wallet"?
+Delegation Management (Sub-delegation) allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
 
 ### How it works
 With your "Vault Wallet" you just need to perform one transaction registering a delegation address with sub-delegation rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
