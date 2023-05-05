@@ -14,7 +14,7 @@ Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x8f86c644f845A077999939C69Bc787662
 
 ## What is it?
 
-Simply put, the proposed contract implementation deploys a "Delegation Management" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
+Simply put, the proposed contract implementation deploys a "Delegation Management Registry" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
 
 ## Purpose
 
