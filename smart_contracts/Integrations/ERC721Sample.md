@@ -114,6 +114,7 @@ contract ERC721_sample is ERC721, Ownable {
         }
 
         /**
+        * OPTION A:
         * Minting function taking into consideration retrieveDelegators() function from the NFTDelegation.com Smart Contract
         * In this case the minted tokens are sent to the vault wallet addresses (Delegators Addresses)
         * To send the minted tokens to the hot wallet change _safeMint(dmcDelegators[i], mintIndex) to _safeMint(msg.sender, mintIndex);
@@ -137,6 +138,7 @@ contract ERC721_sample is ERC721, Ownable {
         }
 
         /**
+        * OPTION B:
         * Minting function taking into consideration retrieveGlobalStatusOfDelegation() function from the NFTDelegation.com Smart Contract
         * In this case the minted token is sent to the vault wallet address, Deelgator's Address
         * To send the minted token to the hot wallet change _safeMint(_vault, mintIndex) --> _safeMint(msg.sender, mintIndex);
@@ -161,6 +163,7 @@ contract ERC721_sample is ERC721, Ownable {
         }
 
         /**
+        * OPTION C:
         * Minting function taking into consideration retrieveGlobalStatusOfDelegation() function from the NFTDelegation.com Smart Contract
         * In this case the minted token is sent to the _mintToAddress wallet address
         */
