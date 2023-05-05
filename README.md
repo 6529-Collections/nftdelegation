@@ -118,7 +118,7 @@ Current implementation enables the following functionality:
   15. Retrieve functions to get the tokens ids as well as the expiry dates of a delegation given a delegator/delegation address
   16. Retrieve function to get the most recent delegation address delegated on a specific usecase
   17. Retrieve function to get the most recent delegator given a delegation Address
-  18. Function to support the Sub-Delegation process
+  18. Function to support the registration of Delegation Managers
   19. Function to check the consolidation between 2 addresses
   20. Other functions that support the smart contract's processes like retrieving of hashes etc.
 
@@ -134,7 +134,7 @@ Want to learn more? [Explore documentation](https://github.com/6529-Collections/
 Delegation Management (Sub-delegation) allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
 
 ### How it works
-With your "Vault Wallet" you just need to perform one transaction registering a delegation address with sub-delegation rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
+With your "Vault Wallet" you just need to perform one transaction registering a delegation address with Delegation Management (Sub-delegation) rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
 
 ## What is Consolidation?
 A consolidation is used when you want to establish an ownership connection between two addresses, such as combining the Total Days Held (TDH) of multiple wallets that you control on [seize.io](https://seize.io).
