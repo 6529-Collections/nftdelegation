@@ -1,5 +1,11 @@
 # Install
 
+  Create a new folder NFTDelegation_Console
+  
+  Download NFTDelegation.js and NFTdelegationABI.js
+  
+  Open terminal --> Locate path 
+
   ```
   npm i web3
   ```
