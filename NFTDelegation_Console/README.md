@@ -42,7 +42,7 @@
   
 ## Currently Supported Functions
 
-Function | Smart Contract function
+functionCall | Smart Contract function
 ------------- | -------------
 retrieveDelegationAddresses  | retrieveDelegationAddresses
 retrieveDelegationAddressesInfo | retrieveDelegationAddressesTokensIDsandExpiredDates
