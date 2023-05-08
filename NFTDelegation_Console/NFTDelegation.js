@@ -1,7 +1,7 @@
 const {NFTdelegation} = require('./NFTdelegationABI'); 
 
 const Web3 = require ('web3')
-const web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/<API KEY>>"))
+const web3 = new Web3(new Web3.providers.HttpProvider("https://mainnet.infura.io/v3/<API KEY>"))
 const contract = new web3.eth.Contract(NFTdelegation, "0x2202CB9c00487e7e8EF21e6d8E914B32e709f43d")
 
 const functionCall = process.argv[2];
