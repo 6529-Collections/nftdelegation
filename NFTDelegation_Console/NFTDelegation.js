@@ -16,7 +16,7 @@ async function retrieveDelegationAddresses() {
 	console.log(result);
 }
 
-async function retrieveDelegationAddressesTokens() {
+async function retrieveDelegationAddressesInfo() {
 	result = await contract.methods.retrieveDelegationAddressesTokensIDsandExpiredDates(address,collection,usecase).call()
 	console.log(result);
 }
@@ -26,7 +26,7 @@ async function retrieveDelegators() {
 	console.log(result);
 }
 
-async function retrieveDelegatorsTokens() {
+async function retrieveDelegatorsInfo() {
 	result = await contract.methods.retrieveDelegatorsTokensIDsandExpiredDates(address,collection,usecase).call()
 	console.log(result);
 }
@@ -34,12 +34,12 @@ async function retrieveDelegatorsTokens() {
 switch (functionCall) {
 	case ('retrieveDelegationAddresses'): 
 		return retrieveDelegationAddresses()
-	case ('retrieveDelegationAddressesTokens'): 
-		return retrieveDelegationAddressesTokens()
+	case ('retrieveDelegationAddressesInfo'): 
+		return retrieveDelegationAddressesInfo()
 	case ('retrieveDelegators'): 
 		return retrieveDelegators()
-	case ('retrieveDelegatorsTokens'): 
-		return retrieveDelegatorsTokens()
+	case ('retrieveDelegatorsInfo'): 
+		return retrieveDelegatorsInfo()
 	default:
 		console.log('Unknown')
 }
