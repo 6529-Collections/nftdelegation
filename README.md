@@ -56,7 +56,8 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 14 | NFT rentals
 15 | View Access
 16 | Manage Access
-17 to 949 | Reserved by NFTDelegation.com for future Active (Canonical) Use Cases
+17 | Mint To Address
+18 to 949 | Reserved by NFTDelegation.com for future Active (Canonical) Use Cases
 
 ### Special Use Cases
 
@@ -78,9 +79,9 @@ Note: Special Use Cases are not captured by Use Case #1 ("All").
 
 ### Active (Canonical) Use Cases
 
-- Use cases #1 to #16 are active canonical (official) use cases.
+- Use cases #1 to #17 are active canonical (official) use cases.
 
-- #17 to #949 are reserved for additional Active (Canonical) use cases, to be added from time to time by NFTDelegation.com.
+- #18 to #949 are reserved for additional Active (Canonical) use cases, to be added from time to time by NFTDelegation.com.
 
 ### Special Use Cases
 
