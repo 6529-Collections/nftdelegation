@@ -9,6 +9,7 @@ Polygon  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d]
 Binance SC  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://bscscan.com/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d)
 Avalanche  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://snowtrace.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d)
 Klaytn  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://scope.klaytn.com/account/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d?tabId=internalTx)
+Arbitrum  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://arbiscan.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d)
 
 ## Testnet Deployments
 
