@@ -5,11 +5,6 @@
 Network  | Deployer | Contract Address 
 ------------- | ------------- | ------------- 
 Ethereum  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://etherscan.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d)
-Polygon (MATIC)  | 0x707e25f...C74bc6eE8F | [0xAc6f08B923a0631a4f436Bf3aFd29c38349093Cc](https://polygonscan.com/address/0xac6f08b923a0631a4f436bf3afd29c38349093cc)
-Optimism  | 0x707e25f...C74bc6eE8F | [0xAc6f08B923a0631a4f436Bf3aFd29c38349093Cc](https://optimistic.etherscan.io/address/0xac6f08b923a0631a4f436bf3afd29c38349093cc)
-Arbitrum  | 0x707e25f...C74bc6eE8F | [0xAc6f08B923a0631a4f436Bf3aFd29c38349093Cc](https://arbiscan.io/address/0xac6f08b923a0631a4f436bf3afd29c38349093cc)
-Avalanche  | 0x707e25f...C74bc6eE8F | [0x48cdfe7ff4dd309fd70bb70a810f98609cc87f58](https://snowtrace.io/address/0x48cdfe7ff4dd309fd70bb70a810f98609cc87f58)
-Klaytn  | 0x707e25f...C74bc6eE8F | [0xac6f08b923a0631a4f436bf3afd29c38349093cc](https://scope.klaytn.com/account/0xac6f08b923a0631a4f436bf3afd29c38349093cc?tabId=internalTx)
 
 ## Testnet Deployments
 
