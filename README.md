@@ -1,6 +1,6 @@
 # NFTDelegation.com
 
-## Mainet Deployment
+## Mainet Deployments
 
 Network  | Deployer | Contract Address 
 ------------- | ------------- | ------------- 
