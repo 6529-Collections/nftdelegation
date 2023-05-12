@@ -2,15 +2,16 @@
 
 ## Mainet Deployment
 
-Network  | Deployer | Contract Address | Version
-------------- | ------------- | ------------- | -------------
-Ethereum Network  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://etherscan.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d) | 5.20.15
+Network  | Deployer | Contract Address 
+------------- | ------------- | ------------- 
+Ethereum  | 0x707e25f...C74bc6eE8F | [0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d](https://etherscan.io/address/0x2202cb9c00487e7e8ef21e6d8e914b32e709f43d)
+Polygon (MATIC)  | 0x707e25f...C74bc6eE8F | [0xAc6f08B923a0631a4f436Bf3aFd29c38349093Cc](https://polygonscan.com/address/0xac6f08b923a0631a4f436bf3afd29c38349093cc)
 
 ## Testnet Deployments
 
-Network  | Deployer | Contract Address | Version
-------------- | ------------- | ------------- | -------------
-Sepolia Testnet  | 0xAcf42B8...DE9953c2a0 | [0x8f86c644f845A077999939C69Bc787662377d915](https://sepolia.etherscan.io/address/0x8f86c644f845A077999939C69Bc787662377d915) | 5.20.15
+Network  | Deployer | Contract Address 
+------------- | ------------- | ------------- 
+Sepolia  | 0xAcf42B8...DE9953c2a0 | [0x8f86c644f845A077999939C69Bc787662377d915](https://sepolia.etherscan.io/address/0x8f86c644f845A077999939C69Bc787662377d915)
 
 ## What is it?
 
