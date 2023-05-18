@@ -20,7 +20,7 @@ This smart contract demonstrates how an ERC721 smart contract can integrate the 
     mapping (address => bool) public checkDelegatorMints;
     ```
 
-4. Modify your ERC721 contructor as below. When deploying the smart contract input the NFTDelegation smart contract address `0x2202CB9c00487e7e8EF21e6d8E914B32e709f43d` within your constructor.
+4. Modify your ERC721 constructor as below. When deploying the smart contract input the NFTDelegation smart contract address `0x2202CB9c00487e7e8EF21e6d8E914B32e709f43d` within your constructor.
     ```ruby
     constructor(address _delegationManagementContract, string memory name, string memory symbol) ERC721(name, symbol) {
         dmc = INFTDelegationRead(_delegationManagementContract);
