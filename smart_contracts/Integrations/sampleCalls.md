@@ -14,7 +14,7 @@ This smart contract demonstrates how the NFTDelegation.com smart contract can be
     INFTDelegationRead public dmcRead;
     ```
 
-2. Modify your contructor as below. When deploying the smart contract input the NFTDelegation smart contract address `0x2202CB9c00487e7e8EF21e6d8E914B32e709f43d` within your constructor.
+2. Modify your constructor as below. When deploying the smart contract input the NFTDelegation smart contract address `0x2202CB9c00487e7e8EF21e6d8E914B32e709f43d` within your constructor.
     ```ruby
     constructor(address _NFTdelegationManagementContract) {
         dmcRead = INFTDelegationRead(_NFTdelegationManagementContract);
