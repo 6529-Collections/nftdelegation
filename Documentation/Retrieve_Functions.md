@@ -133,15 +133,16 @@
     /**
       * @dev Retrieve the delegation status given a delegator address and a delegation address.
       * @param _delegatorAddress The delegator address.
-      * @param _delegationAddress The delegation address.
       * @param _collectionAddress The address of a specific collection.
+      * @param _delegationAddress The delegation address.
       * @param _useCase The type of delegation.
       * @return true if delegation exists, false otherwise.
     */
  
     function retrieveGlobalStatusOfDelegation(
-      address _delegationAddress,
+      address _delegatorAddress  
       address _collectionAddress,
+      address _delegationAddress,
       uint8 _useCase
     ) public view returns (bool) {
       return true/false;
