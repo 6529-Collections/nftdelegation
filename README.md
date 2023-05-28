@@ -1,6 +1,6 @@
 # NFTDelegation.com
 
-## Mainet Deployments
+## Mainnet Deployments
 
 Network  | Deployer | Contract Address 
 ------------- | ------------- | ------------- 
@@ -19,18 +19,18 @@ Sepolia  | 0xAcf42B8...DE9953c2a0 | [0x8f86c644f845A077999939C69Bc787662377d915]
 
 ## What is it?
 
-Simply put, the proposed contract implementation deploys a "Delegation Management Registry" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
+Simply put, the contract deploys a "Delegation Management Registry" that exists purely on-chain. This means that all data and their provenance are part of the contract's state.
 
 ## Purpose
 
-- It is often the case that wallet owners wish to assign delegation rights (in this context let's refer to assigners as "Delegators") to some other wallet address to act on their behalf.
+- It is often the case that wallet owners wish to assign delegation rights (in this context, let's refer to assigners as "Delegators") to some other wallet address to act on their behalf.
 - A Delegator can assign a delegation address for a specific use case on a specific NFT collection for a certain duration.
-- We note that the action of "delegation" does not assign any ownership (including its assets) on the Delegator's wallet.
+- The action of "delegation" does not assign any ownership over—nor control of assets in—the Delegator's wallet.
 
 ## Why is delegation useful?
 
 - Interacting with dApps often requires signing of messages for performing certain operations. Accidentally signing a malicious transaction can authorize access to your assets.
-- Delegation assignments make sense in cases where it is extremely risky to connect and sign messages from a cold wallet that is used for storing valuable fungible or non-fungible assets. Delegation addresses can be used to represent a Delegator and act on the Delegator's behalf under certain actions:
+- Delegation assignments make sense in cases where it is risky to connect and sign messages from a cold wallet that is used for storing valuable fungible or non-fungible assets. Delegation addresses can be used to represent a Delegator and act on the Delegator's behalf under certain actions:
 
 - An action could be:
   1. claiming token airdrops
@@ -62,7 +62,7 @@ Simply put, the proposed contract implementation deploys a "Delegation Managemen
 15 | View Access
 16 | Manage Access
 17 | Mint To Address
-18 to 949 | Reserved by NFTDelegation.com for future Active (Canonical) Use Cases
+18 to 949 | Reserved by NFTDelegation.com for future active (canonical) use cases
 
 ### Special Use Cases
 
@@ -86,7 +86,7 @@ Note: Special Use Cases are not captured by Use Case #1 ("All").
 
 - Use cases #1 to #17 are active canonical (official) use cases.
 
-- #18 to #949 are reserved for additional Active (Canonical) use cases, to be added from time to time by NFTDelegation.com.
+- #18 to #949 are reserved for additional canonical use cases, to be added from time to time by NFTDelegation.com.
 
 ### Special Use Cases
 
@@ -137,19 +137,23 @@ Want to learn more? [Explore documentation](https://github.com/6529-Collections/
 [Retrieve/Read Functions](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Retrieve_Functions.md)
 
 ## Why use Delegation Management (Sub-delegation) if I can delegate directly with my "Vault Wallet"?
-Delegation Management (Sub-delegation) allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
+
+Delegation Management (sub-delegation) allows you to reduce the number of delegation transactions you perform with your "Vault Wallet" by delegating all contract interactions, including changing delegations, to a "Delegated Wallet." This ensures your Vault remains cold (not connected) after the initial Sub-delegation.
 
 ### How it works
-With your "Vault Wallet" you just need to perform one transaction registering a delegation address with Delegation Management (Sub-delegation) rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
+
+With your "Vault Wallet" you just need to perform one transaction registering a delegation address with Delegation Management (sub-delegation) rights. (See [how to register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address)). Then you can use your sub-delegated wallet to [register a delegation address on behalf of a Delegator](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address-using-an-address-with-sub-delegation-rights).
 
 ## What is Consolidation?
+
 A consolidation is used when you want to establish an ownership connection between two addresses, such as combining the Total Days Held (TDH) of multiple wallets that you control on [seize.io](https://seize.io).
 
 ### How it works
-To create a consolidation between two wallets (e.g., Wallet A and Wallet B), both wallets must register a consolidation with each other.. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with consolidation from Wallet A to Wallet B and vice verse, from Wallet B to Wallet A.
+
+To create a consolidation between two wallets (e.g., Wallet A and Wallet B), both wallets must register a consolidation with each other. This means that you need to [register a delegation address](https://github.com/6529-Collections/nftdelegation/blob/main/Documentation/Write_Functions.md#how-to-register-a-delegation-address) with consolidation from Wallet A to Wallet B and vice verse, in a second transaction: from Wallet B to Wallet A.
 
 ## Free from Dependencies
 
 The contract is free from any dependencies.
 
-We took the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
+We made the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
