@@ -62,7 +62,9 @@ Simply put, the contract deploys a "Delegation Management Registry" that exists 
 15 | View Access
 16 | Manage Access
 17 | Mint To Address
-18 to 949 | Reserved by NFTDelegation.com for future active (canonical) use cases
+18 | Team
+19 | Artists
+20 to 949 | Reserved by NFTDelegation.com for future active (canonical) use cases
 
 ### Special Use Cases
 
@@ -84,9 +86,9 @@ Note: Special Use Cases are not captured by Use Case #1 ("All").
 
 ### Active (Canonical) Use Cases
 
-- Use cases #1 to #17 are active canonical (official) use cases.
+- Use cases #1 to #19 are active canonical (official) use cases.
 
-- #18 to #949 are reserved for additional canonical use cases, to be added from time to time by NFTDelegation.com.
+- #20 to #949 are reserved for additional canonical use cases, to be added from time to time by NFTDelegation.com.
 
 ### Special Use Cases
 
