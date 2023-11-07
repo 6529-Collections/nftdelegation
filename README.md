@@ -159,3 +159,14 @@ To create a consolidation between two wallets (e.g., Wallet A and Wallet B), bot
 The contract is free from any dependencies.
 
 We made the design decision to implement core functionality and include it as part of the core contract without referring to any external libraries that could (potentially) introduce additional attack vectors or vulnerabilities outside our control; since these are maintained by teams that are outside the control scope of our core implementation. Therefore, we are adopting a self-contained contract philosophy.
+
+## Tests
+
+Sample hardhat tests are provided.
+
+1. Download the github repo
+2. Open command prompt and navigate to the hardhat folder
+3. Install hardhat using `npm i`
+4. Compile smart contracts using `npx hardhat compile`
+  - If you get `Error HH502` then please upgrade to the laetst hardhat - `npm up hardhat`
+5. Run the tests that exist within the test folder using `npx hardhat test`
