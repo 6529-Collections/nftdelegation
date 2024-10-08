@@ -1,1 +1,27 @@
+.idea/
+node_modules/
+artifacts/
+cache/
+build/
+abi-out/
+coverage/
+coverage.json
+coverageEnv/
+scTopics
+allFiredEvents
+.soliumignore
+.soliumrc
+
 .DS_Store
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+*.out
